@@ -66,10 +66,10 @@ Create a `.env` file in the root directory:
 ```env
 OPENAI_API_KEY=your_openai_api_key
 COHERE_API_KEY=your_cohere_api_key
-TELEGRAM_BOT_TOKEN=8678897707:AAGir63LUcbL-w9TILmkoPSxHgBXfhC8on4
-TELEGRAM_CHAT_ID=1154451605
-TELEGRAM_ALERT_BOT_TOKEN=8847600936:AAGHCH1bBVMGSXl_MSrxo1klwgrUGJyeDW0
-TELEGRAM_ALERT_CHAT_ID=1154451605
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_CHAT_ID=your_telegram_chat_id
+TELEGRAM_ALERT_BOT_TOKEN=your_telegram_alert_bot_token
+TELEGRAM_ALERT_CHAT_ID=your_telegram_chat_id
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
