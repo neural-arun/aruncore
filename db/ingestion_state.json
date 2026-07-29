@@ -1,355 +1,444 @@
 {
     "version": 2,
     "files": {
-        "data/github/README.md": {
-            "hash": "89c7f754b14c5d219a9b0d3f83865c15",
+        "data/github/med_coach/README.md": {
+            "hash": "573b2483f1a56bb619f90059f1fd2627",
             "chunk_ids": [
-                "github_README.md_README_chunk_0",
-                "github_README.md_README_chunk_1",
-                "github_README.md_README_chunk_2",
-                "github_README.md_README_chunk_3",
-                "github_README.md_README_chunk_4",
-                "github_README.md_README_chunk_5"
+                "github_med_coach_README_chunk_0",
+                "github_med_coach_README_chunk_1",
+                "github_med_coach_README_chunk_2"
             ]
         },
-        "data/github/Agentic_AI_Projects/master_portfolio_summary.md": {
-            "hash": "87e9185138c1551c6bfb898ecf5298c2",
+        "data/github/Notes_maker_via_youtube_or_subs/README.md": {
+            "hash": "02c4a948be1cd1feb49b2ceaa3b6e110",
             "chunk_ids": [
-                "github_Agentic_AI_Projects_master_portfolio_summary_chunk_0",
-                "github_Agentic_AI_Projects_master_portfolio_summary_chunk_1",
-                "github_Agentic_AI_Projects_master_portfolio_summary_chunk_2",
-                "github_Agentic_AI_Projects_master_portfolio_summary_chunk_3",
-                "github_Agentic_AI_Projects_master_portfolio_summary_chunk_4",
-                "github_Agentic_AI_Projects_master_portfolio_summary_chunk_5",
-                "github_Agentic_AI_Projects_master_portfolio_summary_chunk_6"
+                "github_Notes_maker_via_youtube_or_subs_README_chunk_0",
+                "github_Notes_maker_via_youtube_or_subs_README_chunk_1",
+                "github_Notes_maker_via_youtube_or_subs_README_chunk_2",
+                "github_Notes_maker_via_youtube_or_subs_README_chunk_3",
+                "github_Notes_maker_via_youtube_or_subs_README_chunk_4",
+                "github_Notes_maker_via_youtube_or_subs_README_chunk_5",
+                "github_Notes_maker_via_youtube_or_subs_README_chunk_6"
             ]
         },
-        "data/github/Agentic_AI_Projects/readme.md": {
-            "hash": "918b806d490d03a9ba736276b9dc16b2",
+        "data/github/working_with_LLMs/README.md": {
+            "hash": "bf5606eda0b1c4e0e5d1b899f7dd9409",
             "chunk_ids": [
-                "github_Agentic_AI_Projects_readme_chunk_0",
-                "github_Agentic_AI_Projects_readme_chunk_1",
-                "github_Agentic_AI_Projects_readme_chunk_2",
-                "github_Agentic_AI_Projects_readme_chunk_3",
-                "github_Agentic_AI_Projects_readme_chunk_4",
-                "github_Agentic_AI_Projects_readme_chunk_5"
+                "github_working_with_LLMs_README_chunk_0",
+                "github_working_with_LLMs_README_chunk_1",
+                "github_working_with_LLMs_README_chunk_2",
+                "github_working_with_LLMs_README_chunk_3",
+                "github_working_with_LLMs_README_chunk_4",
+                "github_working_with_LLMs_README_chunk_5",
+                "github_working_with_LLMs_README_chunk_6",
+                "github_working_with_LLMs_README_chunk_7",
+                "github_working_with_LLMs_README_chunk_8",
+                "github_working_with_LLMs_README_chunk_9",
+                "github_working_with_LLMs_README_chunk_10"
             ]
         },
-        "data/github/arun_core_digital_twin/architecture.md": {
-            "hash": "5732cadc282d151d0395249c21315a98",
+        "data/github/personal_learning_lab/README.md": {
+            "hash": "f7698ec89db831d1ed31ac9f3292acd8",
             "chunk_ids": [
-                "github_arun_core_digital_twin_architecture_chunk_0",
-                "github_arun_core_digital_twin_architecture_chunk_1",
-                "github_arun_core_digital_twin_architecture_chunk_2",
-                "github_arun_core_digital_twin_architecture_chunk_3",
-                "github_arun_core_digital_twin_architecture_chunk_4",
-                "github_arun_core_digital_twin_architecture_chunk_5",
-                "github_arun_core_digital_twin_architecture_chunk_6"
+                "github_personal_learning_lab_README_chunk_0",
+                "github_personal_learning_lab_README_chunk_1",
+                "github_personal_learning_lab_README_chunk_2",
+                "github_personal_learning_lab_README_chunk_3",
+                "github_personal_learning_lab_README_chunk_4",
+                "github_personal_learning_lab_README_chunk_5",
+                "github_personal_learning_lab_README_chunk_6",
+                "github_personal_learning_lab_README_chunk_7",
+                "github_personal_learning_lab_README_chunk_8",
+                "github_personal_learning_lab_README_chunk_9",
+                "github_personal_learning_lab_README_chunk_10",
+                "github_personal_learning_lab_README_chunk_11"
             ]
         },
-        "data/github/arun_core_digital_twin/decisions.md": {
-            "hash": "495efcb2b7e5690c7140dfa8024b2ed6",
+        "data/github/Agentic_AI_Projects/README.md": {
+            "hash": "d410d7f7e07b40582960c92e37b9bf10",
             "chunk_ids": [
-                "github_arun_core_digital_twin_decisions_chunk_0",
-                "github_arun_core_digital_twin_decisions_chunk_1",
-                "github_arun_core_digital_twin_decisions_chunk_2",
-                "github_arun_core_digital_twin_decisions_chunk_3",
-                "github_arun_core_digital_twin_decisions_chunk_4",
-                "github_arun_core_digital_twin_decisions_chunk_5",
-                "github_arun_core_digital_twin_decisions_chunk_6"
+                "github_Agentic_AI_Projects_README_chunk_0",
+                "github_Agentic_AI_Projects_README_chunk_1"
             ]
         },
-        "data/github/arun_core_digital_twin/features.md": {
-            "hash": "d4574415a1aeadf5961714bd1f8d0468",
+        "data/github/neet-bot/README.md": {
+            "hash": "fdcc9d9def1afc97ffce3914fa501d13",
             "chunk_ids": [
-                "github_arun_core_digital_twin_features_chunk_0",
-                "github_arun_core_digital_twin_features_chunk_1",
-                "github_arun_core_digital_twin_features_chunk_2",
-                "github_arun_core_digital_twin_features_chunk_3",
-                "github_arun_core_digital_twin_features_chunk_4",
-                "github_arun_core_digital_twin_features_chunk_5",
-                "github_arun_core_digital_twin_features_chunk_6"
+                "github_neet-bot_README_chunk_0",
+                "github_neet-bot_README_chunk_1",
+                "github_neet-bot_README_chunk_2",
+                "github_neet-bot_README_chunk_3",
+                "github_neet-bot_README_chunk_4",
+                "github_neet-bot_README_chunk_5",
+                "github_neet-bot_README_chunk_6",
+                "github_neet-bot_README_chunk_7",
+                "github_neet-bot_README_chunk_8"
             ]
         },
-        "data/github/arun_core_digital_twin/overview.md": {
-            "hash": "98eb3e2fd823f7452ae832f5b4e36c2b",
+        "data/github/web_wizard/README.md": {
+            "hash": "33b15af58701bb28129dfd2143d65831",
             "chunk_ids": [
-                "github_arun_core_digital_twin_overview_chunk_0",
-                "github_arun_core_digital_twin_overview_chunk_1",
-                "github_arun_core_digital_twin_overview_chunk_2",
-                "github_arun_core_digital_twin_overview_chunk_3",
-                "github_arun_core_digital_twin_overview_chunk_4",
-                "github_arun_core_digital_twin_overview_chunk_5"
+                "github_web_wizard_README_chunk_0",
+                "github_web_wizard_README_chunk_1",
+                "github_web_wizard_README_chunk_2",
+                "github_web_wizard_README_chunk_3",
+                "github_web_wizard_README_chunk_4",
+                "github_web_wizard_README_chunk_5",
+                "github_web_wizard_README_chunk_6",
+                "github_web_wizard_README_chunk_7",
+                "github_web_wizard_README_chunk_8",
+                "github_web_wizard_README_chunk_9"
             ]
         },
-        "data/github/arun_core_digital_twin/technical_specs.md": {
-            "hash": "e3299b98bbf2b394e000e58286f5a401",
+        "data/github/01_manage_patient_task/README.md": {
+            "hash": "2873f759c1847328796249157e2a0852",
             "chunk_ids": [
-                "github_arun_core_digital_twin_technical_specs_chunk_0",
-                "github_arun_core_digital_twin_technical_specs_chunk_1",
-                "github_arun_core_digital_twin_technical_specs_chunk_2",
-                "github_arun_core_digital_twin_technical_specs_chunk_3",
-                "github_arun_core_digital_twin_technical_specs_chunk_4",
-                "github_arun_core_digital_twin_technical_specs_chunk_5"
+                "github_01_manage_patient_task_README_chunk_0",
+                "github_01_manage_patient_task_README_chunk_1",
+                "github_01_manage_patient_task_README_chunk_2",
+                "github_01_manage_patient_task_README_chunk_3",
+                "github_01_manage_patient_task_README_chunk_4",
+                "github_01_manage_patient_task_README_chunk_5",
+                "github_01_manage_patient_task_README_chunk_6",
+                "github_01_manage_patient_task_README_chunk_7",
+                "github_01_manage_patient_task_README_chunk_8",
+                "github_01_manage_patient_task_README_chunk_9"
             ]
         },
-        "data/github/legal_RAG_system/architecture.md": {
-            "hash": "aafdd404cf78145119c0269230ef8887",
+        "data/github/neural-arun/README.md": {
+            "hash": "3a083299c418a7f4d838262f21342a7e",
             "chunk_ids": [
-                "github_legal_RAG_system_architecture_chunk_0",
-                "github_legal_RAG_system_architecture_chunk_1",
-                "github_legal_RAG_system_architecture_chunk_2",
-                "github_legal_RAG_system_architecture_chunk_3",
-                "github_legal_RAG_system_architecture_chunk_4",
-                "github_legal_RAG_system_architecture_chunk_5",
-                "github_legal_RAG_system_architecture_chunk_6"
+                "github_neural-arun_README_chunk_0",
+                "github_neural-arun_README_chunk_1",
+                "github_neural-arun_README_chunk_2",
+                "github_neural-arun_README_chunk_3",
+                "github_neural-arun_README_chunk_4",
+                "github_neural-arun_README_chunk_5",
+                "github_neural-arun_README_chunk_6",
+                "github_neural-arun_README_chunk_7",
+                "github_neural-arun_README_chunk_8",
+                "github_neural-arun_README_chunk_9"
             ]
         },
-        "data/github/legal_RAG_system/decisions.md": {
-            "hash": "d0852714fccd33f1eb903c432395aa3e",
+        "data/github/personal_ai_agent/README.md": {
+            "hash": "33a10b6a6b1260b2817a082f84e1a2f6",
             "chunk_ids": [
-                "github_legal_RAG_system_decisions_chunk_0",
-                "github_legal_RAG_system_decisions_chunk_1",
-                "github_legal_RAG_system_decisions_chunk_2",
-                "github_legal_RAG_system_decisions_chunk_3",
-                "github_legal_RAG_system_decisions_chunk_4",
-                "github_legal_RAG_system_decisions_chunk_5",
-                "github_legal_RAG_system_decisions_chunk_6"
+                "github_personal_ai_agent_README_chunk_0",
+                "github_personal_ai_agent_README_chunk_1",
+                "github_personal_ai_agent_README_chunk_2",
+                "github_personal_ai_agent_README_chunk_3",
+                "github_personal_ai_agent_README_chunk_4"
             ]
         },
-        "data/github/legal_RAG_system/readme.md": {
-            "hash": "fd5f6db10343461518f8fcf83de60276",
+        "data/github/result_anomaly/README.md": {
+            "hash": "d11f5781145e6487e1cd536c2918ea7c",
             "chunk_ids": [
-                "github_legal_RAG_system_readme_chunk_0",
-                "github_legal_RAG_system_readme_chunk_1",
-                "github_legal_RAG_system_readme_chunk_2",
-                "github_legal_RAG_system_readme_chunk_3"
+                "github_result_anomaly_README_chunk_0",
+                "github_result_anomaly_README_chunk_1",
+                "github_result_anomaly_README_chunk_2",
+                "github_result_anomaly_README_chunk_3",
+                "github_result_anomaly_README_chunk_4",
+                "github_result_anomaly_README_chunk_5",
+                "github_result_anomaly_README_chunk_6",
+                "github_result_anomaly_README_chunk_7",
+                "github_result_anomaly_README_chunk_8"
             ]
         },
-        "data/github/neural_arun_labs/readme.md": {
-            "hash": "3be3dd7db74bebc315280cf51c03dc3d",
+        "data/github/uday_bpsc/README.md": {
+            "hash": "ef07935320820fa143aa5f8c1e582a55",
             "chunk_ids": [
-                "github_neural_arun_labs_readme_chunk_0",
-                "github_neural_arun_labs_readme_chunk_1",
-                "github_neural_arun_labs_readme_chunk_2",
-                "github_neural_arun_labs_readme_chunk_3"
+                "github_uday_bpsc_README_chunk_0",
+                "github_uday_bpsc_README_chunk_1",
+                "github_uday_bpsc_README_chunk_2",
+                "github_uday_bpsc_README_chunk_3",
+                "github_uday_bpsc_README_chunk_4",
+                "github_uday_bpsc_README_chunk_5",
+                "github_uday_bpsc_README_chunk_6"
             ]
         },
-        "data/github/personal_ai_agent/architecture.md": {
-            "hash": "e498a8f0c032ea6fe403c5c0e8a4492b",
+        "data/github/api_projects/README.md": {
+            "hash": "7d25c918a4b159d7642611416a27b4f2",
             "chunk_ids": [
-                "github_personal_ai_agent_architecture_chunk_0",
-                "github_personal_ai_agent_architecture_chunk_1",
-                "github_personal_ai_agent_architecture_chunk_2",
-                "github_personal_ai_agent_architecture_chunk_3",
-                "github_personal_ai_agent_architecture_chunk_4",
-                "github_personal_ai_agent_architecture_chunk_5",
-                "github_personal_ai_agent_architecture_chunk_6",
-                "github_personal_ai_agent_architecture_chunk_7"
+                "github_api_projects_README_chunk_0",
+                "github_api_projects_README_chunk_1",
+                "github_api_projects_README_chunk_2",
+                "github_api_projects_README_chunk_3",
+                "github_api_projects_README_chunk_4",
+                "github_api_projects_README_chunk_5",
+                "github_api_projects_README_chunk_6",
+                "github_api_projects_README_chunk_7",
+                "github_api_projects_README_chunk_8",
+                "github_api_projects_README_chunk_9",
+                "github_api_projects_README_chunk_10",
+                "github_api_projects_README_chunk_11",
+                "github_api_projects_README_chunk_12",
+                "github_api_projects_README_chunk_13"
             ]
         },
-        "data/github/personal_ai_agent/decisions.md": {
-            "hash": "cdc61a7ea2ab30400cecfc56cb42d80a",
+        "data/github/skills/README.md": {
+            "hash": "1ea3cbd60c3157bb378764f5134646e7",
             "chunk_ids": [
-                "github_personal_ai_agent_decisions_chunk_0",
-                "github_personal_ai_agent_decisions_chunk_1",
-                "github_personal_ai_agent_decisions_chunk_2",
-                "github_personal_ai_agent_decisions_chunk_3",
-                "github_personal_ai_agent_decisions_chunk_4",
-                "github_personal_ai_agent_decisions_chunk_5"
+                "github_skills_README_chunk_0",
+                "github_skills_README_chunk_1",
+                "github_skills_README_chunk_2",
+                "github_skills_README_chunk_3",
+                "github_skills_README_chunk_4"
             ]
         },
-        "data/github/personal_ai_agent/readme.md": {
-            "hash": "2d999d1ca238b9082cc72526ae9f982d",
+        "data/github/deep_research/README.md": {
+            "hash": "afe5b458158704fca14749c43a58b5e8",
             "chunk_ids": [
-                "github_personal_ai_agent_readme_chunk_0",
-                "github_personal_ai_agent_readme_chunk_1",
-                "github_personal_ai_agent_readme_chunk_2",
-                "github_personal_ai_agent_readme_chunk_3"
+                "github_deep_research_README_chunk_0",
+                "github_deep_research_README_chunk_1"
             ]
         },
-        "data/github/real_state_listing_scraper/architecture.md": {
-            "hash": "63d3fbcde554a82fe835220639c1cd69",
+        "data/github/relic-rush-game/README.md": {
+            "hash": "b884af8f85e2222286c885513ae30a0e",
             "chunk_ids": [
-                "github_real_state_listing_scraper_architecture_chunk_0",
-                "github_real_state_listing_scraper_architecture_chunk_1",
-                "github_real_state_listing_scraper_architecture_chunk_2",
-                "github_real_state_listing_scraper_architecture_chunk_3",
-                "github_real_state_listing_scraper_architecture_chunk_4"
+                "github_relic-rush-game_README_chunk_0",
+                "github_relic-rush-game_README_chunk_1",
+                "github_relic-rush-game_README_chunk_2",
+                "github_relic-rush-game_README_chunk_3",
+                "github_relic-rush-game_README_chunk_4",
+                "github_relic-rush-game_README_chunk_5",
+                "github_relic-rush-game_README_chunk_6",
+                "github_relic-rush-game_README_chunk_7",
+                "github_relic-rush-game_README_chunk_8",
+                "github_relic-rush-game_README_chunk_9",
+                "github_relic-rush-game_README_chunk_10",
+                "github_relic-rush-game_README_chunk_11",
+                "github_relic-rush-game_README_chunk_12",
+                "github_relic-rush-game_README_chunk_13",
+                "github_relic-rush-game_README_chunk_14"
             ]
         },
-        "data/github/real_state_listing_scraper/decisions.md": {
-            "hash": "41ec5396571ec030369f9bec12d85698",
+        "data/github/real_state_listing_scraper/README.md": {
+            "hash": "cb6e185addb62126ac0f44a2809ad9e9",
             "chunk_ids": [
-                "github_real_state_listing_scraper_decisions_chunk_0",
-                "github_real_state_listing_scraper_decisions_chunk_1",
-                "github_real_state_listing_scraper_decisions_chunk_2",
-                "github_real_state_listing_scraper_decisions_chunk_3",
-                "github_real_state_listing_scraper_decisions_chunk_4",
-                "github_real_state_listing_scraper_decisions_chunk_5"
+                "github_real_state_listing_scraper_README_chunk_0",
+                "github_real_state_listing_scraper_README_chunk_1",
+                "github_real_state_listing_scraper_README_chunk_2",
+                "github_real_state_listing_scraper_README_chunk_3",
+                "github_real_state_listing_scraper_README_chunk_4",
+                "github_real_state_listing_scraper_README_chunk_5",
+                "github_real_state_listing_scraper_README_chunk_6",
+                "github_real_state_listing_scraper_README_chunk_7",
+                "github_real_state_listing_scraper_README_chunk_8"
             ]
         },
-        "data/github/real_state_listing_scraper/readme.md": {
-            "hash": "88dc293e76a03096260cfa51a28c9c77",
+        "data/github/mcp/README.md": {
+            "hash": "47beb3b24ccbd20f181447312cb4364e",
             "chunk_ids": [
-                "github_real_state_listing_scraper_readme_chunk_0",
-                "github_real_state_listing_scraper_readme_chunk_1",
-                "github_real_state_listing_scraper_readme_chunk_2",
-                "github_real_state_listing_scraper_readme_chunk_3"
+                "github_mcp_README_chunk_0",
+                "github_mcp_README_chunk_1"
             ]
         },
-        "data/github/result_anomaly/architecture.md": {
-            "hash": "763016e768451bfeefc27f5c0f68fc03",
+        "data/github/neural_arun_labs/README.md": {
+            "hash": "b5e12e3e6002802e5ab9fac72e14e61e",
             "chunk_ids": [
-                "github_result_anomaly_architecture_chunk_0",
-                "github_result_anomaly_architecture_chunk_1",
-                "github_result_anomaly_architecture_chunk_2",
-                "github_result_anomaly_architecture_chunk_3",
-                "github_result_anomaly_architecture_chunk_4"
+                "github_neural_arun_labs_README_chunk_0",
+                "github_neural_arun_labs_README_chunk_1",
+                "github_neural_arun_labs_README_chunk_2"
             ]
         },
-        "data/github/result_anomaly/decisions.md": {
-            "hash": "f39116fe5d0cba4b3b64bee6be4bbdb2",
+        "data/github/legal_RAG_system/README.md": {
+            "hash": "514a5b18596dbd72785158fcf8de7d12",
             "chunk_ids": [
-                "github_result_anomaly_decisions_chunk_0",
-                "github_result_anomaly_decisions_chunk_1",
-                "github_result_anomaly_decisions_chunk_2",
-                "github_result_anomaly_decisions_chunk_3",
-                "github_result_anomaly_decisions_chunk_4"
+                "github_legal_RAG_system_README_chunk_0",
+                "github_legal_RAG_system_README_chunk_1",
+                "github_legal_RAG_system_README_chunk_2",
+                "github_legal_RAG_system_README_chunk_3",
+                "github_legal_RAG_system_README_chunk_4",
+                "github_legal_RAG_system_README_chunk_5",
+                "github_legal_RAG_system_README_chunk_6",
+                "github_legal_RAG_system_README_chunk_7",
+                "github_legal_RAG_system_README_chunk_8",
+                "github_legal_RAG_system_README_chunk_9",
+                "github_legal_RAG_system_README_chunk_10",
+                "github_legal_RAG_system_README_chunk_11",
+                "github_legal_RAG_system_README_chunk_12",
+                "github_legal_RAG_system_README_chunk_13",
+                "github_legal_RAG_system_README_chunk_14",
+                "github_legal_RAG_system_README_chunk_15",
+                "github_legal_RAG_system_README_chunk_16",
+                "github_legal_RAG_system_README_chunk_17",
+                "github_legal_RAG_system_README_chunk_18",
+                "github_legal_RAG_system_README_chunk_19",
+                "github_legal_RAG_system_README_chunk_20",
+                "github_legal_RAG_system_README_chunk_21",
+                "github_legal_RAG_system_README_chunk_22",
+                "github_legal_RAG_system_README_chunk_23",
+                "github_legal_RAG_system_README_chunk_24",
+                "github_legal_RAG_system_README_chunk_25",
+                "github_legal_RAG_system_README_chunk_26",
+                "github_legal_RAG_system_README_chunk_27",
+                "github_legal_RAG_system_README_chunk_28"
             ]
         },
-        "data/github/result_anomaly/readme.md": {
-            "hash": "a191fb0c26cb1b1d35742b70cfad2e24",
+        "data/github/valueable_notes/README.md": {
+            "hash": "e8b547db725dca4f4efe4ae0b0642111",
             "chunk_ids": [
-                "github_result_anomaly_readme_chunk_0",
-                "github_result_anomaly_readme_chunk_1",
-                "github_result_anomaly_readme_chunk_2",
-                "github_result_anomaly_readme_chunk_3"
+                "github_valueable_notes_README_chunk_0",
+                "github_valueable_notes_README_chunk_1",
+                "github_valueable_notes_README_chunk_2",
+                "github_valueable_notes_README_chunk_3",
+                "github_valueable_notes_README_chunk_4",
+                "github_valueable_notes_README_chunk_5",
+                "github_valueable_notes_README_chunk_6",
+                "github_valueable_notes_README_chunk_7",
+                "github_valueable_notes_README_chunk_8",
+                "github_valueable_notes_README_chunk_9",
+                "github_valueable_notes_README_chunk_10"
             ]
         },
-        "data/github/web_wizard/readme.md": {
-            "hash": "eaeca5ec5d83c9d71a079d1ffbae5282",
+        "data/github/ArunCore/README.md": {
+            "hash": "709c12a76222bc1e38f105c3d5bfe112",
             "chunk_ids": [
-                "github_web_wizard_readme_chunk_0",
-                "github_web_wizard_readme_chunk_1",
-                "github_web_wizard_readme_chunk_2",
-                "github_web_wizard_readme_chunk_3",
-                "github_web_wizard_readme_chunk_4"
+                "github_ArunCore_README_chunk_0",
+                "github_ArunCore_README_chunk_1",
+                "github_ArunCore_README_chunk_2",
+                "github_ArunCore_README_chunk_3",
+                "github_ArunCore_README_chunk_4",
+                "github_ArunCore_README_chunk_5",
+                "github_ArunCore_README_chunk_6",
+                "github_ArunCore_README_chunk_7",
+                "github_ArunCore_README_chunk_8",
+                "github_ArunCore_README_chunk_9",
+                "github_ArunCore_README_chunk_10",
+                "github_ArunCore_README_chunk_11",
+                "github_ArunCore_README_chunk_12"
+            ]
+        },
+        "data/github/med_coach/metadata.json": {
+            "hash": "b4679231825af3564c11661cb3a2b83a",
+            "chunk_ids": [
+                "github_med_coach_metadata_chunk_0"
+            ]
+        },
+        "data/github/Notes_maker_via_youtube_or_subs/metadata.json": {
+            "hash": "b0bf02ecc2f031912c54d45a21181545",
+            "chunk_ids": [
+                "github_Notes_maker_via_youtube_or_subs_metadata_chunk_0"
+            ]
+        },
+        "data/github/working_with_LLMs/metadata.json": {
+            "hash": "7516980c8e73fa76f6449d87ffa9f6b1",
+            "chunk_ids": [
+                "github_working_with_LLMs_metadata_chunk_0"
+            ]
+        },
+        "data/github/personal_learning_lab/metadata.json": {
+            "hash": "7d58310a4772d1d15b5be188626ce1e2",
+            "chunk_ids": [
+                "github_personal_learning_lab_metadata_chunk_0"
             ]
         },
         "data/github/Agentic_AI_Projects/metadata.json": {
-            "hash": "1e5f4542e9d0b67dadbed557781c3fb0",
+            "hash": "2fd686db573b282c5e1dfeaad2706759",
             "chunk_ids": [
                 "github_Agentic_AI_Projects_metadata_chunk_0"
             ]
         },
-        "data/github/arun_core_digital_twin/code_summaries.json": {
-            "hash": "f88572b18b344f6ff425a7b16d6b173f",
+        "data/github/neet-bot/metadata.json": {
+            "hash": "86965ef47755525338d514512b3c76f3",
             "chunk_ids": [
-                "github_arun_core_digital_twin_code_summaries_chunk_0"
-            ]
-        },
-        "data/github/arun_core_digital_twin/metadata.json": {
-            "hash": "fd7936435daf0f372b700db51673fc56",
-            "chunk_ids": [
-                "github_arun_core_digital_twin_metadata_chunk_0"
-            ]
-        },
-        "data/github/legal_RAG_system/code_summaries.json": {
-            "hash": "876c9e9d15a117c843f5571c941860cf",
-            "chunk_ids": [
-                "github_legal_RAG_system_code_summaries_chunk_0"
-            ]
-        },
-        "data/github/legal_RAG_system/metadata.json": {
-            "hash": "7be5d67aaed773aae6cd94c05c3e7e7d",
-            "chunk_ids": [
-                "github_legal_RAG_system_metadata_chunk_0"
-            ]
-        },
-        "data/github/neural_arun_labs/metadata.json": {
-            "hash": "b37040f28da2124401df3226e5ab1363",
-            "chunk_ids": [
-                "github_neural_arun_labs_metadata_chunk_0"
-            ]
-        },
-        "data/github/personal_ai_agent/code_summaries.json": {
-            "hash": "952bb5f9e5a41c3090448a89b158593f",
-            "chunk_ids": [
-                "github_personal_ai_agent_code_summaries_chunk_0"
-            ]
-        },
-        "data/github/personal_ai_agent/metadata.json": {
-            "hash": "7f880ea39dce320d40fa3aacae2aeef3",
-            "chunk_ids": [
-                "github_personal_ai_agent_metadata_chunk_0"
-            ]
-        },
-        "data/github/real_state_listing_scraper/code_summaries.json": {
-            "hash": "b0c222d07d03c9858ac5b8364171b13f",
-            "chunk_ids": [
-                "github_real_state_listing_scraper_code_summaries_chunk_0"
-            ]
-        },
-        "data/github/real_state_listing_scraper/metadata.json": {
-            "hash": "cbdddb89621470ab0763a0960ae9ee4f",
-            "chunk_ids": [
-                "github_real_state_listing_scraper_metadata_chunk_0"
-            ]
-        },
-        "data/github/result_anomaly/code_summaries.json": {
-            "hash": "f37f99175974b87573a5c5941db3bab6",
-            "chunk_ids": [
-                "github_result_anomaly_code_summaries_chunk_0"
-            ]
-        },
-        "data/github/result_anomaly/metadata.json": {
-            "hash": "ac8139723521dc9147dc1b2e3bc78ab1",
-            "chunk_ids": [
-                "github_result_anomaly_metadata_chunk_0"
+                "github_neet-bot_metadata_chunk_0"
             ]
         },
         "data/github/web_wizard/metadata.json": {
-            "hash": "d74ddd743029eb878fab15cde86abbdb",
+            "hash": "2d0ce28c430f13e52854bebaa51a9ed0",
             "chunk_ids": [
                 "github_web_wizard_metadata_chunk_0"
             ]
         },
-        "data/raw/all_projects_summary.md": {
-            "hash": "536a627c31e92f4dfd18a3947b5493c2",
+        "data/github/01_manage_patient_task/metadata.json": {
+            "hash": "1f97975af61796e3c2092ce11aea1cf8",
             "chunk_ids": [
-                "raw_N/A_all_projects_summary_chunk_0",
-                "raw_N/A_all_projects_summary_chunk_1",
-                "raw_N/A_all_projects_summary_chunk_2",
-                "raw_N/A_all_projects_summary_chunk_3",
-                "raw_N/A_all_projects_summary_chunk_4",
-                "raw_N/A_all_projects_summary_chunk_5",
-                "raw_N/A_all_projects_summary_chunk_6",
-                "raw_N/A_all_projects_summary_chunk_7",
-                "raw_N/A_all_projects_summary_chunk_8",
-                "raw_N/A_all_projects_summary_chunk_9",
-                "raw_N/A_all_projects_summary_chunk_10",
-                "raw_N/A_all_projects_summary_chunk_11",
-                "raw_N/A_all_projects_summary_chunk_12",
-                "raw_N/A_all_projects_summary_chunk_13",
-                "raw_N/A_all_projects_summary_chunk_14",
-                "raw_N/A_all_projects_summary_chunk_15",
-                "raw_N/A_all_projects_summary_chunk_16",
-                "raw_N/A_all_projects_summary_chunk_17",
-                "raw_N/A_all_projects_summary_chunk_18",
-                "raw_N/A_all_projects_summary_chunk_19",
-                "raw_N/A_all_projects_summary_chunk_20",
-                "raw_N/A_all_projects_summary_chunk_21",
-                "raw_N/A_all_projects_summary_chunk_22",
-                "raw_N/A_all_projects_summary_chunk_23",
-                "raw_N/A_all_projects_summary_chunk_24",
-                "raw_N/A_all_projects_summary_chunk_25",
-                "raw_N/A_all_projects_summary_chunk_26",
-                "raw_N/A_all_projects_summary_chunk_27",
-                "raw_N/A_all_projects_summary_chunk_28",
-                "raw_N/A_all_projects_summary_chunk_29",
-                "raw_N/A_all_projects_summary_chunk_30",
-                "raw_N/A_all_projects_summary_chunk_31"
+                "github_01_manage_patient_task_metadata_chunk_0"
+            ]
+        },
+        "data/github/neural-arun/metadata.json": {
+            "hash": "0fb588c4619fdffc3098bcfe15be8034",
+            "chunk_ids": [
+                "github_neural-arun_metadata_chunk_0"
+            ]
+        },
+        "data/github/personal_ai_agent/metadata.json": {
+            "hash": "6c57ae28b626334253b6470e88288274",
+            "chunk_ids": [
+                "github_personal_ai_agent_metadata_chunk_0"
+            ]
+        },
+        "data/github/result_anomaly/metadata.json": {
+            "hash": "fd672f7587d85fca739586a37aae32a7",
+            "chunk_ids": [
+                "github_result_anomaly_metadata_chunk_0"
+            ]
+        },
+        "data/github/uday_bpsc/metadata.json": {
+            "hash": "4c23c88b00690c8fb9a9f101b1e5a4d6",
+            "chunk_ids": [
+                "github_uday_bpsc_metadata_chunk_0"
+            ]
+        },
+        "data/github/api_projects/metadata.json": {
+            "hash": "20f2a1487f8094da3d668b13f3f05c63",
+            "chunk_ids": [
+                "github_api_projects_metadata_chunk_0"
+            ]
+        },
+        "data/github/skills/metadata.json": {
+            "hash": "c82171b1efcd316523023a9efbbd2977",
+            "chunk_ids": [
+                "github_skills_metadata_chunk_0"
+            ]
+        },
+        "data/github/deep_research/metadata.json": {
+            "hash": "3dc08d528fcc1a149efc2d4be152aa20",
+            "chunk_ids": [
+                "github_deep_research_metadata_chunk_0"
+            ]
+        },
+        "data/github/relic-rush-game/metadata.json": {
+            "hash": "ee3b3f74c2beff5ac97c0fa15712b286",
+            "chunk_ids": [
+                "github_relic-rush-game_metadata_chunk_0"
+            ]
+        },
+        "data/github/real_state_listing_scraper/metadata.json": {
+            "hash": "318a1e7ae5cccab6a182ddca4689702b",
+            "chunk_ids": [
+                "github_real_state_listing_scraper_metadata_chunk_0"
+            ]
+        },
+        "data/github/mcp/metadata.json": {
+            "hash": "3c802cbcf6c0411a259f16186a169c39",
+            "chunk_ids": [
+                "github_mcp_metadata_chunk_0"
+            ]
+        },
+        "data/github/neural_arun_labs/metadata.json": {
+            "hash": "da91691defbd7231ca397ea3fe55065a",
+            "chunk_ids": [
+                "github_neural_arun_labs_metadata_chunk_0"
+            ]
+        },
+        "data/github/legal_RAG_system/metadata.json": {
+            "hash": "821cd823de0996dc1e54872ebb37d179",
+            "chunk_ids": [
+                "github_legal_RAG_system_metadata_chunk_0"
+            ]
+        },
+        "data/github/valueable_notes/metadata.json": {
+            "hash": "4a1fbbfeed61a8b0beee3270416f0c80",
+            "chunk_ids": [
+                "github_valueable_notes_metadata_chunk_0"
+            ]
+        },
+        "data/github/ArunCore/metadata.json": {
+            "hash": "7319ef6abb74d9215545bae4e8ca0a34",
+            "chunk_ids": [
+                "github_ArunCore_metadata_chunk_0"
             ]
         },
         "data/raw/personal_background.md": {
@@ -365,24 +454,8 @@
                 "raw_N/A_personal_background_chunk_7"
             ]
         },
-        "data/raw/README.md": {
-            "hash": "8412054e97ec51136b955e6efa823819",
-            "chunk_ids": [
-                "raw_N/A_README_chunk_0",
-                "raw_N/A_README_chunk_1",
-                "raw_N/A_README_chunk_2",
-                "raw_N/A_README_chunk_3",
-                "raw_N/A_README_chunk_4"
-            ]
-        },
-        "data/raw/metadata.json": {
-            "hash": "a1d86f63862a278e14e7bb4271be2d36",
-            "chunk_ids": [
-                "raw_N/A_metadata_chunk_0"
-            ]
-        },
         "data/linkedin/posts.md": {
-            "hash": "880690b65f9d8ab3b61840b3e8bcebff",
+            "hash": "1a71134dbbff3ac529e75b7fddccdc23",
             "chunk_ids": [
                 "linkedin_N/A_posts_chunk_0",
                 "linkedin_N/A_posts_chunk_1",
@@ -394,23 +467,23 @@
                 "linkedin_N/A_posts_chunk_7",
                 "linkedin_N/A_posts_chunk_8",
                 "linkedin_N/A_posts_chunk_9",
-                "linkedin_N/A_posts_chunk_10"
+                "linkedin_N/A_posts_chunk_10",
+                "linkedin_N/A_posts_chunk_11",
+                "linkedin_N/A_posts_chunk_12",
+                "linkedin_N/A_posts_chunk_13",
+                "linkedin_N/A_posts_chunk_14",
+                "linkedin_N/A_posts_chunk_15",
+                "linkedin_N/A_posts_chunk_16",
+                "linkedin_N/A_posts_chunk_17",
+                "linkedin_N/A_posts_chunk_18",
+                "linkedin_N/A_posts_chunk_19",
+                "linkedin_N/A_posts_chunk_20",
+                "linkedin_N/A_posts_chunk_21"
             ]
         },
         "data/linkedin/profile_summary.md": {
             "hash": "d41d8cd98f00b204e9800998ecf8427e",
             "chunk_ids": []
-        },
-        "data/static/public_profile.md": {
-            "hash": "9665911b6cd12fd338d4b64ac35730be",
-            "chunk_ids": [
-                "static_N/A_public_profile_chunk_0",
-                "static_N/A_public_profile_chunk_1",
-                "static_N/A_public_profile_chunk_2",
-                "static_N/A_public_profile_chunk_3",
-                "static_N/A_public_profile_chunk_4",
-                "static_N/A_public_profile_chunk_5"
-            ]
         },
         "data/static/README.md": {
             "hash": "e71befe905c6348f2d497aee35f37f81",
@@ -433,6 +506,28 @@
                 "static_N/A_rules_of_engagement_chunk_5",
                 "static_N/A_rules_of_engagement_chunk_6",
                 "static_N/A_rules_of_engagement_chunk_7"
+            ]
+        },
+        "data/static/profile.md": {
+            "hash": "a332720af968cb4010401e4b18381f2b",
+            "chunk_ids": [
+                "static_N/A_profile_chunk_0",
+                "static_N/A_profile_chunk_1",
+                "static_N/A_profile_chunk_2",
+                "static_N/A_profile_chunk_3",
+                "static_N/A_profile_chunk_4",
+                "static_N/A_profile_chunk_5"
+            ]
+        },
+        "data/static/public_profile.md": {
+            "hash": "a332720af968cb4010401e4b18381f2b",
+            "chunk_ids": [
+                "static_N/A_public_profile_chunk_0",
+                "static_N/A_public_profile_chunk_1",
+                "static_N/A_public_profile_chunk_2",
+                "static_N/A_public_profile_chunk_3",
+                "static_N/A_public_profile_chunk_4",
+                "static_N/A_public_profile_chunk_5"
             ]
         }
     }

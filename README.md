@@ -1,115 +1,107 @@
----
-title: ArunCore Digital Twin
-emoji: 🧠
-colorFrom: green
-colorTo: blue
-sdk: docker
-app_port: 7860
-pinned: false
----
+# 🧠 Arun Yadav — AI Systems Architect & Personal AI Assistant
 
-# ArunCore: The AI Digital Twin & Agentic Architecture
+**ArunCore** is a production-grade, stateful, agentic portfolio and personal AI assistant built for **Arun Yadav** (AI Systems Architect specializing in Healthcare & Education). 
 
-**ArunCore** is a production-grade, stateful, retrieval-augmented AI agent engineered to serve as my personal digital proxy. It isn't just a simple chatbot; it is a full-stack, hybrid-search intelligence pipeline built to securely and accurately represent my professional background, technical decisions, and portfolio.
-
-This repository contains the entirety of the system: the Python backend (LangChain, ChromaDB, FastAPI), the data ingestion pipeline, and the ultra-optimized Next.js frontend GUI.
-
-![ArunCore UI Showcase](Images/UI.png)
+It features an intelligent conversational assistant equipped with real-time NDJSON token streaming, OpenAI Studio Neural Speech (TTS), Web Speech Voice-to-Text (STT), zero-hallucination hybrid RAG, live GitHub data inspection, and a dual-bot Telegram lead handoff system.
 
 ---
 
-## 🌟 High-Level Capabilities
+## 🌟 Key Features
 
-1.  **Zero-Hallucination Retrieval System:** Features a custom hybrid-search mechanism combining **ChromaDB (semantic vector search)** using OpenAI Embeddings and a **BM25 Lexical Retriever (keyword exact match)**. This guarantees the AI never guesses or fabricates my experience.
+1. **🤖 Arun's AI Assistant Persona**:
+   - Witty, casual, straightforward, and cool-friend vibe with zero corporate fluff.
+   - **Dynamic Language Matching**: Responds in clean, articulate English for international/corporate queries, and natural Hinglish/Hindi whenever visitors chat in Hindi.
 
-![Searching the Knowledge Base](Images/searching_the_DB.png)
-2.  **Cohere Reranking:** All retrieved results pass through Cohere's English V3 Reranker to surface the most contextually relevant chunks before passing them to the final LangChain prompt.
-3.  **Stateful Memory Loop:** Implements a rolling-memory summarization engine for conversational context retention without bloating the immediate context window.
-4.  **"3-Strike" Loop Control:** The LangChain routing agent has strict limits applied to its tool-calling process (max 3 database searches per query) to prevent endless recursive loops on ambiguous questions.
-5.  **Multi-Platform Presentation:** Incorporates a tailored Next.js UI using `ReactMarkdown` and custom styling for a sleek, dark-mode desktop presence with dynamic resizing for mobile compatibility.
-6.  **Human-in-the-Loop:** A native tool-call integration with the Telegram API alerts my personal device instantly if a user asks to connect, requires freelance negotiation, or submits a lead.
+2. **🎙️ Voice Studio (HD Neural TTS & STT)**:
+   - **Text-to-Speech (TTS)**: Built-in `[ 🔊 Listen (HD Voice) ]` button powered by OpenAI's `tts-1` studio neural voice (`/tts` endpoint) with automatic browser Web Speech fallback.
+   - **Speech-to-Text (STT)**: Built-in Microphone `[ 🎙️ ]` button in the text input container allowing users to speak directly into the chat input with real-time transcription.
 
-![Telegram Bot Integration](Images/telegram_bot.png)
+3. **⚡ Real-Time Token Streaming**:
+   - Streaming NDJSON response buffer over HTTP with a live radar pulse status indicator, typing cursor (`▌`), and collapsible step-by-step engine execution trace drawer.
+
+4. **🚨 Proactive Lead Capture & Dual Telegram Bots**:
+   - When visitors ask about hiring Arun or submitting project inquiries, the assistant provides direct contact details (+91 8881109193, `neural.arun.dev@gmail.com`), prompts for the lead's contact details, and triggers an instant Telegram alert to Arun's phone.
+   - **Dual Bot Separation**:
+     - `TELEGRAM_ALERT_BOT_TOKEN` (`@ai_twin_alert_bot`): Instant phone alerts for leads & urgent contact queries.
+     - `TELEGRAM_BOT_TOKEN`: Background transcript logging and system debug event traces.
+
+5. **🔍 Zero-Hallucination Hybrid RAG & Live GitHub Engine**:
+   - Combines dense vector embeddings (**ChromaDB**), BM25 keyword search, and **Cohere V3 Reranker** for grounded answers.
+   - Live GitHub tool (`get_github_live_data`) to fetch real-time repositories, commits, and project activity on demand.
+
+6. **🎨 Modern Light-Default UI**:
+   - Built with **Next.js 16 (Turbopack)**, Tailwind CSS, Lucide icons, and React Markdown.
+   - Symmetrical 100% single-viewport landing page with Hero profile card, 2x2 interactive question grid, and prominent input container.
 
 ---
 
 ## 🏗️ System Architecture
 
-![ArunCore System Design](Images/ArunCore_system_design.png)
-
-### 1. The Knowledge Base (`/data/`)
-The foundational data driving ArunCore is stored statically.
-*   **Static Data (`data/static/`)**: Holds the `public_profile.md` (resume details) and `rules_of_engagement.md` (strict behavioral blueprints for the LLM).
-*   **Dynamic Portfolios (`data/github/`)**: Folders containing `overview.md`, `metadata.json`, and `code_summaries.json` for every major project in my career.
-
-### 2. The Engine (`/core/`)
-*   **`ingest.py`**: The offline script that chunks all markdown files, vectorizes them using OpenAI Embeddings, and indexes them into ChromaDB.
-*   **`agent.py`**: Contains the core `ChatPromptTemplate`, tool bindings (`search_arun_knowledge`, `notify_arun`), and memory mechanics.
-*   **`api.py`**: The FastAPI server bridging the backend algorithms to the web client endpoints.
-
-### 3. The Client (`/frontend/`)
-A Next.js (TypeScript) single-page application.
-*   It maintains session state, handles the "typing" visual queues, manages strict layout breaks for Desktop/Mobile viewports, and overrides raw markdown into visually premium UI components.
+```
+.
+├── core/                  # Python FastAPI & LangChain Agent Backend
+│   ├── agent.py           # Core agent loop, persona rules, RAG tools & dual Telegram handlers
+│   ├── api.py             # FastAPI streaming server (NDJSON /chat) & OpenAI HD Neural Voice (/tts)
+│   ├── ingest.py          # Vector database indexing pipeline
+│   └── bot.py             # Public Telegram bot service
+├── frontend/              # Next.js 16 Web Application
+│   ├── app/               # Next.js App Router (page.tsx, layout.tsx, globals.css)
+│   ├── components/        # React components (Header, ChatPanel, ManifestoView, ProjectsView)
+│   └── lib/               # Types & API client helpers
+├── data/                  # Single source of truth knowledge base
+│   ├── static/            # public_profile.md (identity/skills) & rules_of_engagement.md
+│   └── github/            # Curated markdown document repositories
+├── scripts/               # Automation scripts
+│   ├── sync_github_data.py # Auto-syncs GitHub repos & READMEs
+│   └── sync_linkedin.py   # Apify LinkedIn post sync script
+└── README.md
+```
 
 ---
 
 ## 🚀 Quick Start Guide
 
-### Prerequisites
-*   Python 3.10+
-*   Node.js (LTS Version)
-*   Access keys for: OpenAI, Groq, Cohere.
+### 1. Environment Setup
+Create a `.env` file in the root directory:
+```env
+OPENAI_API_KEY=your_openai_api_key
+COHERE_API_KEY=your_cohere_api_key
+TELEGRAM_BOT_TOKEN=8678897707:AAGir63LUcbL-w9TILmkoPSxHgBXfhC8on4
+TELEGRAM_CHAT_ID=1154451605
+TELEGRAM_ALERT_BOT_TOKEN=8847600936:AAGHCH1bBVMGSXl_MSrxo1klwgrUGJyeDW0
+TELEGRAM_ALERT_CHAT_ID=1154451605
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-### Backend Setup
-1.  **Clone & Install:**
-    ```bash
-    git clone https://github.com/neural-arun/ArunCore.git
-    cd ArunCore
-    python -m venv venv
-    venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
-2.  **Environment Variables:** Create a `.env` file at the root.
-    ```env
-    OPENAI_API_KEY=your_key_here
-    GROQ_API_KEY=your_key_here
-    COHERE_API_KEY=your_key_here
-    TELEGRAM_BOT_TOKEN=your_bot_token  (Optional)
-    TELEGRAM_CHAT_ID=your_chat_id      (Optional)
-    ```
-3.  **Bootstrap the Database:** Run the ingestion script to vectorize the data folder.
-    ```bash
-    python core/ingest.py
-    ```
-4.  **Launch the Server:** Starts the FastAPI engine.
-    ```bash
-    uvicorn core.api:app --host 0.0.0.0 --port 8000
-    ```
+### 2. Backend Launch (FastAPI)
+```bash
+# Activate virtual environment
+source .venv/bin/activate
 
-### Frontend Setup
-1.  **Install Dependencies:**
-    ```bash
-    cd frontend
-    npm install
-    ```
-2.  **Configure the Backend URL:** Create `frontend/.env.local` and point it at the running API.
-    ```env
-    NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
-    ```
-3.  **Launch the UI:** Runs the development server on `localhost:3000`.
-    ```bash
-    npm run dev
-    ```
+# Ingest knowledge base into ChromaDB
+python core/ingest.py
+
+# Start FastAPI Uvicorn Server
+uvicorn core.api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+### 3. Frontend Launch (Next.js 16)
+```bash
+cd frontend
+npm install
+npm run dev
+# Open http://localhost:3000 in your browser
+```
 
 ---
 
-## 📖 Navigation Guide
+## 🛠️ Tech Stack
 
-For a deeper dive into scaling operations, deployment structures, or individual modules, please consult the dedicated internal documentation:
-*   [Scaling & Cloud Deployment (`docs/scaling_guide.md`)](docs/scaling_guide.md)
-*   [Data Updates (`docs/updating_digital_twin.md`)](docs/updating_digital_twin.md)
-*   [Frontend Internals (`frontend/README.md`)](frontend/README.md)
-*   [Core Backend Internals (`core/README.md`)](core/README.md)
+- **Core & AI Backend**: Python 3.11, FastAPI, Uvicorn, LangChain, OpenAI (GPT-4o-mini & TTS-1), ChromaDB, BM25, Cohere Reranker.
+- **Frontend & UI**: Next.js 16 (Turbopack), React 19, TypeScript, Tailwind CSS, Lucide Icons, Web Speech API.
+- **Notifications & Integrations**: Telegram Bot API, GitHub REST API.
 
 ---
-*Built by Arun Yadav — Architecting Autonomous Intelligence.*
+
+*Built by Arun Yadav — AI Systems Architect specializing in Healthcare & Education.*  
+*Contact: +91 8881109193 | neural.arun.dev@gmail.com*

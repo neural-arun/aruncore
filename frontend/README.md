@@ -1,21 +1,36 @@
-# Frontend UI Module (`/frontend/`)
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-This directory contains the client-side infrastructure that renders ArunCore's identity on the web. It is physically isolated from the Python backend, allowing highly decoupled deployment pipelines.
+## Getting Started
 
-## Tech Stack
-*   **Framework:** Next.js (TypeScript)
-*   **Styling:** Raw CSS Global Interception (Vanilla CSS Modules)
-*   **Markdown Core:** `ReactMarkdown` paired with `remark-gfm`.
+First, run the development server:
 
-## Architecture Details
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-### Session Architecture
-To ensure users can maintain a continuous conversation stream, the frontend relies on `uuidv4` mapping to cache a unique `aruncore_session_id` in HTML5 `sessionStorage`. Upon page refresh, conversational memory context resets, ensuring data privacy across transient browser instances.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Visual State Engine
-The app (`page.tsx`) uses a responsive boolean hook (`isMobile`) mapped directly to `window.innerWidth`. Instead of fighting complex heavy-duty CSS media queries, it executes complete structural DOM swapping:
-*   **Desktop Layout:** Renders split-pane architecture (Sidebar Identity Card + Chat Window).
-*   **Mobile Layout:** Compresses cleanly into a unified sticky top-bar with ultra-high contrast chat elements.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### Parsing Constraints
-Due to the often inconsistent generation mechanics of quantized LLMs, the Markdown renderer is decoupled and strict. It receives raw API text directly, utilizing preprocessor heuristics where necessary to ensure standard UI structures (like bolded elements) aren't broken by erratic line formatting.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

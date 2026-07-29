@@ -1,21 +1,28 @@
 # Core Engine Module (`/core/`)
 
-This directory houses the neural and structural Python backend of ArunCore. It is responsible for intercepting network requests, parsing intent using LLMs, searching databases, and coordinating external Telegram tools.
+This directory houses the neural and structural Python backend of **ArunCore**. It manages API endpoints, LLM agent reasoning, vector database search, real-time GitHub inspection, and Telegram alerts.
 
-## Key Files & Architectures
+---
 
-### `api.py` (The Networking Boundary)
-*   **Framework:** FastAPI.
-*   **Purpose:** Exposes a clean `/chat` REST endpoint. It handles CORS for the Next.js client, parses session variables, and wraps around `agent.py` to trigger the AI workflow.
+## 🔑 Key Components
 
-### `agent.py` (The Reasoning Loop)
-*   **Framework:** LangChain & Groq (LLaMA inference).
-*   **Purpose:** Houses the multi-step reasoning protocol. 
-*   **Mechanism:** Implements a heavily supervised generic routing function. The LLM is handed strict parameters (e.g., "Max 3 Database Searches") and is forced to output specific JSON tool invocations (`notify_arun` or `search_arun_knowledge`). It also houses the `RollingMemory` class to compress old context dynamically.
+### `api.py` (FastAPI Server)
+* **Framework:** FastAPI + `uvicorn`
+* **Endpoint:** `POST /chat` (Streaming NDJSON), `GET /health`, `GET /test-telegram`
+* **Function:** Serves real-time streaming responses (status updates, tool call thoughts, and final replies) to the Next.js client.
 
-### `ingest.py` (The RAG Compiler)
-*   **Framework:** LangChain Document Loaders + OpenAI Embeddings.
-*   **Purpose:** Automates the indexing pipeline. It crawls `../data/`, parses Markdown and JSON structs, runs text through structural chunkers, and calculates dense vector graphs, persisting them into the Chroma local database.
+### `agent.py` (Reasoning Loop & Tools)
+* **Framework:** LangChain & OpenAI (`gpt-4o-mini`).
+* **Tool Bindings:**
+  1. `search_arun_knowledge`: Hybrid ChromaDB + BM25 + Cohere Reranker search.
+  2. `get_github_live_data`: Real-time GitHub engine (list repos, read READMEs, search commits, inspect raw code files).
+  3. `notify_arun`: Telegram alert escalation for lead capture and urgent questions.
+* **Memory:** `RollingMemory` compresses historical chat turns after 4 turns using GPT.
 
-### `bot.py` (The Telegram Integration)
-*   Provides a direct conversational hook, allowing me (Arun) or authorized users to test the agent purely through a mobile Telegram interface without opening the web browser.
+### `ingest.py` (Vector Database Compiler)
+* **Framework:** LangChain Document Loaders + OpenAI Embeddings (`text-embedding-3-small`) + ChromaDB.
+* **Function:** Crawls `../data/`, computes MD5 file hashes, chunks Markdown/JSON files, and incrementally updates the ChromaDB vector database in `../db/`.
+
+### `bot.py` (Public Telegram Bot)
+* **Framework:** `python-telegram-bot` + `ChatOpenAI`.
+* **Function:** Allows users to talk directly to the ArunCore Digital Twin on Telegram.

@@ -1,25 +1,221 @@
 import os
 import json
+import io
 import asyncio
+import requests
+import queue
+import threading
+from typing import Dict, Any, List, Optional, Tuple
+
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
-from typing import Dict
-from dotenv import load_dotenv
-
-# Import the core engine components
-from core.agent import init_agent, RollingMemory, queue_debug_event, queue_maybe_notify_arun, run_pre_escalation, queue_chat_history_to_telegram
 from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.tools import tool
 
-load_dotenv()
+from core.agent import (
+    init_agent,
+    RollingMemory,
+    queue_debug_event,
+    queue_maybe_notify_arun,
+    run_pre_escalation,
+    queue_chat_history_to_telegram,
+)
+
+_GLOBAL_VECTORSTORE = None
+_GLOBAL_BM25 = None
+_GLOBAL_COMPRESSOR = None
+
+_task_queue = queue.Queue()
+
+
+def _background_worker():
+    import urllib3
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    while True:
+        try:
+            task = _task_queue.get()
+            if task is None:
+                break
+            func, args, kwargs = task
+            try:
+                func(*args, **kwargs)
+            except Exception as e:
+                print(f"[BACKGROUND WORKER ERROR] Failed in {func.__name__}: {e}")
+            finally:
+                _task_queue.task_done()
+        except Exception as outer_e:
+            print(f"[BACKGROUND WORKER FATAL] Queue fetch failed: {outer_e}")
+
+
+worker_thread = threading.Thread(target=_background_worker, daemon=True)
+worker_thread.start()
+
+
+def _submit_background_task(name: str, func, *args, **kwargs) -> bool:
+    try:
+        _task_queue.put((func, args, kwargs))
+        print(f"[BACKGROUND] {name}: Task queued.")
+        return True
+    except Exception as e:
+        print(f"[BACKGROUND ERROR] Failed to queue {name}: {e}")
+        return False
+
+
+def load_static_context() -> Tuple[str, str]:
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    profile_path = os.path.join(base_dir, "data", "static", "public_profile.md")
+    rules_path = os.path.join(base_dir, "data", "static", "rules_of_engagement.md")
+
+    profile_content = ""
+    rules_content = ""
+
+    if os.path.exists(profile_path):
+        with open(profile_path, "r", encoding="utf-8") as f:
+            profile_content = f.read()
+
+    if os.path.exists(rules_path):
+        with open(rules_path, "r", encoding="utf-8") as f:
+            rules_content = f.read()
+
+    return profile_content, rules_content
+
+
+def _safe_truncate(text: str, limit: int = 1500) -> str:
+    cleaned = (text or "").strip()
+    if len(cleaned) <= limit:
+        return cleaned
+    return cleaned[:limit] + "..."
+
+
+def _is_truthy_env(val: Optional[str], default: bool = True) -> bool:
+    if val is None:
+        return default
+    return val.strip().lower() in ("1", "true", "yes", "on")
+
+
+def _is_telegram_debug_enabled() -> bool:
+    return _is_truthy_env(os.getenv("TELEGRAM_DEBUG_ENABLED"), default=True)
+
+
+def _get_telegram_target(debug: bool = False, alert: bool = False) -> Tuple[Optional[str], Optional[str]]:
+    if alert:
+        token = os.getenv("TELEGRAM_ALERT_BOT_TOKEN") or os.getenv("TELEGRAM_BOT_TOKEN")
+        chat_id = os.getenv("TELEGRAM_ALERT_CHAT_ID") or os.getenv("TELEGRAM_CHAT_ID")
+        return token, chat_id
+    if debug:
+        token = os.getenv("TELEGRAM_DEBUG_BOT_TOKEN") or os.getenv("TELEGRAM_BOT_TOKEN")
+        chat_id = os.getenv("TELEGRAM_DEBUG_CHAT_ID") or os.getenv("TELEGRAM_CHAT_ID")
+        return token, chat_id
+
+    return os.getenv("TELEGRAM_BOT_TOKEN"), os.getenv("TELEGRAM_CHAT_ID")
+
+
+def _chunk_text(text: str, limit: int = 2200) -> List[str]:
+    cleaned = (text or "").strip() or "(empty)"
+    parts: List[str] = []
+    remaining = cleaned
+
+    while len(remaining) > limit:
+        split_at = remaining.rfind("\n", 0, limit)
+        if split_at < int(limit * 0.5):
+            split_at = remaining.rfind(" ", 0, limit)
+        if split_at <= 0:
+            split_at = limit
+
+        parts.append(remaining[:split_at].strip())
+        remaining = remaining[split_at:].lstrip()
+
+    if remaining:
+        parts.append(remaining)
+
+    return parts or ["(empty)"]
+
+
+def _send_telegram_message(
+    token: str,
+    chat_id: str,
+    text: str,
+    parse_mode: str = "HTML",
+    max_attempts: int = 3,
+    delivery_label: str = "default",
+    retry_sleep_seconds: float = 1.0,
+) -> str:
+    import urllib3
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    session = requests.Session()
+    session.verify = False
+
+    chunks = _chunk_text(text)
+    total_chunks = len(chunks)
+
+    for idx, chunk in enumerate(chunks, 1):
+        payload: Dict[str, Any] = {
+            "chat_id": chat_id,
+            "text": chunk,
+            "disable_web_page_preview": True,
+        }
+        if parse_mode:
+            payload["parse_mode"] = parse_mode
+
+        sent_chunk = False
+        last_error = ""
+
+        for attempt in range(1, max_attempts + 1):
+            try:
+                res = session.post(
+                    f"https://api.telegram.org/bot{token}/sendMessage",
+                    json=payload,
+                    timeout=10,
+                )
+                if res.status_code == 200 and res.json().get("ok"):
+                    sent_chunk = True
+                    break
+                else:
+                    last_error = f"HTTP {res.status_code}: {res.text}"
+            except Exception as e:
+                last_error = str(e)
+
+            if attempt < max_attempts:
+                import time
+                time.sleep(retry_sleep_seconds)
+
+        if not sent_chunk and parse_mode == "HTML":
+            fallback_payload = {
+                "chat_id": chat_id,
+                "text": f"[{delivery_label}] (Plain Text Fallback {idx}/{total_chunks})\n{chunk}",
+                "disable_web_page_preview": True,
+            }
+            try:
+                res = session.post(
+                    f"https://api.telegram.org/bot{token}/sendMessage",
+                    json=fallback_payload,
+                    timeout=10,
+                )
+                if res.status_code == 200 and res.json().get("ok"):
+                    sent_chunk = True
+            except Exception as e:
+                last_error = f"Fallback error: {e}"
+
+        if not sent_chunk:
+            print(f"[TELEGRAM:{delivery_label}] FAILED chunk {idx}/{total_chunks}: {last_error}")
+            return f"FAILED: {last_error}"
+
+    print(f"[TELEGRAM:{delivery_label}] SUCCESS")
+    return "SUCCESS: message delivered."
+
 
 # Initialize the ArunCore Engine
 try:
     print("Initializing ArunCore API Backend...")
     main_llm, prompt, default_memory, tools = init_agent()
 
-    # We create a tool map to easily execute tools by name
     global_tool_map = {t.name: t for t in tools}
 
     print("API Backend Initialized Successfully.")
@@ -47,6 +243,11 @@ class ChatRequest(BaseModel):
     message: str
 
 
+class TTSRequest(BaseModel):
+    text: str
+    voice: Optional[str] = "alloy"
+
+
 @app.post("/chat")
 async def chat_endpoint(req: ChatRequest):
     if not req.message.strip():
@@ -58,58 +259,35 @@ async def chat_endpoint(req: ChatRequest):
 
     memory = active_sessions[req.session_id]
 
-    async def event_generator():
-        scratchpad = []
+    async def generate_response():
         thoughts = []
-        max_iterations = 8
-        iterations = 0
-        search_count = 0
-        max_search_limit = 3
-        final_response = None
-
         try:
-            yield json.dumps({"type": "status", "content": "Analyzing your request..."}) + "\n"
-
             queue_debug_event(
                 "user_message",
                 req.message,
                 {"channel": "api", "session_id": req.session_id},
             )
 
-            pre_escalation = await asyncio.to_thread(
-                run_pre_escalation,
-                req.message,
-                global_tool_map,
-                {"channel": "api", "session_id": req.session_id},
-                True,
-            )
-            if pre_escalation:
-                pre_escalation_result = pre_escalation.get("result", "")
-                if pre_escalation_result.startswith("SUCCESS"):
-                    pre_escalation_status = "Notification sent to Arun."
-                elif pre_escalation_result.startswith("SKIPPED"):
-                    pre_escalation_status = "Notification was already sent recently."
-                elif "Retry queued in background" in pre_escalation_result:
-                    pre_escalation_status = "Notification was not confirmed immediately. Retrying in background."
-                elif "QUEUED" in pre_escalation_result:
-                    pre_escalation_status = "Sending notification to Arun in the background."
-                elif "credentials are missing" in pre_escalation_result:
-                    pre_escalation_status = "Error: Please set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in HuggingFace Spaces Settings!"
-                else:
-                    pre_escalation_status = "Notification could not be confirmed."
+            yield json.dumps({"type": "status", "content": "Analyzing request & retrieving context..."}) + "\n"
+            thoughts.append("Analyzing request & retrieving context...")
 
-                yield json.dumps({"type": "status", "content": pre_escalation_status}) + "\n"
-                thoughts.append(pre_escalation_status)
-                queue_debug_event(
-                    "pre_escalation",
-                    pre_escalation_result,
-                    {
-                        "channel": "api",
-                        "session_id": req.session_id,
-                        "category": pre_escalation.get("category"),
-                        "reason": pre_escalation.get("reason"),
-                    },
+            pre_escalation = run_pre_escalation(req.message, global_tool_map)
+            if pre_escalation and pre_escalation.get("escalate"):
+                yield json.dumps({"type": "status", "content": "Triggering instant Telegram alert..."}) + "\n"
+                thoughts.append("Triggering instant Telegram alert...")
+                queue_maybe_notify_arun(
+                    user_input=req.message,
+                    reason=pre_escalation.get("reason"),
+                    channel="api",
+                    session_id=req.session_id,
                 )
+
+            scratchpad = []
+            max_iterations = 5
+            iterations = 0
+            max_search_limit = 3
+            search_count = 0
+            final_response = ""
 
             while iterations < max_iterations:
                 messages = prompt.format_messages(
@@ -127,21 +305,12 @@ async def chat_endpoint(req: ChatRequest):
                         tool_name = tc["name"]
                         tool_args = tc.get("args", {})
 
-                        status_msg = "Searching Arun's knowledge..." if tool_name == "search_arun_knowledge" else \
+                        status_msg = "Searching Arun's knowledge base..." if tool_name == "search_arun_knowledge" else \
                                      "Sending notification to Arun..." if tool_name == "notify_arun" else \
-                                     f"Running {tool_name}..."
+                                     f"Executing {tool_name}..."
 
                         yield json.dumps({"type": "status", "content": status_msg}) + "\n"
                         thoughts.append(status_msg)
-                        queue_debug_event(
-                            "tool_call",
-                            json.dumps(tool_args, ensure_ascii=False, indent=2, default=str),
-                            {
-                                "channel": "api",
-                                "session_id": req.session_id,
-                                "tool_name": tool_name,
-                            },
-                        )
 
                         if tool_name == "search_arun_knowledge":
                             search_count += 1
@@ -158,40 +327,31 @@ async def chat_endpoint(req: ChatRequest):
                             "tool_call_id": tc["id"],
                             "content": str(tool_result)[:2000],
                         })
-                        queue_debug_event(
-                            "tool_result",
-                            str(tool_result),
-                            {
-                                "channel": "api",
-                                "session_id": req.session_id,
-                                "tool_name": tool_name,
-                            },
-                        )
                     iterations += 1
                 else:
-                    final_response = ai_msg.content
+                    yield json.dumps({"type": "status", "content": "Synthesizing final response..."}) + "\n"
+                    thoughts.append("Synthesizing final response...")
+
+                    full_reply = ""
+                    for chunk in main_llm.stream(messages):
+                        if chunk.content:
+                            full_reply += chunk.content
+                            yield json.dumps({"type": "token", "content": chunk.content}) + "\n"
+                            await asyncio.sleep(0.005)
+
+                    final_response = full_reply
                     break
 
             if not final_response:
                 final_response = "I encountered a processing limit. How else can I help?"
 
-            queue_debug_event(
-                "assistant_reply",
-                final_response,
-                {"channel": "api", "session_id": req.session_id},
-            )
-
-            queue_maybe_notify_arun(
-                user_input=req.message,
-                final_response=final_response,
-                scratchpad=scratchpad,
-                tool_map=global_tool_map,
-                user_metadata={"channel": "api", "session_id": req.session_id},
-                pre_notified=bool(pre_escalation and pre_escalation.get("handled")),
-            )
-
             memory.add_interaction(req.message, final_response)
-            queue_chat_history_to_telegram(req.session_id, req.message, final_response)
+
+            queue_chat_history_to_telegram(
+                session_id=req.session_id,
+                user_input=req.message,
+                assistant_response=final_response,
+            )
 
             yield json.dumps({
                 "type": "final",
@@ -200,56 +360,54 @@ async def chat_endpoint(req: ChatRequest):
                 "session_id": req.session_id,
             }) + "\n"
 
-        except Exception as e:
-            queue_debug_event(
-                "error",
-                str(e),
-                {"channel": "api", "session_id": req.session_id},
-            )
-            yield json.dumps({"type": "error", "content": str(e)}) + "\n"
+        except Exception as err:
+            err_msg = f"API Error: {str(err)}"
+            yield json.dumps({"type": "error", "content": err_msg}) + "\n"
 
-    return StreamingResponse(event_generator(), media_type="application/x-ndjson")
+    return StreamingResponse(generate_response(), media_type="application/x-ndjson")
 
 
+@app.post("/tts")
+async def tts_endpoint(req: TTSRequest):
+    if not req.text.strip():
+        raise HTTPException(status_code=400, detail="Text cannot be empty.")
 
-    return StreamingResponse(event_generator(), media_type="application/x-ndjson")
+    try:
+        openai_key = os.getenv("OPENAI_API_KEY")
+        if not openai_key:
+            raise HTTPException(status_code=500, detail="OPENAI_API_KEY missing.")
+
+        clean_snippet = (
+            req.text
+            .replace("*", "")
+            .replace("#", "")
+            .replace("`", "")
+            .replace("\n", " ")
+            [:1000]
+        )
+
+        res = requests.post(
+            "https://api.openai.com/v1/audio/speech",
+            headers={
+                "Authorization": f"Bearer {openai_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "tts-1",
+                "input": clean_snippet,
+                "voice": req.voice or "alloy",
+            },
+            timeout=10,
+        )
+
+        if res.status_code == 200:
+            return StreamingResponse(io.BytesIO(res.content), media_type="audio/mpeg")
+        else:
+            raise HTTPException(status_code=res.status_code, detail=res.text)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/health")
-async def health_check():
+def health_check():
     return {"status": "online", "active_sessions": len(active_sessions)}
-
-
-@app.get("/test-telegram")
-def test_telegram():
-    import os, urllib.request, json, traceback, ssl
-    
-    token = os.getenv("TELEGRAM_BOT_TOKEN")
-    chat_id = os.getenv("TELEGRAM_CHAT_ID")
-    if not token or not chat_id:
-        return {"status": "error", "message": "Missing credentials", "has_token": bool(token), "has_chat_id": bool(chat_id)}
-    
-    token = token.strip(' "\'')
-    chat_id = chat_id.strip(' "\'')
-    url = f"https://api.telegram.org/bot{token}/sendMessage"
-    payload = {"chat_id": chat_id, "text": "Test message from HuggingFace backend using urllib!"}
-    
-    data = json.dumps(payload).encode('utf-8')
-    headers = {'Content-Type': 'application/json', 'User-Agent': 'ArunCore/1.0'}
-    
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-
-    try:
-        req = urllib.request.Request(url, data=data, headers=headers, method='POST')
-        with urllib.request.urlopen(req, timeout=10, context=ctx) as response:
-            resp_text = response.read().decode('utf-8')
-            return {"status": "finished", "status_code": response.status, "response": resp_text}
-    except Exception as e:
-        return {"status": "exception", "error": str(e), "traceback": traceback.format_exc()}
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("core.api:app", host="0.0.0.0", port=8000, reload=True)

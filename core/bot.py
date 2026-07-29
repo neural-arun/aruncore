@@ -3,7 +3,7 @@ import json
 import os
 import re
 from dotenv import load_dotenv
-from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
@@ -25,10 +25,10 @@ print("Bot engine ready.")
 def get_or_create_memory(chat_id: int) -> RollingMemory:
     """Returns existing memory for this user, or creates a new one."""
     if chat_id not in sessions:
-        summary_llm = ChatGroq(
+        summary_llm = ChatOpenAI(
             temperature=0.0,
-            model_name="llama-3.1-8b-instant",
-            api_key=os.getenv("GROQ_API_KEY")
+            model="gpt-4o-mini",
+            api_key=os.getenv("OPENAI_API_KEY")
         )
         sessions[chat_id] = RollingMemory(summary_llm=summary_llm)
     return sessions[chat_id]

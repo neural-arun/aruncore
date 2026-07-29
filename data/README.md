@@ -1,16 +1,42 @@
-# The Knowledge Base (`/data/`)
+# Knowledge Base (`/data/`)
 
-This directory is the absolute source of truth for the digital twin's semantic memory. The data here is strictly separated into core identity configurations and isolated architectural projects.
+This directory is the single source of truth for ArunCore's semantic memory.
 
-## Directory Breakdown
+---
 
-### `static/`
-The files in this folder are prioritized during parsing and inserted directly into the system prompt context. 
-*   **`public_profile.md`**: Defines global constants about Arun (location, high-level skills, direct links).
-*   **`rules_of_engagement.md`**: The behavioral constraint matrix. This dictates formatting limits (e.g., Markdown generation behavior) and topical vetos (e.g., refusing to answer salary questions).
+## 📁 Directory Structure
 
-### `github/`
-This cluster contains isolated project nodes. When `ingest.py` runs, it recursively parses these sub-folders, converting the Markdown and JSON documents into deeply dense, interconnected vector maps.
-*   **Narrative Files (`overview.md`, `decisions.md`)**: Instructs the LLM on *why* certain actions were taken.
-*   **Structural Files (`metadata.json`)**: Allows precise routing parameters, ensuring the RAG pipeline understands technology stacks.
-*   **Master Indices (`master_portfolio_summary.md`)**: Used to seed global summary answers without requiring the LLM to process thousands of discrete vector chunks.
+```
+data/
+├── static/
+│   ├── public_profile.md         # Core identity, principles, vision & system loop
+│   └── rules_of_engagement.md   # Zero-hallucination rules & system prompts
+│
+├── github/                        # Curated project repositories
+│   ├── <project_name>/
+│   │   ├── README.md              # Project README with direct GitHub URL
+│   │   └── metadata.json          # Repo metadata (language, stars, topics)
+│   └── ... (22 synced repos)
+│
+├── linkedin/
+│   └── posts.md                   # Auto-scraped LinkedIn posts and technical insights
+│
+└── HOW_TO_UPDATE_DATA.md          # Guide for updating data in the future
+```
+
+---
+
+## 🔄 Quick Commands
+
+* **Sync All 22 GitHub Repos & READMEs:**
+  ```bash
+  python scripts/sync_github_data.py
+  ```
+* **Sync LinkedIn Posts & Re-Ingest Vector DB:**
+  ```bash
+  python scripts/sync_linkedin.py
+  ```
+* **Re-Ingest Vector DB Manually:**
+  ```bash
+  python core/ingest.py
+  ```
