@@ -411,3 +411,10 @@ async def tts_endpoint(req: TTSRequest):
 @app.get("/health")
 def health_check():
     return {"status": "online", "active_sessions": len(active_sessions)}
+
+
+# Mount static frontend export if built (for Hugging Face Spaces production deployment)
+frontend_out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "out")
+if os.path.exists(frontend_out):
+    from fastapi.staticfiles import StaticFiles
+    app.mount("/", StaticFiles(directory=frontend_out, html=True), name="static_frontend")
