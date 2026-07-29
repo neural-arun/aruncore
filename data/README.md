@@ -1,42 +1,34 @@
-# Knowledge Base (`/data/`)
+# 📊 Knowledge Base Data Directory (`/data/`)
 
-This directory is the single source of truth for ArunCore's semantic memory.
+This folder serves as the **single source of truth knowledge base** for Arun's AI Assistant. The ingestion engine (`core/ingest.py`) indexes these files into ChromaDB vector memory.
 
 ---
 
-## 📁 Directory Structure
+## 📁 Subdirectories & File Descriptions
 
 ```
 data/
 ├── static/
-│   ├── public_profile.md         # Core identity, principles, vision & system loop
-│   └── rules_of_engagement.md   # Zero-hallucination rules & system prompts
-│
-├── github/                        # Curated project repositories
-│   ├── <project_name>/
-│   │   ├── README.md              # Project README with direct GitHub URL
-│   │   └── metadata.json          # Repo metadata (language, stars, topics)
-│   └── ... (22 synced repos)
-│
-├── linkedin/
-│   └── posts.md                   # Auto-scraped LinkedIn posts and technical insights
-│
-└── HOW_TO_UPDATE_DATA.md          # Guide for updating data in the future
+│   ├── public_profile.md      # Core identity, bio, contact details, and career overview
+│   └── rules_of_engagement.md # Behavioral rules, safety boundaries, and response guidelines
+├── github/                    # 22+ curated markdown repositories detailing Arun's projects & code
+│   └── [project_name]/        # README.md and metadata.json for each individual repository
+└── linkedin/
+    └── posts.md               # Scraped LinkedIn posts, insights, and engagement metrics
 ```
 
 ---
 
-## 🔄 Quick Commands
+## 📁 Detailed File Overview
 
-* **Sync All 22 GitHub Repos & READMEs:**
-  ```bash
-  python scripts/sync_github_data.py
-  ```
-* **Sync LinkedIn Posts & Re-Ingest Vector DB:**
-  ```bash
-  python scripts/sync_linkedin.py
-  ```
-* **Re-Ingest Vector DB Manually:**
-  ```bash
-  python core/ingest.py
-  ```
+### 1. `data/static/public_profile.md`
+- **What it does**: Defines Arun Yadav's background, education, contact information, specialization in Healthcare & Education AI systems, and key milestones.
+
+### 2. `data/static/rules_of_engagement.md`
+- **What it does**: Defines strict system instructions for the AI assistant (e.g. zero hallucination rules, when to cite GitHub repos, how to handle unknown questions, when to trigger lead alerts).
+
+### 3. `data/github/` (Project Knowledge Base)
+- **What it does**: Contains 22 individual subfolders for each of Arun's projects (e.g., `ArunCore`, `deep_research`, `legal_RAG_system`, `med_coach`, `neet-bot`). Each folder contains a detailed `README.md` and `metadata.json` for RAG vector retrieval.
+
+### 4. `data/linkedin/posts.md`
+- **What it does**: Contains synced LinkedIn posts and articles written by Arun, allowing the AI assistant to reference his public technical thoughts and insights.

@@ -1,28 +1,34 @@
-# Core Engine Module (`/core/`)
+# ⚙️ Core Engine (`/core/`)
 
-This directory houses the neural and structural Python backend of **ArunCore**. It manages API endpoints, LLM agent reasoning, vector database search, real-time GitHub inspection, and Telegram alerts.
+This folder contains the **Python backend engine** for Arun's AI Assistant. It handles the API server, AI reasoning loop, vector database search, OpenAI studio voice synthesis, real-time GitHub data fetching, and Telegram notifications.
 
 ---
 
-## 🔑 Key Components
+## 📁 Files Overview & Descriptions
 
-### `api.py` (FastAPI Server)
-* **Framework:** FastAPI + `uvicorn`
-* **Endpoint:** `POST /chat` (Streaming NDJSON), `GET /health`, `GET /test-telegram`
-* **Function:** Serves real-time streaming responses (status updates, tool call thoughts, and final replies) to the Next.js client.
+### 1. 🌐 `core/api.py` (FastAPI Web Server & Voice Endpoint)
+- **What it does**: Runs the HTTP server on port 8000 that connects the frontend to the AI assistant.
+- **Key Endpoints**:
+  - `POST /chat`: Streams real-time AI responses token-by-token using NDJSON over HTTP.
+  - `POST /tts`: Converts AI text into HD neural studio voice audio using OpenAI `tts-1` (`alloy` voice).
+  - `GET /health`: Health check endpoint showing system status and active sessions.
 
-### `agent.py` (Reasoning Loop & Tools)
-* **Framework:** LangChain & OpenAI (`gpt-4o-mini`).
-* **Tool Bindings:**
-  1. `search_arun_knowledge`: Hybrid ChromaDB + BM25 + Cohere Reranker search.
-  2. `get_github_live_data`: Real-time GitHub engine (list repos, read READMEs, search commits, inspect raw code files).
-  3. `notify_arun`: Telegram alert escalation for lead capture and urgent questions.
-* **Memory:** `RollingMemory` compresses historical chat turns after 4 turns using GPT.
+---
 
-### `ingest.py` (Vector Database Compiler)
-* **Framework:** LangChain Document Loaders + OpenAI Embeddings (`text-embedding-3-small`) + ChromaDB.
-* **Function:** Crawls `../data/`, computes MD5 file hashes, chunks Markdown/JSON files, and incrementally updates the ChromaDB vector database in `../db/`.
+### 2. 🧠 `core/agent.py` (AI Persona, Agentic Loop & Tools)
+- **What it does**: Defines the AI assistant's system prompt, persona rules (witty, casual, cool-friend vibe with dynamic English/Hindi language matching), memory management, and tool functions.
+- **Tools**:
+  - `search_arun_knowledge`: Hybrid ChromaDB vector search + BM25 keyword matching + Cohere V3 reranker.
+  - `get_github_live_data`: Fetches real-time public repositories and recent commit activity from GitHub.
+  - `notify_arun`: Sends instant Telegram alerts to Arun's phone for hiring leads or urgent queries.
+- **Memory**: `RollingMemory` compresses historical chat context after 4 turns using `gpt-4o-mini` to keep conversation context concise.
 
-### `bot.py` (Public Telegram Bot)
-* **Framework:** `python-telegram-bot` + `ChatOpenAI`.
-* **Function:** Allows users to talk directly to the ArunCore Digital Twin on Telegram.
+---
+
+### 3. 📚 `core/ingest.py` (Vector Database Compiler)
+- **What it does**: Scans all markdown and JSON files inside `data/`, chunks them into semantic paragraphs, generates vector embeddings using OpenAI (`text-embedding-3-small`), and stores them in ChromaDB (`db/`).
+
+---
+
+### 4. 🤖 `core/bot.py` (Public Telegram Bot Service)
+- **What it does**: Runs a standalone Telegram bot service allowing visitors to interact with Arun's AI Assistant directly inside Telegram.
