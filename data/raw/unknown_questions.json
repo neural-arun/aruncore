@@ -1,0 +1,12 @@
+[
+  {
+    "question": "How much do you charge for building custom medical AI tutors?",
+    "answer": "Pricing depends on project scope, custom clinical datasets, guardrail requirements, and model hosting. Basic MVPs start around $1,500 - $3,000, while full-scale custom systems with voice studio and EHR integration range from $3,500 - $7,000+.",
+    "timestamp": "2026-07-30T01:05:00Z"
+  },
+  {
+    "question": "How does MedCoach work?",
+    "answer": "MedCoach uses simulated patient interaction graphs and clinical reasoning evaluation.",
+    "timestamp": "2026-07-30T01:06:16.229451Z"
+  }
+]

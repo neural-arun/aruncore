@@ -173,9 +173,36 @@ def format_for_telegram(text: str) -> str:
     return text.strip()
 
 
+from core.agent import save_unknown_question_answer
+
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
     chat_id = update.effective_chat.id
+
+    # Check if this is a Telegram reply to an Alert message
+    if update.message.reply_to_message:
+        reply_to_text = update.message.reply_to_message.text or ""
+        
+        if "UNKNOWN_QUESTION" in reply_to_text or "ALERT" in reply_to_text or "User Query / Details:" in reply_to_text:
+            extracted_question = ""
+            if "User Query / Details:" in reply_to_text:
+                parts = reply_to_text.split("User Query / Details:")
+                if len(parts) > 1:
+                    extracted_question = parts[1].split("Direct Contact:")[0].split("Chat ID:")[0].strip()
+            
+            if not extracted_question:
+                extracted_question = reply_to_text.strip()
+
+            if extracted_question:
+                save_unknown_question_answer(extracted_question, user_text)
+                confirmation = (
+                    f"<b>✅ Answer Saved & Ingested into AI Memory!</b>\n\n"
+                    f"<b>Question:</b> <code>{extracted_question}</code>\n"
+                    f"<b>Your Verified Answer:</b>\n{user_text}\n\n"
+                    f"<i>Next time any user asks this on Vercel or Telegram, the AI will use your exact answer!</i>"
+                )
+                await update.message.reply_text(confirmation, parse_mode="HTML")
+                return
 
     await update.message.chat.send_action("typing")
     reply = await asyncio.to_thread(run_agent, chat_id, user_text)

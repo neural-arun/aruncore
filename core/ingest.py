@@ -120,6 +120,33 @@ def process_markdown_file(filepath: Path, base_folder: str, rel_path: str) -> Li
 
 def process_json_file(filepath: Path, base_folder: str, rel_path: str) -> List[Document]:
     with open(filepath, "r", encoding="utf-8") as f:
+        try:
+            data = json.load(f)
+        except Exception:
+            data = None
+
+    if filepath.name == "unknown_questions.json" and isinstance(data, list):
+        docs = []
+        for i, item in enumerate(data):
+            if isinstance(item, dict) and "question" in item and "answer" in item:
+                q = item.get("question", "").strip()
+                a = item.get("answer", "").strip()
+                content = f"### Verified Question & Answer\n**Question:** {q}\n**Answer:** {a}"
+                docs.append(
+                    Document(
+                        page_content=content,
+                        metadata={
+                            "source": rel_path,
+                            "folder": base_folder,
+                            "project": "unknown_questions",
+                            "chunk_id": f"unknown_q_{i}",
+                        },
+                    )
+                )
+        if docs:
+            return docs
+
+    with open(filepath, "r", encoding="utf-8") as f:
         content = f.read()
 
     project_name = "N/A"

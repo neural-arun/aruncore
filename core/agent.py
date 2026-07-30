@@ -430,6 +430,19 @@ def search_arun_knowledge(query: str) -> str:
             prof_content = f.read()
             results.append(f"--- Public Profile ---\n{prof_content}")
 
+    unknown_questions_path = os.path.join(data_dir, "raw", "unknown_questions.json")
+    if os.path.exists(unknown_questions_path):
+        try:
+            with open(unknown_questions_path, "r", encoding="utf-8") as f:
+                uq_data = json.load(f)
+                if isinstance(uq_data, list):
+                    for item in uq_data:
+                        q_item = item.get("question", "")
+                        a_item = item.get("answer", "")
+                        results.append(f"--- Verified Q&A Pair ---\nQuestion: {q_item}\nAnswer: {a_item}")
+        except Exception as e:
+            print(f"[UNKNOWN QUESTIONS READ ERROR] {e}")
+
     stop_words = {"how", "does", "the", "a", "an", "is", "for", "to", "of", "with", "work", "what", "tell", "me", "about"}
     significant_words = [w.strip("?,.!") for w in cleaned_query.split() if w.strip("?,.!") not in stop_words and len(w) > 2]
     
@@ -448,6 +461,53 @@ def search_arun_knowledge(query: str) -> str:
         return "\n\n".join(unique_results[:3])
         
     return "No exact match found in knowledge base. Recommend asking Arun directly."
+
+
+def save_unknown_question_answer(question: str, answer: str) -> str:
+    """Saves an answered unknown question from Telegram reply directly into data/raw/unknown_questions.json and triggers vector DB re-ingestion."""
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    target_file = os.path.join(base_dir, "data", "raw", "unknown_questions.json")
+    
+    import datetime
+    now_iso = datetime.datetime.utcnow().isoformat() + "Z"
+    
+    entry = {
+        "question": question.strip(),
+        "answer": answer.strip(),
+        "timestamp": now_iso
+    }
+    
+    existing = []
+    if os.path.exists(target_file):
+        try:
+            with open(target_file, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+                if not isinstance(existing, list):
+                    existing = []
+        except Exception:
+            existing = []
+
+    updated = False
+    for item in existing:
+        if item.get("question", "").lower() == question.strip().lower():
+            item["answer"] = answer.strip()
+            item["timestamp"] = now_iso
+            updated = True
+            break
+            
+    if not updated:
+        existing.append(entry)
+
+    with open(target_file, "w", encoding="utf-8") as f:
+        json.dump(existing, f, indent=2)
+
+    try:
+        import subprocess
+        subprocess.Popen(["python3", os.path.join(base_dir, "core", "ingest.py")])
+    except Exception as e:
+        print(f"[REINGEST ERROR] {e}")
+
+    return "SUCCESS: Saved to unknown_questions.json and ingested into memory."
 
 
 @tool
