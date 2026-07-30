@@ -385,6 +385,24 @@ async def chat_endpoint(req: ChatRequest):
                     agent_scratchpad=scratchpad,
                 )
 
+                # Inject dynamic Real Arun Human Presence notice if Real Arun is active in this session
+                arun_human_msgs = [m for m in SESSION_CHAT_STORE.get(req.session_id, []) if m.get("sender") == "human_arun"]
+                if arun_human_msgs:
+                    formatted_arun_msgs = "\n".join([f"• Real Arun (👨‍💻): \"{m.get('text')}\"" for m in arun_human_msgs])
+                    live_notice = SystemMessage(content=(
+                        f"🟢 CRITICAL LIVE 3-WAY CHAT NOTICE (REAL ARUN YADAV IS PRESENT):\n"
+                        f"The REAL HUMAN Arun Yadav (👨‍💻 Arun Yadav) HAS JOINED THIS CHAT ROOM LIVE AND IS CURRENTLY CHATTING!\n\n"
+                        f"REAL ARUN'S MESSAGES IN THIS SESSION:\n{formatted_arun_msgs}\n\n"
+                        f"MANDATORY INSTRUCTIONS FOR AI TWIN IN THIS 3-WAY CHAT:\n"
+                        f"1. Acknowledge that the REAL human Arun Yadav is present right next to you in this chat session!\n"
+                        f"2. If the user asks how Arun came here or questions about his arrival, explain enthusiastically: \"The real Arun Yadav tapped his 1-Click Telegram link and joined our chat live from his phone! So both of us (Real Arun + AI Assistant) are here together with you!\"\n"
+                        f"3. Never confuse yourself as the human — you are Arun's AI Assistant co-piloting alongside Real Arun!"
+                    ))
+                    if len(messages) > 1:
+                        messages.insert(1, live_notice)
+                    else:
+                        messages.append(live_notice)
+
                 ai_msg = await asyncio.to_thread(main_llm.invoke, messages)
 
                 if ai_msg.tool_calls:
