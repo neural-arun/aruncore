@@ -6,6 +6,51 @@ I focus on solving high-value problems where accuracy, reliability, and human ov
 
 ---
 
+# Contact & Collaboration Info
+
+- 📞 **Phone / Call:** +91 8881109193
+- 💬 **WhatsApp:** [+91 8881109193](https://wa.me/918881109193)
+- ✉️ **Email:** neural.arun.dev@gmail.com
+- 🌐 **GitHub:** [neural-arun](https://github.com/neural-arun)
+- 💼 **LinkedIn:** [Arun Yadav](https://linkedin.com)
+
+---
+
+# Technical Stack & Core Architecture
+
+- **Primary Languages**: Python, TypeScript, SQL, Bash.
+- **Backend Frameworks**: FastAPI, Pydantic, Uvicorn, AsyncIO, Next.js 16 (App Router).
+- **ArunCore RAG Engine**: Powered by **ChromaDB** (dense vector database) + **BM25** (keyword search) + **Cohere English V3 Reranker** for zero-hallucination hybrid retrieval.
+- **Voice Studio**: OpenAI `tts-1` studio neural speech (`alloy` voice) + Web Speech API (STT Mic).
+- **Agentic Workflows**: Multi-step tool calling, memory compression (`RollingMemory`), dual Telegram alert channels (`@ai_twin_alert_bot`).
+
+---
+
+# Detailed Projects & Technical Specs
+
+### 1. Legal RAG System (`legal_RAG_system`)
+- **IPC Chunking**: Solved statutory chunking failures on Indian Penal Code (IPC) sections by implementing custom legal-aware boundary chunking that preserves full legal sections and clauses intact without splitting mid-statute.
+
+### 2. MedCoach (`med_coach`)
+- **Clinical Reasoning Architecture**: Built with a modular split between reasoning/thinking and execution components, providing real-time feedback loops and clinical diagnosis tutoring.
+
+### 3. NEET 2027 AI Practice Ecosystem (`neet-bot`)
+- **Curated Content**: Contains 10,000+ NCERT-aligned MCQs with diagnostic analytics, spaced repetition algorithms, and instant step-by-step solution breakdowns.
+
+### 4. 99acres Real Estate Scraper (`real_state_listing_scraper`)
+- **Bypassing Cloudflare**: Handled Cloudflare anti-bot protection and rate limits by combining Playwright headless browser rendering, dynamic header spoofing, and automated proxy rotation.
+
+---
+
+# Social Insights & LinkedIn Posts
+
+- **Uday Pratap Yadav (Rank 5 BPSC)**: Arun wrote an inspiring post celebrating his brother Uday Pratap Yadav for securing Rank 5 in the BPSC (Bihar Public Service Commission) exam.
+- **FastAPI Todo API**: Shared insights on building production-ready async CRUD REST APIs using FastAPI, Pydantic data validation, and automated OpenAPI documentation.
+- **AI Workforce Trends (2026–2036)**: Authored a strategic playbook analyzing how AI automation will reshape professional software engineering, emphasizing human-in-the-loop oversight and domain expertise over generic AI wrappers.
+- **Prompt Engineering & Zero To Mastery**: Discussed prompt engineering concepts from the Zero To Mastery bootcamp, advocating for structured system prompts, tool calling, and deterministic verification over fragile prompt tricks.
+
+---
+
 # What I Do
 
 I design and build end-to-end software systems that combine:
@@ -67,106 +112,22 @@ Building intelligent learning systems that help institutions and learners:
 
 ---
 
-# My Philosophy
-
-Technology is only valuable when it solves a real business problem.
-
-Every product starts with understanding:
-
-- Who has the problem?
-- How expensive is it?
-- Why hasn't it been solved?
-- Why would someone pay for it?
-- How can AI create measurable value?
-
-Only then does engineering begin.
-
----
-
-# The System I Build Around
-
-```text
-Understand the Problem
-        ↓
-Validate the Market
-        ↓
-Design Reliable Architecture
-        ↓
-Build Software + AI
-        ↓
-Deploy to Real Users
-        ↓
-Measure Results
-        ↓
-Improve Continuously
-        ↓
-Scale
-```
-
----
-
 # Core Principles
 
 ### 1. Problems Before Technology
-
-I don't start with AI.
-
-I start with expensive, real-world problems.
+I start with expensive, real-world problems in healthcare and education.
 
 ---
 
 ### 2. Trust Over Hype
-
-Healthcare and education demand reliability.
-
-Every system should include verification, guardrails, and appropriate human oversight.
+Healthcare and education demand reliability. Every system includes verification, guardrails, and appropriate human oversight.
 
 ---
 
 ### 3. Build Complete Products
-
-Software creates value only when people can actually use it.
-
-Infrastructure, UX, workflows, deployment, and adoption matter as much as the model itself.
+Software creates value only when people can actually use it. Infrastructure, UX, workflows, deployment, and adoption matter as much as the model itself.
 
 ---
 
 ### 4. Ship. Learn. Improve.
-
-Shipping to real users creates more learning than months of planning.
-
-Iteration beats perfection.
-
----
-
-# Long-Term Vision
-
-To build companies that improve Healthcare and Education through trustworthy software systems.
-
-My ambition isn't simply to create AI applications.
-
-It's to build products that become critical infrastructure for professionals, institutions, and organizations.
-
----
-
-# Mission
-
-> **Build software that combines AI, data, and human expertise into trusted systems that improve healthcare, transform education, and create lasting business value.**
-
----
-
-# If You Work With Me
-
-You can expect someone who thinks beyond code.
-
-I care about:
-
-- Solving the right problem
-- Building reliable systems
-- Shipping production-ready software
-- Creating measurable business impact
-- Building products that compound over time
-
-Because successful software isn't defined by the intelligence of its model.
-
-It's defined by the value it creates.
+Shipping to real users creates more learning than months of planning. Iteration beats perfection.
