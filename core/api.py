@@ -254,7 +254,7 @@ async def chat_endpoint(req: ChatRequest):
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
 
     if req.session_id not in active_sessions:
-        summary_llm = ChatOpenAI(temperature=0.0, model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"))
+        summary_llm = ChatOpenAI(temperature=0.0, model="gpt-4.1-nano", api_key=os.getenv("OPENAI_API_KEY"))
         active_sessions[req.session_id] = RollingMemory(summary_llm=summary_llm)
 
     memory = active_sessions[req.session_id]

@@ -471,7 +471,7 @@ def init_agent():
 
     main_llm = ChatOpenAI(
         temperature=0.4, # Witty, casual, sharp tone
-        model="gpt-4o-mini",
+        model="gpt-4.1-nano",
         api_key=openai_key,
     ).bind_tools(tools)
 
