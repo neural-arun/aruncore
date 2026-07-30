@@ -198,7 +198,7 @@ def _send_telegram_message(
                     f"https://api.telegram.org/bot{token}/sendMessage",
                     json=payload,
                     headers={"Connection": "close"},
-                    timeout=(5.0, 20.0),
+                    timeout=(30.0, 60.0),
                 )
                 if res.status_code == 200 and res.json().get("ok"):
                     sent_chunk = True
@@ -223,7 +223,7 @@ def _send_telegram_message(
                     f"https://api.telegram.org/bot{token}/sendMessage",
                     json=fallback_payload,
                     headers={"Connection": "close"},
-                    timeout=(5.0, 20.0),
+                    timeout=(30.0, 60.0),
                 )
                 if res.status_code == 200 and res.json().get("ok"):
                     sent_chunk = True
