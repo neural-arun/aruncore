@@ -387,23 +387,66 @@ def notify_arun(category: str, user_input: str, user_metadata_json: str = "") ->
 
 @tool
 def search_arun_knowledge(query: str) -> str:
-    """Search Arun's local knowledge base (ChromaDB + BM25 + Cohere Reranker) for information about his projects, architecture, philosophy, and background."""
+    """Search Arun's local knowledge base for information about his projects, architecture, philosophy, and background."""
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    docs_dir = os.path.join(base_dir, "data", "github")
+    data_dir = os.path.join(base_dir, "data")
+    
+    cleaned_query = (query or "").lower().replace("-", " ").replace("_", " ")
+    
+    project_aliases = {
+        "medcoach": ["med_coach", "medcoach", "medical tutor", "clinical reasoning tutor", "clinical tutor"],
+        "legal": ["legal_rag_system", "legal rag", "ipc", "indian penal code"],
+        "neet": ["neet-bot", "neet bot", "neet 2027", "cbt simulator"],
+        "real estate": ["real_state_listing_scraper", "99acres", "scraper"],
+        "aruncore": ["aruncore", "profile", "assistant"],
+    }
+    
+    matched_project_folder = None
+    for key, synonyms in project_aliases.items():
+        if any(syn in cleaned_query for syn in synonyms):
+            if key == "medcoach":
+                matched_project_folder = "med_coach"
+            elif key == "legal":
+                matched_project_folder = "legal_RAG_system"
+            elif key == "neet":
+                matched_project_folder = "neet-bot"
+            elif key == "real estate":
+                matched_project_folder = "real_state_listing_scraper"
+            elif key == "aruncore":
+                matched_project_folder = "ArunCore"
+            break
 
     results = []
-    if os.path.exists(docs_dir):
-        for root, _, files in os.walk(docs_dir):
+
+    if matched_project_folder:
+        target_readme = os.path.join(data_dir, "github", matched_project_folder, "README.md")
+        if os.path.exists(target_readme):
+            with open(target_readme, "r", encoding="utf-8") as f:
+                results.append(f"--- Project: {matched_project_folder} ---\n{f.read()}")
+
+    profile_path = os.path.join(data_dir, "static", "public_profile.md")
+    if os.path.exists(profile_path):
+        with open(profile_path, "r", encoding="utf-8") as f:
+            prof_content = f.read()
+            results.append(f"--- Public Profile ---\n{prof_content}")
+
+    stop_words = {"how", "does", "the", "a", "an", "is", "for", "to", "of", "with", "work", "what", "tell", "me", "about"}
+    significant_words = [w.strip("?,.!") for w in cleaned_query.split() if w.strip("?,.!") not in stop_words and len(w) > 2]
+    
+    if significant_words:
+        for root, _, files in os.walk(data_dir):
             for file in files:
                 if file.endswith(".md"):
                     file_path = os.path.join(root, file)
                     with open(file_path, "r", encoding="utf-8") as f:
                         content = f.read()
-                        if any(q.lower() in content.lower() for q in query.split()):
-                            results.append(f"--- File: {file} ---\n{content[:1500]}")
+                        if any(w in content.lower() for w in significant_words):
+                            results.append(f"--- File: {os.path.basename(file_path)} ---\n{content[:1500]}")
 
     if results:
-        return "\n\n".join(results[:3])
+        unique_results = list(dict.fromkeys(results))
+        return "\n\n".join(unique_results[:3])
+        
     return "No exact match found in knowledge base. Recommend asking Arun directly."
 
 
