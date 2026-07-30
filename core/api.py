@@ -288,6 +288,8 @@ async def chat_endpoint(req: ChatRequest):
             max_search_limit = 3
             search_count = 0
             final_response = ""
+            executed_tools = []
+            retrieved_chunks = []
 
             while iterations < max_iterations:
                 messages = prompt.format_messages(
@@ -311,6 +313,7 @@ async def chat_endpoint(req: ChatRequest):
 
                         yield json.dumps({"type": "status", "content": status_msg}) + "\n"
                         thoughts.append(status_msg)
+                        executed_tools.append(f"{tool_name}({tool_args})")
 
                         if tool_name == "search_arun_knowledge":
                             search_count += 1
@@ -320,6 +323,9 @@ async def chat_endpoint(req: ChatRequest):
                         else:
                             tool_func = global_tool_map.get(tool_name)
                             tool_result = await asyncio.to_thread(tool_func.invoke, tool_args)
+
+                        if tool_name == "search_arun_knowledge" and tool_result:
+                            retrieved_chunks.append(str(tool_result)[:1000])
 
                         scratchpad.append({
                             "role": "tool",
@@ -351,6 +357,9 @@ async def chat_endpoint(req: ChatRequest):
                 session_id=req.session_id,
                 user_input=req.message,
                 assistant_response=final_response,
+                thoughts=thoughts,
+                tool_calls=executed_tools,
+                retrieved_chunks=retrieved_chunks,
             )
 
             yield json.dumps({

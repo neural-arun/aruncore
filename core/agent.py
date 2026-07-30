@@ -202,8 +202,20 @@ def queue_chat_history_to_telegram(
     session_id: str,
     user_input: str,
     assistant_response: str,
+    thoughts: Optional[List[str]] = None,
+    tool_calls: Optional[List[str]] = None,
+    retrieved_chunks: Optional[List[str]] = None,
 ) -> str:
-    _submit_background_task("chat_history_log", send_chat_history_to_telegram, session_id, user_input, assistant_response)
+    _submit_background_task(
+        "chat_history_log",
+        send_chat_history_to_telegram,
+        session_id,
+        user_input,
+        assistant_response,
+        thoughts or [],
+        tool_calls or [],
+        retrieved_chunks or [],
+    )
     return "QUEUED: chat history scheduled."
 
 
@@ -211,6 +223,9 @@ def send_chat_history_to_telegram(
     session_id: str,
     user_input: str,
     assistant_response: str,
+    thoughts: Optional[List[str]] = None,
+    tool_calls: Optional[List[str]] = None,
+    retrieved_chunks: Optional[List[str]] = None,
 ) -> str:
     token, chat_id = _get_telegram_target(debug=False)
     if not token or not chat_id:
@@ -219,11 +234,29 @@ def send_chat_history_to_telegram(
     clean_user = _escape_html(_safe_truncate(user_input, 1500))
     clean_ai = _escape_html(_safe_truncate(assistant_response, 2500))
 
+    tools_html = ""
+    if tool_calls and len(tool_calls) > 0:
+        tools_str = "\n".join([f"• <code>{_escape_html(_safe_truncate(t, 250))}</code>" for t in tool_calls])
+        tools_html = f"\n\n<b>🛠️ Tools Called:</b>\n{tools_str}"
+
+    chunks_html = ""
+    if retrieved_chunks and len(retrieved_chunks) > 0:
+        chunks_str = "\n".join([f"--- Chunk {i+1} ---\n{_escape_html(_safe_truncate(c, 400))}" for i, c in enumerate(retrieved_chunks[:3])])
+        chunks_html = f"\n\n<b>📚 Retrieved Context Chunks:</b>\n<code>{chunks_str}</code>"
+
+    thoughts_html = ""
+    if thoughts and len(thoughts) > 0:
+        thoughts_str = "\n".join([f"• {_escape_html(t)}" for t in thoughts])
+        thoughts_html = f"\n\n<b>⚙️ Execution Steps:</b>\n{thoughts_str}"
+
     html = (
-        f"<b>💬 CHAT LOG</b>\n"
+        f"<b>💬 CHAT LOG & TRACE</b>\n"
         f"<b>Session:</b> <code>{_escape_html(session_id)}</code>\n\n"
-        f"<b>👤 User:</b>\n{clean_user}\n\n"
-        f"<b>🤖 Arun's Assistant:</b>\n{clean_ai}"
+        f"<b>👤 User Query:</b>\n{clean_user}"
+        f"{tools_html}"
+        f"{chunks_html}"
+        f"{thoughts_html}\n\n"
+        f"<b>🤖 Arun's Assistant Response:</b>\n{clean_ai}"
     )
 
     return _send_telegram_message(
