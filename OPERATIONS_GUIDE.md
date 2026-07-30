@@ -1,183 +1,110 @@
-# 🚀 ArunCore — Operations & Update Guide
+# 🛠️ ArunCore Master Operational Guide
 
-Welcome to the **Master Operations & Maintenance Guide** for **ArunCore AI Assistant**.
-
-This document covers everything: updating LinkedIn/GitHub data, re-indexing vector memory, deploying to all platforms, managing the Telegram Active Learning Loop, and CI/CD pipeline reference.
+This document contains full operational procedures for managing, updating, testing, and deploying **ArunCore**.
 
 ---
 
-## 📋 Quick Command Cheat Sheet
-
-| Task | Command |
-| :--- | :--- |
-| **Sync LinkedIn Posts** | `python scripts/sync_linkedin.py` |
-| **Sync GitHub Repositories** | `python scripts/sync_github_data.py` |
-| **Re-index Vector Memory** | `python core/ingest.py` |
-| **Run 30-Question Eval Suite** | `PYTHONPATH=. python scripts/evaluate_30_questions.py` |
-| **Run Local Backend (FastAPI)** | `.venv/bin/uvicorn core.api:app --host 0.0.0.0 --port 8000 --reload` |
-| **Run Local Frontend (Next.js)** | `cd frontend && npm run dev` |
-| **Deploy EVERYTHING** | `git add . && git commit -m "update" && git push origin main` |
+## 📋 Table of Contents
+1. [Architecture Overview](#1-architecture-overview)
+2. [100% Automated Telegram Alerts & 3-Way Live Takeover](#2-100-automated-telegram-alerts--3-way-live-takeover)
+3. [Vercel Serverless Egress Relay](#3-vercel-serverless-egress-relay)
+4. [Active Learning Loop (Telegram Reply)](#4-active-learning-loop-telegram-reply)
+5. [Data Maintenance & Vector Ingestion](#5-data-maintenance--vector-ingestion)
+6. [System Verification & Integration Testing](#6-system-verification--integration-testing)
+7. [Automated CI/CD Deployment](#7-automated-cicd-deployment)
 
 ---
 
-## 1. 💼 How to Update LinkedIn Data
+## 1. Architecture Overview
 
-When you publish new posts or career updates on LinkedIn:
-
-### Step 1: Sync LinkedIn Posts
-```bash
-python scripts/sync_linkedin.py
-```
-Or manually edit [`data/static/public_profile.md`](data/static/public_profile.md) to add new achievements.
-
-### Step 2: Re-Compile Vector Memory
-```bash
-python core/ingest.py
-```
-*(You will see: `Upsert complete. Ingestion sequence complete.`)*
-
-### Step 3: Push to Production
-```bash
-git add . && git commit -m "data: update LinkedIn posts" && git push origin main
-```
-This automatically updates Vercel + Hugging Face via GitHub Actions.
+ArunCore consists of three main components:
+- **Frontend UI (`frontend/`)**: Built with Next.js 16, React, Tailwind CSS. Deployed on **Vercel** (`aruncore.vercel.app`).
+- **Backend Engine (`core/`)**: Built with FastAPI, LangChain, ChromaDB, Cohere V3 Reranker, and OpenAI `gpt-4.1-nano`. Deployed on **Hugging Face Spaces** (`neural-arun-aruncore.hf.space`).
+- **Telegram Notification & Active Learning System**: Dual Telegram bot system for 100% automated alerts, full execution trace logging, active learning ingestion, and 1-Click Magic Link 3-Way Real Human Takeover.
 
 ---
 
-## 2. 🐙 How to Update GitHub Project Data
+## 2. 100% Automated Telegram Alerts & 3-Way Live Takeover
 
-When you create a new repo or update an existing project's `README.md`:
+### How Automated Alerts Work:
+- Every time a visitor sends a message on `aruncore.vercel.app`, the backend unconditionally queues an instant notification to `@ai_twin_alert_bot`.
+- The notification contains:
+  - 👤 **User Question**
+  - 🤖 **AI Response**
+  - 🔗 **1-Click Magic Join Link**: `https://aruncore.vercel.app/?session_id=...&admin_token=...`
 
-### Step 1: Run GitHub Sync Script
-```bash
-python scripts/sync_github_data.py
-```
-Fetches latest `README.md` and metadata from all public repos under `neural-arun`.
-
-### Step 2: Re-Compile Vector Memory
-```bash
-python core/ingest.py
-```
-
-### Step 3: Push to Production
-```bash
-git add . && git commit -m "data: sync github projects" && git push origin main
-```
+### How 3-Way Real Human Takeover Works:
+1. Click the **1-Click Magic Join Link** in your Telegram notification on your phone or laptop.
+2. The website opens in **Admin Mode** with a green status banner: `🟢 LOGGED IN AS REAL ARUN YADAV — LIVE 3-WAY CHAT ROOM`.
+3. Type a message in the bottom **Admin Reply Bar** and click **SEND AS REAL ARUN**.
+4. Your message appears live on the visitor's screen in 3 seconds formatted as:
+   `👨‍💻 Arun Yadav [VERIFIED HUMAN] 🟢`
+5. The AI Twin continues answering visitor questions normally, while you can chime in alongside the AI in a 3-way conversation.
 
 ---
 
-## 3. 🧠 Telegram Active Learning Loop
+## 3. Vercel Serverless Egress Relay
 
-This is the easiest way to teach the AI new things — **directly from your phone**.
-
-### How It Works:
-1. A user asks something unknown on the web chat or Telegram.
-2. You receive an **instant alert** on Telegram (`@ai_twin_alert_bot`) with the question.
-3. **Swipe right on the alert → Reply with your answer.**
-4. The bot automatically:
-   - Saves the Q&A pair to `data/raw/unknown_questions.json`
-   - Re-ingests it into ChromaDB vector memory
-   - Confirms: *"✅ Answer Saved & Ingested into AI Memory!"*
-5. Next time anyone asks that question, the AI answers using your exact words.
-
-### Manual Edit (if needed):
-Edit `data/raw/unknown_questions.json` directly:
-```json
-[
-  {
-    "question": "What is your freelance rate?",
-    "answer": "Project-based, starting at ₹50K for small scopes.",
-    "timestamp": "2026-07-30T01:00:00Z"
-  }
-]
-```
-Then re-ingest:
-```bash
-python core/ingest.py
-```
+- Free Hugging Face Spaces block outbound TCP port 443 connections to `api.telegram.org` IP ranges.
+- To eliminate network timeouts (`_ssl.c:999: The handshake operation timed out`), all Telegram messages are routed through Vercel's serverless endpoint `/api/telegram` (`frontend/app/api/telegram/route.ts`).
+- Hugging Face has unrestricted access to Vercel HTTPS endpoints, ensuring 100% reliable alert delivery.
 
 ---
 
-## 4. 🔁 Unknown Questions & Lead Capture Flow
+## 4. Active Learning Loop (Telegram Reply)
 
-When a visitor asks something the AI doesn't know:
-
-1. **AI alerts Arun** on Telegram instantly via `@ai_twin_alert_bot`.
-2. **AI asks the user** for their Name, Email or Phone/WhatsApp so Arun can follow up.
-3. Arun **replies on Telegram** with the answer → AI learns it automatically (Section 3 above).
-
----
-
-## 5. 🧪 How to Stress-Test & Evaluate Responses
-
-To verify the AI answers accurately across 30 standard questions:
-```bash
-PYTHONPATH=. python scripts/evaluate_30_questions.py
-```
-Generates `test_output_30.json` with detailed answers, tools called, and response speeds.
+When you receive a Telegram notification for an `UNKNOWN_QUESTION` or lead inquiry:
+1. Reply directly to the Telegram message on your phone.
+2. The bot handler (`core/bot.py`) extracts the question and saves your reply to `data/raw/unknown_questions.json`.
+3. ChromaDB automatically re-ingests the updated knowledge store in the background.
+4. Future user queries matching that question are answered using your exact verified words!
 
 ---
 
-## 6. 🔄 Automated CI/CD Pipeline — One Command to Rule Them All
+## 5. Data Maintenance & Vector Ingestion
+
+To manually update knowledge base files or re-index ChromaDB:
 
 ```bash
-git add . && git commit -m "your message" && git push origin main
+# Activate virtual environment
+source .venv/bin/activate
+
+# Add new markdown files to data/raw/ or edit data/static/public_profile.md
+
+# Re-run vector ingestion manually
+python3 core/ingest.py
 ```
 
-| Platform | Trigger | What Happens | URL |
-| :--- | :--- | :--- | :--- |
-| **GitHub** | `git push` | Source code updated | [github.com/neural-arun/ArunCore](https://github.com/neural-arun/ArunCore) |
-| **Vercel** | Auto GitHub webhook | Frontend rebuilt & deployed | [aruncore.vercel.app](https://aruncore.vercel.app) |
-| **Hugging Face** | GitHub Actions (`.github/workflows/deploy.yml`) | Backend synced & redeployed | [huggingface.co/spaces/neural-arun/ArunCore](https://huggingface.co/spaces/neural-arun/ArunCore) |
-
-### Required Secret (already set ✅):
-- `HF_TOKEN` in [GitHub → Settings → Secrets → Actions](https://github.com/neural-arun/ArunCore/settings/secrets/actions)
-
 ---
 
-## 7. 🔐 Environment Variables & Secrets Reference
+## 6. System Verification & Integration Testing
 
-### Local `.env` file:
-```ini
-OPENAI_API_KEY=your_openai_api_key
-COHERE_API_KEY=your_cohere_api_key
+Run the automated 5-part integration test suite before pushing changes:
 
-# Telegram Chat Log Bot (full execution trace logging)
-TELEGRAM_BOT_TOKEN=your_log_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
-
-# Telegram Lead Alert Bot (@ai_twin_alert_bot)
-TELEGRAM_ALERT_BOT_TOKEN=your_alert_bot_token
-TELEGRAM_ALERT_CHAT_ID=your_chat_id
+```bash
+source .venv/bin/activate
+python3 tests/test_system.py
 ```
 
-### Hugging Face Space Secrets (Space Settings → Variables and Secrets):
-| Secret Name | Purpose |
-| :--- | :--- |
-| `OPENAI_API_KEY` | LLM reasoning (`gpt-4.1-nano`) & Embeddings |
-| `COHERE_API_KEY` | Vector search reranking (Cohere V3) |
-| `TELEGRAM_BOT_TOKEN` | Chat history logging & full execution trace |
-| `TELEGRAM_CHAT_ID` | Telegram log chat target ID |
-| `TELEGRAM_ALERT_BOT_TOKEN` | Instant phone alerts (`@ai_twin_alert_bot`) |
-| `TELEGRAM_ALERT_CHAT_ID` | Alert phone target ID |
-
-### GitHub Repository Secrets (for CI/CD):
-| Secret Name | Purpose |
-| :--- | :--- |
-| `HF_TOKEN` | Hugging Face Write Token for auto-deploy |
+The test suite verifies:
+1. Knowledge Base RAG Search (Alias mapping & markdown chunk retrieval).
+2. Live GitHub API Data Sync (`pushed_at` repository sorting).
+3. Active Learning Loop (`unknown_questions.json` saving & ChromaDB re-indexing).
+4. Telegram Alert Delivery Engine (Vercel Relay endpoint).
+5. Agent Invocation & Dynamic Language Rules (Pure English enforcement).
 
 ---
 
-## 8. 📱 Mobile UI Notes
+## 7. Automated CI/CD Deployment
 
-The chat UI is fully optimized for both mobile and desktop:
-- **Mobile**: Full-width touch buttons, compact hero card, 2-line prompt cards, sticky STT input container.
-- **Desktop/Laptop**: Layout completely unchanged from original design.
+To deploy updates to GitHub, Vercel, and Hugging Face simultaneously:
 
----
+```bash
+git add .
+git commit -m "feat: description of your changes"
+git push origin main
+```
 
-## 9. 🗣️ Language Behavior
-
-- **English queries** → 100% clean, professional English. No Hindi slang.
-- **Hindi / Hinglish queries** → Natural, witty Hinglish.
-- Tone and persona remain consistent. Only the language adapts.
+- **GitHub**: Code pushed to `origin main`.
+- **Vercel**: Next.js frontend rebuilds automatically via GitHub webhook.
+- **Hugging Face**: Docker container rebuilds automatically via GitHub Actions workflow (`.github/workflows/deploy.yml`).

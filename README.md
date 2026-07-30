@@ -12,7 +12,7 @@ pinned: false
 
 **ArunCore** is a production-grade, stateful, agentic portfolio and personal AI assistant built for **Arun Yadav** (AI Systems Architect specializing in Healthcare & Education).
 
-It features an intelligent conversational assistant equipped with `gpt-4.1-nano`, real-time NDJSON token streaming, OpenAI Studio Neural Speech (TTS), Web Speech Voice-to-Text (STT), zero-hallucination hybrid RAG, live GitHub data inspection, value-first project inquiry logic, a dual-bot Telegram lead handoff system, a **Telegram Active Learning Loop**, and **fully automated CI/CD deployment** via GitHub Actions.
+It features an intelligent conversational assistant equipped with `gpt-4.1-nano`, real-time NDJSON token streaming, OpenAI Studio Neural Speech (TTS), Web Speech Voice-to-Text (STT), zero-hallucination hybrid RAG, live GitHub API data sync, value-first project inquiry logic, **100% automated Telegram notifications**, a **1-Click Magic Link 3-Way Real Human Takeover Engine**, a **Telegram Active Learning Loop**, and **fully automated CI/CD deployment** via GitHub Actions.
 
 ---
 
@@ -20,43 +20,43 @@ It features an intelligent conversational assistant equipped with `gpt-4.1-nano`
 
 1. **🤖 Arun's AI Assistant Persona**:
    - Witty, casual, straightforward, and cool-friend vibe with zero corporate fluff.
-   - **Strict Dynamic Language Matching**: Responds in 100% clean, articulate English for English queries. Responds naturally in Hinglish/Hindi when the user speaks Hindi. No mixing.
+   - **Strict Exact Language Matching**: Responds in 100% clean, articulate English for English queries with zero Hindi/Hinglish slang leaks. Responds naturally in Hinglish/Hindi when the user speaks Hindi.
 
-2. **💡 Value & Problem-Solving First Project Inquiries**:
-   - When asked about projects, the AI leads with **real-world business value, problem-solving impact, and time/cost savings** before detailing technical architecture.
-   - **Smart Alias Search**: Project name variations (e.g. "MedCoach", "med coach", "clinical tutor") are intelligently resolved to the correct repository README.
+2. **⚡ 100% Automated Telegram Alerts (Zero LLM Dependency)**:
+   - **Every Single Visitor Message**: Automatically triggers an instant notification to Arun's Telegram Alert Bot without depending on LLM decision gates or category filters.
+   - Includes: User Question, AI Twin Response, Session ID, and a **1-Click Magic Join Link**.
 
-3. **🎙️ Voice Studio (HD Neural TTS & STT)**:
-   - **Text-to-Speech (TTS)**: `[ 🔊 Listen (HD Voice) ]` button powered by OpenAI's `tts-1` studio neural voice (`/tts` endpoint) with Web Speech fallback.
-   - **Speech-to-Text (STT)**: `[ 🎙️ ]` microphone button with **duplicate-free transcription** (fixed interim result compounding bug).
+3. **👨‍💻 1-Click Magic Link 3-Way Real Human Takeover**:
+   - **Seamless Intervention**: Clicking `https://aruncore.vercel.app/?session_id=...&admin_token=...` in Telegram opens the website directly in **Admin Mode** on any device.
+   - **Admin Reply Bar**: Unlocks a dedicated input box allowing Arun to post messages live as `👨‍💻 Arun Yadav [VERIFIED HUMAN] 🟢`.
+   - **3-Way Conversation**: The AI Twin continues answering visitor questions instantly, while Arun can chime in alongside the AI in real time.
 
-4. **⚡ Real-Time Token Streaming**:
-   - NDJSON streaming over HTTP with a live radar pulse status indicator, typing cursor (`▌`), and collapsible step-by-step engine execution trace drawer.
+4. **🌐 Vercel Serverless Telegram Egress Relay**:
+   - Next.js `/api/telegram` serverless endpoint routes all outbound Telegram API traffic through Vercel serverless functions, bypassing Hugging Face Space egress firewall restrictions on Telegram IP ranges.
 
-5. **🚨 Proactive Lead Capture & Dual Telegram Bots**:
-   - **Unknown Questions**: When a user asks something the AI doesn't know, it **alerts Arun instantly** on Telegram AND asks the user for their **Name, Email or Phone** so Arun can follow up directly.
-   - **Hiring/Contact Queries**: Provides Arun's direct contact details (+91 8881109193, `neural.arun.dev@gmail.com`) and triggers an instant phone alert.
-   - **Dual Bot Separation**:
-     - `TELEGRAM_ALERT_BOT_TOKEN` (`@ai_twin_alert_bot`): Instant phone alerts for leads & urgent queries.
-     - `TELEGRAM_BOT_TOKEN`: Background transcript logging with full execution trace (tools called, retrieved chunks, steps).
-
-6. **🧠 Telegram Active Learning Loop**:
-   - When Arun **replies to an UNKNOWN_QUESTION alert** on Telegram, the bot automatically:
-     - Saves the Q&A pair to `data/raw/unknown_questions.json`.
+5. **🧠 Telegram Active Learning Loop**:
+   - When Arun **replies to an alert message** on Telegram, the bot automatically:
+     - Extracts the question and saves the verified answer to `data/raw/unknown_questions.json`.
      - Re-ingests into ChromaDB vector memory in the background.
      - Confirms with: *"✅ Answer Saved & Ingested into AI Memory!"*
-   - Next time any user asks that question (web or Telegram), the AI answers using Arun's exact words.
 
-7. **🔍 Zero-Hallucination Hybrid RAG & Live GitHub Engine**:
-   - Alias-aware project search (resolves `MedCoach` → `med_coach/README.md`).
-   - Always checks `data/raw/unknown_questions.json` for Arun's verified human answers.
-   - Combines ChromaDB dense embeddings, BM25 keyword search, and Cohere V3 Reranker.
+6. **💡 Value & Problem-Solving First Project Inquiries**:
+   - Leads with **real-world business value, problem-solving impact, and high-friction operational workflows** (time, accuracy, human energy) before detailing technical architecture.
+   - **Smart Alias Search**: Intelligently maps variations like "MedCoach" to the correct repository README.
 
-8. **📱 Mobile-Optimized UI**:
-   - Full-width touch-friendly buttons, compact hero card layout, correct touch target sizes — desktop layout completely unchanged.
+7. **🐙 Live GitHub API Auto-Sync**:
+   - Real-time client-side sync fetching repositories live from `api.github.com/users/neural-arun/repos`.
+   - Automatically sorted by `pushed_at` descending with live commit pulse indicators.
 
-9. **🔄 Fully Automated CI/CD Pipeline**:
-   - One command: `git push origin main` → **GitHub + Vercel + Hugging Face** all update automatically.
+8. **🎙️ Voice Studio (HD Neural TTS & STT)**:
+   - **Text-to-Speech (TTS)**: OpenAI `tts-1` studio neural voice (`/tts` endpoint) with Web Speech fallback.
+   - **Speech-to-Text (STT)**: Microphone button with duplicate-free transcription.
+
+9. **📱 Mobile-Optimized UI**:
+   - Full-width touch-friendly controls, responsive hero card layout, compact status indicators, and dark/light mode toggle.
+
+10. **🔄 Fully Automated CI/CD Pipeline**:
+    - One command: `git push origin main` → **GitHub + Vercel + Hugging Face** all update automatically.
 
 ---
 
@@ -65,7 +65,7 @@ It features an intelligent conversational assistant equipped with `gpt-4.1-nano`
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                      User Interface                     │
-│    Next.js 16 • Tailwind CSS • HD Voice & STT Studio    │
+│  Next.js 16 • 3-Way Live Chat • 1-Click Magic Link Admin│
 └────────────────────────────┬────────────────────────────┘
                              │ HTTP POST /chat & /tts
 ┌────────────────────────────▼────────────────────────────┐
@@ -74,10 +74,10 @@ It features an intelligent conversational assistant equipped with `gpt-4.1-nano`
 └──────┬──────────────────────┬────────────────────┬──────┘
        │                      │                    │
 ┌──────▼──────┐        ┌──────▼──────┐      ┌──────▼──────┐
-│ ChromaDB +  │        │ Live GitHub │      │ Dual-Bot    │
+│ ChromaDB +  │        │ Live GitHub │      │ Vercel Relay│
 │ Cohere V3   │        │     API     │      │ Telegram    │
-│ + unknown   │        └─────────────┘      │ + Active    │
-│ _questions  │                             │ Learning    │
+│ + unknown   │        └─────────────┘      │ Alerts +    │
+│ _questions  │                             │ 3-Way Chat  │
 └─────────────┘                             └─────────────┘
 
 ┌─────────────────────────────────────────────────────────┐
@@ -90,12 +90,10 @@ It features an intelligent conversational assistant equipped with `gpt-4.1-nano`
 
 ## 📁 Repository Structure Overview
 
-- [core/README.md](core/README.md): FastAPI backend, agent loop (`gpt-4.1-nano`), vector store compiler, and endpoints.
-- [frontend/README.md](frontend/README.md): Next.js 16 UI components, voice studio controls, and static export setup.
+- [core/README.md](core/README.md): FastAPI backend, agent loop (`gpt-4.1-nano`), 3-way human takeover endpoints, vector store compiler.
+- [frontend/README.md](frontend/README.md): Next.js 16 UI components, Vercel Telegram relay route (`/api/telegram`), admin mode controls.
 - [data/README.md](data/README.md): Knowledge base files including `unknown_questions.json` active learning store.
-- [scripts/README.md](scripts/README.md): Data sync scripts (GitHub & LinkedIn) and 30-question evaluation suite.
-- [OPERATIONS_GUIDE.md](OPERATIONS_GUIDE.md): Master operational guide — how to update data, push to all platforms, and manage the active learning loop.
-- [.github/workflows/deploy.yml](.github/workflows/deploy.yml): GitHub Actions workflow for automated Hugging Face deployment on every push.
+- [OPERATIONS_GUIDE.md](OPERATIONS_GUIDE.md): Master operational guide — how to manage data, use live takeover links, and run system tests.
 
 ---
 
@@ -120,14 +118,17 @@ git add . && git commit -m "your update" && git push origin main
 OPENAI_API_KEY=your_openai_api_key
 COHERE_API_KEY=your_cohere_api_key
 
-# Telegram Chat Log Bot (full trace logging)
+# Telegram Chat Log Bot (full execution trace logging)
 TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 TELEGRAM_CHAT_ID=your_chat_id
 
-# Telegram Lead Alert Bot (@ai_twin_alert_bot)
+# Telegram Alert Bot (@ai_twin_alert_bot)
 TELEGRAM_ALERT_BOT_TOKEN=your_alert_bot_token
 TELEGRAM_ALERT_CHAT_ID=your_chat_id
+
+# Admin Takeover Secret Key
+ADMIN_SECRET_KEY=your_admin_secret_key
 ```
 
 **GitHub Repository Secret** (for CI/CD auto-deploy to Hugging Face):
-- `HF_TOKEN` = Your Hugging Face Write Access Token (set in GitHub → Settings → Secrets → Actions)
+- `HF_TOKEN` = Your Hugging Face Write Access Token
