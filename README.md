@@ -1,3 +1,13 @@
+---
+title: ArunCore AI Assistant
+emoji: 🧠
+colorFrom: green
+colorTo: emerald
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🧠 Arun Yadav — AI Systems Architect & Personal AI Assistant
 
 **ArunCore** is a production-grade, stateful, agentic portfolio and personal AI assistant built for **Arun Yadav** (AI Systems Architect specializing in Healthcare & Education). 
