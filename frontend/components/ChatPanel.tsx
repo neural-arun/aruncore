@@ -297,14 +297,14 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   return (
     <div className="flex h-full flex-col justify-between overflow-hidden bg-[var(--bg-main)]">
       {messages.length === 0 ? (
-        /* Symmetrical Single-Viewport Landing */
-        <div className="flex-1 flex flex-col justify-center px-4 py-3 sm:px-8 overflow-hidden">
-          <div className="mx-auto max-w-4xl w-full flex flex-col justify-center gap-4 my-auto">
+        /* Symmetrical Single-Viewport Landing (Mobile & Laptop Optimized) */
+        <div className="flex-1 flex flex-col justify-center px-3 py-2 sm:px-8 sm:py-3 overflow-y-auto sm:overflow-hidden">
+          <div className="mx-auto max-w-4xl w-full flex flex-col justify-center gap-3 sm:gap-4 my-auto">
             
             {/* Hero Card */}
-            <div className="rounded-2xl border-2 border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 backdrop-blur-md shadow-lg space-y-3.5">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <div className="relative h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-md">
+            <div className="rounded-2xl border-2 border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3.5 sm:p-6 backdrop-blur-md shadow-lg space-y-3 sm:space-y-3.5">
+              <div className="flex flex-row items-center sm:items-center gap-3 sm:gap-4">
+                <div className="relative h-14 w-14 sm:h-20 sm:w-20 overflow-hidden rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-md">
                   <Image
                     src="/profile_photo.png"
                     alt="Arun Yadav"
@@ -315,32 +315,36 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   />
                 </div>
 
-                <div className="space-y-1 flex-1 min-w-0">
-                  <div className="flex items-center gap-2.5 flex-wrap">
-                    <h1 className="font-heading text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
+                <div className="space-y-0.5 sm:space-y-1 flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h1 className="font-heading text-xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
                       Arun Yadav
                     </h1>
-                    <span className="rounded-md border border-[var(--border-accent)] bg-[var(--bg-main)] px-2.5 py-0.5 font-mono text-xs font-semibold text-[var(--accent-green)] flex items-center gap-1.5">
+                    <span className="rounded-md border border-[var(--border-accent)] bg-[var(--bg-main)] px-2 py-0.5 font-mono text-[10px] sm:text-xs font-semibold text-[var(--accent-green)] flex items-center gap-1.5">
                       <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
                       <span>Arun's Assistant Online</span>
                     </span>
                   </div>
 
-                  <p className="text-sm sm:text-base font-bold text-[var(--accent-amber)]">
+                  <p className="text-xs sm:text-base font-bold text-[var(--accent-amber)] leading-tight">
                     AI Systems Architect • Healthcare & Education
                   </p>
 
-                  <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-medium">
+                  <p className="hidden sm:block text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-medium">
                     I build AI-powered software systems that automate complex workflows, structure medical knowledge, and help organizations scale expertise.
                   </p>
                 </div>
               </div>
 
+              <p className="sm:hidden text-xs text-[var(--text-muted)] leading-relaxed font-medium">
+                I build AI software systems that automate complex workflows, structure knowledge, and scale expertise.
+              </p>
+
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-2.5 pt-3 border-t border-[var(--border-subtle)]">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 pt-2.5 sm:pt-3 border-t border-[var(--border-subtle)]">
                 <button
                   onClick={openHandoffModal}
-                  className="flex items-center gap-2 rounded-xl bg-[var(--accent-green)] px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm hover:opacity-90 transition-all"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-[var(--accent-green)] px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm hover:opacity-90 transition-all w-full sm:w-auto"
                 >
                   <PhoneCall className="h-4 w-4" />
                   <span>Contact & Consult Arun</span>
@@ -348,7 +352,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
                 <a
                   href="mailto:neural.arun.dev@gmail.com"
-                  className="flex items-center gap-1.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-main)] px-3.5 py-2 text-xs sm:text-sm font-bold text-[var(--text-main)] hover:border-[var(--border-accent)] transition-all"
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-main)] px-3.5 py-2 text-xs sm:text-sm font-bold text-[var(--text-main)] hover:border-[var(--border-accent)] transition-all w-full sm:w-auto"
                 >
                   <span>neural.arun.dev@gmail.com</span>
                 </a>
@@ -356,26 +360,26 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             </div>
 
             {/* 2x2 Question Grid */}
-            <div className="space-y-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] px-1">
+            <div className="space-y-1.5 sm:space-y-2">
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] px-1">
                 Click to Ask Arun's AI Assistant
               </span>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 {starterPrompts.map((item, idx) => (
                   <button
                     key={idx}
                     onClick={() => onSendMessage(item.query)}
-                    className="group text-left rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3.5 sm:p-4 transition-all hover:border-[var(--accent-green)] hover:bg-[var(--bg-surface-hover)] hover:shadow-sm"
+                    className="group text-left rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3 sm:p-4 transition-all hover:border-[var(--accent-green)] hover:bg-[var(--bg-surface-hover)] hover:shadow-sm active:scale-[0.99]"
                   >
-                    <div className="flex items-center justify-between gap-2 text-xs sm:text-sm font-bold text-[var(--accent-green)] mb-1">
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="h-3.5 w-3.5" />
-                        <span>{item.title}</span>
+                    <div className="flex items-center justify-between gap-2 text-xs sm:text-sm font-bold text-[var(--accent-green)] mb-0.5 sm:mb-1">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Sparkles className="h-3.5 w-3.5 shrink-0" />
+                        <span className="line-clamp-1">{item.title}</span>
                       </div>
-                      <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 hidden sm:block" />
                     </div>
-                    <p className="text-xs sm:text-sm text-[var(--text-main)] font-medium leading-relaxed">
+                    <p className="text-xs sm:text-sm text-[var(--text-main)] font-medium leading-relaxed line-clamp-2">
                       "{item.query}"
                     </p>
                   </button>
@@ -392,21 +396,21 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 </div>
               )}
 
-              <div className="input-box-container relative flex items-center px-4 py-2">
+              <div className="input-box-container relative flex items-center px-3 py-1.5 sm:px-4 sm:py-2">
                 <textarea
                   ref={textareaRef}
                   value={inputText}
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
-                  placeholder={isListening ? "Listening..." : "Ask Arun's AI Assistant about systems engineering, RAG architecture, or hiring Arun..."}
+                  placeholder={isListening ? "Listening..." : "Ask Arun's AI Assistant..."}
                   rows={1}
-                  className="flex-1 resize-none bg-transparent py-1.5 text-sm sm:text-base text-[var(--text-main)] placeholder-[var(--text-dim)] font-medium focus:outline-none max-h-28 min-h-[40px]"
+                  className="flex-1 resize-none bg-transparent py-1.5 text-xs sm:text-base text-[var(--text-main)] placeholder-[var(--text-dim)] font-medium focus:outline-none max-h-28 min-h-[38px] sm:min-h-[40px]"
                 />
 
                 {/* Microphone STT Button */}
                 <button
                   onClick={handleToggleListening}
-                  className={`ml-2 flex h-9 w-9 items-center justify-center rounded-xl font-bold transition-all shadow-sm shrink-0 ${
+                  className={`ml-1.5 sm:ml-2 flex h-9 w-9 sm:h-9 sm:w-9 items-center justify-center rounded-xl font-bold transition-all shadow-sm shrink-0 touch-manipulation ${
                     isListening
                       ? "bg-rose-500 text-white animate-pulse"
                       : "bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)] text-[var(--text-main)] hover:border-[var(--border-accent)]"
@@ -420,15 +424,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 <button
                   onClick={handleSend}
                   disabled={!inputText.trim() || isStreaming}
-                  className="ml-2 flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-green)] text-white font-bold transition-all hover:opacity-95 active:scale-95 disabled:opacity-30 shadow-md shrink-0"
-                  title="Send Message (Enter)"
+                  className="ml-1.5 sm:ml-2 flex h-9 w-9 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-[var(--accent-green)] text-white font-bold transition-all hover:opacity-95 active:scale-95 disabled:opacity-30 shadow-md shrink-0 touch-manipulation"
+                  title="Send Message"
                 >
                   <Send className="h-4 w-4" />
                 </button>
               </div>
 
-              <div className="mt-1 flex justify-between text-[11px] text-[var(--text-dim)] font-medium px-1">
-                <span>Press <kbd className="rounded bg-[var(--bg-surface-hover)] px-1.5 py-0.5 text-[10px] font-mono border border-[var(--border-subtle)] text-[var(--text-main)] font-semibold">Enter</kbd> to send or use 🎙️ Mic</span>
+              <div className="mt-1 flex justify-between text-[10px] sm:text-[11px] text-[var(--text-dim)] font-medium px-1">
+                <span>Press <kbd className="rounded bg-[var(--bg-surface-hover)] px-1 py-0.5 text-[9px] sm:text-[10px] font-mono border border-[var(--border-subtle)] text-[var(--text-main)] font-semibold">Enter</kbd> or 🎙️ Mic</span>
               </div>
             </div>
 
