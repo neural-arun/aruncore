@@ -476,9 +476,10 @@ def _deliver_notify_arun(
     header = _CATEGORY_HEADERS.get(category, f"🚨 ALERT: {category}")
     html = (
         f"<b>{header}</b>\n\n"
-        f"<b>User Message:</b>\n{_escape_html(cleaned_input)}\n\n"
+        f"<b>User Query / Details:</b>\n{_escape_html(cleaned_input)}\n\n"
         f"<b>Category:</b> {category}\n"
-        f"<b>Contact:</b> +91 8881109193 | neural.arun.dev@gmail.com"
+        f"<b>Contact:</b> +91 8881109193 | neural.arun.dev@gmail.com\n\n"
+        f"<i>💡 Reply directly to this message to save your answer into AI memory!</i>"
     )
 
     return _send_telegram_message(
