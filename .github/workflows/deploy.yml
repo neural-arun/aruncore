@@ -1,0 +1,27 @@
+name: Sync to Hugging Face Space
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  sync-to-huggingface:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git checkout --orphan hf-deploy-temp
+          git rm -r --cached Images db 2>/dev/null || true
+          git rm --cached $(git ls-files "*.png" "*.jpg" "*.jpeg") 2>/dev/null || true
+          git commit -m "deploy: automated sync from github main"
+          git push --force https://neural-arun:${HF_TOKEN}@huggingface.co/spaces/neural-arun/ArunCore hf-deploy-temp:main

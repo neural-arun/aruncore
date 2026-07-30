@@ -26,3 +26,8 @@ data/test_set/evaluation_report.json
 Thumbs.db
 
 .vercel
+
+# Image Artifacts
+*.png
+*.jpg
+*.jpeg
