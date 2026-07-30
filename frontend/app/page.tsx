@@ -23,12 +23,9 @@ export default function Home() {
     const newSession = `session_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     setSessionId(newSession);
 
-    const storedTheme = localStorage.getItem("aruncore_theme") as "dark" | "light" | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-    } else {
-      setTheme("light");
-    }
+    // Default to Light Mode
+    setTheme("light");
+    localStorage.setItem("aruncore_theme", "light");
   }, []);
 
   useEffect(() => {
