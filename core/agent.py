@@ -375,7 +375,7 @@ _CATEGORY_HEADERS = {
 }
 
 _RECENT_ALERTS: Dict[str, float] = {}
-_ALERT_DEDUP_WINDOW_SECONDS = 120.0
+_ALERT_DEDUP_WINDOW_SECONDS = 10.0
 
 
 def _should_send_alert(category: str, user_input: str) -> bool:
@@ -403,7 +403,9 @@ def _deliver_notify_arun(
     token, chat_id = _get_telegram_target(alert=True)
 
     if not token or not chat_id:
-        return "FAILED: Telegram credentials missing."
+        msg = "FAILED: Telegram credentials missing."
+        _record_telegram_log("notify_arun_bg", "MISSING_CREDS", msg)
+        return msg
 
     category = (category or "UNKNOWN_QUESTION").strip().upper()
     if category not in ALLOWED_NOTIFY_CATEGORIES:
@@ -412,7 +414,9 @@ def _deliver_notify_arun(
     cleaned_input = _safe_truncate(user_input, 1200)
 
     if not _should_send_alert(category, cleaned_input):
-        return f"SKIPPED: duplicate {category} alert suppressed."
+        msg = f"SKIPPED: duplicate {category} alert suppressed within 10s window."
+        _record_telegram_log("notify_arun_bg", "SKIPPED_DEDUP", msg)
+        return msg
 
     header = _CATEGORY_HEADERS.get(category, f"🚨 ALERT: {category}")
     html = (
