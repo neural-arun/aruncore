@@ -43,15 +43,90 @@ export default function Home() {
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const [activePrompt, setActivePrompt] = useState<string>("");
   const [theme, setTheme] = useState<"dark" | "light">("light");
+  const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
+  const [adminToken, setAdminToken] = useState<string>("");
 
   useEffect(() => {
-    const newSession = `session_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
-    setSessionId(newSession);
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlSession = urlParams.get("session_id");
+      const urlToken = urlParams.get("admin_token");
 
-    // Default to Light Mode
+      if (urlSession && urlToken) {
+        setSessionId(urlSession);
+        setAdminToken(urlToken);
+        fetch(`${API_BASE_URL}/chat/verify-admin-token?session_id=${encodeURIComponent(urlSession)}&admin_token=${encodeURIComponent(urlToken)}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data && data.valid) {
+              setIsAdminMode(true);
+            }
+          })
+          .catch((err) => console.warn("Admin verify error:", err));
+      } else {
+        const newSession = `session_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        setSessionId(newSession);
+      }
+    }
+
     setTheme("light");
     localStorage.setItem("aruncore_theme", "light");
   }, []);
+
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/chat/human-messages?session_id=${encodeURIComponent(sessionId)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.messages && data.messages.length > 0) {
+            setMessages((prev) => {
+              const existingIds = new Set(prev.map((m) => m.id));
+              const newHumanMsgs = data.messages.filter((m: any) => !existingIds.has(m.id));
+              if (newHumanMsgs.length > 0) {
+                return [...prev, ...newHumanMsgs];
+              }
+              return prev;
+            });
+          }
+        }
+      } catch (e) {
+        // Silent poll error
+      }
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [sessionId]);
+
+  const handleSendAdminMessage = async (adminText: string) => {
+    if (!adminText.trim() || !isAdminMode || !sessionId || !adminToken) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/chat/human-message`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          session_id: sessionId,
+          admin_token: adminToken,
+          message: adminText,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.entry) {
+          setMessages((prev) => {
+            if (prev.some((m) => m.id === data.entry.id)) return prev;
+            return [...prev, data.entry];
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Failed to send admin human message:", err);
+    }
+  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -249,6 +324,16 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-200">
+      {isAdminMode && (
+        <div className="bg-emerald-600/90 text-white font-mono text-xs px-4 py-2 flex items-center justify-between shadow-md shrink-0">
+          <span className="flex items-center gap-2 font-bold">
+            <span className="h-2.5 w-2.5 rounded-full bg-white animate-ping" />
+            <span>🟢 LOGGED IN AS REAL ARUN YADAV — LIVE 3-WAY CHAT ROOM</span>
+          </span>
+          <span className="text-[11px] font-mono opacity-90">Session: {sessionId}</span>
+        </div>
+      )}
+
       {/* Header Navigation */}
       <Header
         activeTab={activeTab}
@@ -269,6 +354,8 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
             activePrompt={activePrompt}
             setActivePrompt={setActivePrompt}
             openHandoffModal={() => setIsHandoffOpen(true)}
+            isAdminMode={isAdminMode}
+            onSendAdminMessage={handleSendAdminMessage}
           />
         )}
 

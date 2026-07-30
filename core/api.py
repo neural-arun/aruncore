@@ -24,7 +24,12 @@ from core.agent import (
     queue_maybe_notify_arun,
     run_pre_escalation,
     queue_chat_history_to_telegram,
+    queue_automated_chat_alert,
+    generate_admin_token,
+    verify_admin_token,
 )
+
+HUMAN_MESSAGES_STORE: Dict[str, List[Dict[str, Any]]] = {}
 
 _GLOBAL_VECTORSTORE = None
 _GLOBAL_BM25 = None
@@ -426,6 +431,13 @@ async def chat_endpoint(req: ChatRequest):
                 github_data=github_data,
             )
 
+            # Unconditionally queue 100% automated chat alert for EVERY message with 1-Click Join Link
+            queue_automated_chat_alert(
+                session_id=req.session_id,
+                user_input=req.message,
+                assistant_response=final_response,
+            )
+
             yield json.dumps({
                 "type": "final",
                 "reply": final_response,
@@ -498,6 +510,51 @@ def health_check():
         "telegram_chat_id": bot_cid or "MISSING",
         "telegram_logs": TELEGRAM_DELIVERY_LOGS[-10:],
     }
+
+
+class HumanMessageRequest(BaseModel):
+    session_id: str
+    admin_token: str
+    message: str
+
+@app.post("/chat/human-message")
+async def post_human_message(req: HumanMessageRequest):
+    if not verify_admin_token(req.session_id, req.admin_token):
+        raise HTTPException(status_code=403, detail="Invalid admin token.")
+    
+    clean_text = (req.message or "").strip()
+    if not clean_text:
+        raise HTTPException(status_code=400, detail="Message cannot be empty.")
+
+    import time, datetime
+    entry = {
+        "id": f"msg_human_{int(time.time() * 1000)}",
+        "sender": "human_arun",
+        "name": "Arun Yadav",
+        "text": clean_text,
+        "timestamp": datetime.datetime.now().strftime("%I:%M %p"),
+    }
+
+    if req.session_id not in HUMAN_MESSAGES_STORE:
+        HUMAN_MESSAGES_STORE[req.session_id] = []
+    HUMAN_MESSAGES_STORE[req.session_id].append(entry)
+
+    memory = get_or_create_memory(req.session_id)
+    memory.add_interaction(f"[REAL ARUN JOINED LIVE]: {clean_text}", "Acknowledged real Arun input.")
+
+    return {"status": "success", "entry": entry}
+
+
+@app.get("/chat/human-messages")
+async def get_human_messages(session_id: str):
+    msgs = HUMAN_MESSAGES_STORE.get(session_id, [])
+    return {"session_id": session_id, "messages": msgs}
+
+
+@app.get("/chat/verify-admin-token")
+async def verify_admin(session_id: str, admin_token: str):
+    valid = verify_admin_token(session_id, admin_token)
+    return {"valid": valid, "session_id": session_id}
 
 
 # Mount static frontend export if built (for Hugging Face Spaces production deployment)

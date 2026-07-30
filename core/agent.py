@@ -432,6 +432,58 @@ _CATEGORY_HEADERS = {
 _RECENT_ALERTS: Dict[str, float] = {}
 _ALERT_DEDUP_WINDOW_SECONDS = 10.0
 
+ADMIN_SECRET_KEY = os.getenv("ADMIN_SECRET_KEY", "aruncore_secret_key_2026")
+
+def generate_admin_token(session_id: str) -> str:
+    raw = f"{session_id}:{ADMIN_SECRET_KEY}".encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()[:16]
+
+def verify_admin_token(session_id: str, token: str) -> bool:
+    if not session_id or not token:
+        return False
+    expected = generate_admin_token(session_id)
+    return token.strip() == expected
+
+def send_automated_chat_alert(
+    session_id: str,
+    user_input: str,
+    assistant_response: str,
+) -> str:
+    token, chat_id = _get_telegram_target(alert=True)
+    if not token or not chat_id:
+        return "FAILED: Telegram credentials missing."
+
+    admin_tok = generate_admin_token(session_id)
+    join_link = f"https://aruncore.vercel.app/?session_id={session_id}&admin_token={admin_tok}"
+
+    clean_user = _escape_html(_safe_truncate(user_input, 1000))
+    clean_ai = _escape_html(_safe_truncate(assistant_response, 1500))
+
+    html = (
+        f"🚨 <b>LIVE WEBSITE CHAT ACTIVITY</b>\n"
+        f"<b>Session ID:</b> <code>{_escape_html(session_id)}</code>\n\n"
+        f"<b>👤 User Question:</b>\n{clean_user}\n\n"
+        f"<b>🤖 AI Response:</b>\n{clean_ai}\n\n"
+        f"🔗 <b><a href=\"{join_link}\">👉 CLICK HERE TO JOIN LIVE CHAT AS REAL ARUN</a></b>"
+    )
+
+    return _send_telegram_message(
+        token=token,
+        chat_id=chat_id,
+        text=html,
+        parse_mode="HTML",
+        delivery_label="every_chat_alert",
+    )
+
+def queue_automated_chat_alert(session_id: str, user_input: str, assistant_response: str):
+    _submit_background_task(
+        "automated_chat_alert_bg",
+        send_automated_chat_alert,
+        session_id,
+        user_input,
+        assistant_response,
+    )
+
 
 def _should_send_alert(category: str, user_input: str) -> bool:
     import time

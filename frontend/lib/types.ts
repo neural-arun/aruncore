@@ -8,7 +8,8 @@ export interface ThoughtStep {
 
 export interface Message {
   id: string;
-  sender: "user" | "twin";
+  sender: "user" | "twin" | "human_arun";
+  name?: string;
   text: string;
   timestamp: string;
   thoughts?: string[];

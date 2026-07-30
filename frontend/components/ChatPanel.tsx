@@ -17,6 +17,8 @@ interface ChatPanelProps {
   activePrompt: string;
   setActivePrompt: (prompt: string) => void;
   openHandoffModal: () => void;
+  isAdminMode?: boolean;
+  onSendAdminMessage?: (text: string) => void;
 }
 
 export const ChatPanel: React.FC<ChatPanelProps> = ({
@@ -27,8 +29,11 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   activePrompt,
   setActivePrompt,
   openHandoffModal,
+  isAdminMode,
+  onSendAdminMessage,
 }) => {
   const [inputText, setInputText] = useState("");
+  const [adminInputText, setAdminInputText] = useState("");
   const [expandedThoughts, setExpandedThoughts] = useState<Record<string, boolean>>({});
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [playingMessageId, setPlayingMessageId] = useState<string | null>(null);
@@ -473,6 +478,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                     className={`max-w-[95%] sm:max-w-[88%] rounded-2xl px-5 py-4 text-sm sm:text-base ${
                       msg.sender === "user"
                         ? "bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] shadow-md"
+                        : msg.sender === "human_arun"
+                        ? "border-2 border-emerald-500/60 bg-emerald-950/20 text-[var(--text-main)] shadow-xl"
                         : "border border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-main)] shadow-lg"
                     }`}
                   >
@@ -481,6 +488,13 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                       <span className="font-semibold text-[var(--accent-green)] flex items-center gap-2">
                         {msg.sender === "user" ? (
                           "You"
+                        ) : msg.sender === "human_arun" ? (
+                          <span className="flex items-center gap-2 text-emerald-400 font-extrabold">
+                            <span>👨‍💻 Arun Yadav</span>
+                            <span className="rounded-full border border-emerald-500/50 bg-emerald-500/20 px-2 py-0.5 font-mono text-[10px] font-extrabold text-emerald-400 animate-pulse">
+                              VERIFIED HUMAN 🟢
+                            </span>
+                          </span>
                         ) : (
                           <>
                             <span>Arun's AI Assistant</span>
@@ -671,6 +685,41 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 </button>
               </div>
             </div>
+
+            {isAdminMode && (
+              <div className="mt-3 border-t-2 border-emerald-500/60 bg-emerald-950/30 p-2.5 sm:p-3 shrink-0 rounded-2xl shadow-xl">
+                <div className="mx-auto max-w-4xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="flex items-center gap-2 flex-1 rounded-xl border-2 border-emerald-500/50 bg-[var(--bg-surface)] px-3.5 py-1.5 shadow-md">
+                    <span className="font-mono text-xs font-extrabold text-emerald-400 shrink-0">👨‍💻 REAL ARUN:</span>
+                    <input
+                      type="text"
+                      value={adminInputText}
+                      onChange={(e) => setAdminInputText(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && adminInputText.trim()) {
+                          onSendAdminMessage?.(adminInputText);
+                          setAdminInputText("");
+                        }
+                      }}
+                      placeholder="Type live response to client..."
+                      className="flex-1 bg-transparent py-1.5 text-xs sm:text-sm text-[var(--text-main)] placeholder-[var(--text-dim)] font-semibold focus:outline-none"
+                    />
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (adminInputText.trim()) {
+                        onSendAdminMessage?.(adminInputText);
+                        setAdminInputText("");
+                      }
+                    }}
+                    className="rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 text-xs sm:text-sm shadow-lg transition-all active:scale-95 shrink-0 flex items-center justify-center gap-2"
+                  >
+                    <span>SEND AS REAL ARUN</span>
+                    <Send className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </>
       )}
