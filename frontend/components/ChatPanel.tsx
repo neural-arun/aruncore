@@ -105,6 +105,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     setTimeout(() => setCopiedId(null), 2000);
   };
 
+  const baseTextRef = useRef<string>("");
+
   // Speech-To-Text (STT) Microphone Handler
   const handleToggleListening = () => {
     if (typeof window === "undefined") return;
@@ -128,25 +130,25 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     }
 
     try {
+      baseTextRef.current = inputText.trim();
       const recognition = new SpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = true;
       recognition.lang = "en-US";
 
       recognition.onresult = (event: any) => {
-        let transcript = "";
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
+        let currentSpeech = "";
+        for (let i = 0; i < event.results.length; i++) {
+          currentSpeech += event.results[i][0].transcript;
         }
-        if (transcript.trim()) {
-          setInputText((prev) => {
-            const base = prev.trim();
-            return base ? `${base} ${transcript}` : transcript;
-          });
-          if (textareaRef.current) {
-            textareaRef.current.style.height = "auto";
-            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
-          }
+
+        const base = baseTextRef.current;
+        const newText = base ? `${base} ${currentSpeech.trim()}` : currentSpeech.trim();
+        setInputText(newText);
+
+        if (textareaRef.current) {
+          textareaRef.current.style.height = "auto";
+          textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`;
         }
       };
 
