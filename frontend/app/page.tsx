@@ -8,7 +8,7 @@ import { ManifestoView } from "../components/ManifestoView";
 import { HandoffModal } from "../components/HandoffModal";
 import { Message, ActiveTab, HandoffFormData } from "../lib/types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" && window.location.hostname !== "localhost" ? "https://neural-arun-aruncore.hf.space" : "http://localhost:8000");
 
 export default function Home() {
   const [sessionId, setSessionId] = useState<string>("");
@@ -161,19 +161,18 @@ export default function Home() {
       }
     } catch (err: any) {
       // Offline fallback simulation streaming
-      const fallbackText = `I am **ArunCore**, the AI Digital Twin of Arun Yadav.
+      const fallbackText = `I am **ArunCore**, the AI Digital Assistant of Arun Yadav.
 
-I build AI-powered software systems for Healthcare & Education that organizations trust to make decisions, automate complex workflows, and scale expertise.
+Think of me as Arun's interactive AI representative. I can answer questions about his work, technical background, engineering philosophy, current focus, and the AI systems he builds.
+
+Arun specializes in building trustworthy AI infrastructure for Healthcare and Education—combining large language models, knowledge retrieval, backend engineering, and intelligent automation into production-ready systems.
+
+My goal is to help you quickly understand Arun's expertise, explore collaboration opportunities, and answer questions about his work with clarity and accuracy.
 
 ### Direct Contact
 - **Phone / Call:** +91 8881109193
-- **WhatsApp:** [+91 8881109193](https://wa.me/918881109193)
-- **Email:** neural.arun.dev@gmail.com
-
-### Featured Projects
-- **Indian Legal RAG System:** Zero-hallucination legal retrieval pipeline.
-- **MedCoach:** Clinical decision support & medical knowledge search engine.
-- **NEET Bot:** Medical entrance exam prep & tutor.`;
+- **WhatsApp:** https://wa.me/918881109193
+- **Email:** neural.arun.dev@gmail.com`;
 
       // Stream fallback tokens for visualization
       const tokens = fallbackText.split(" ");
