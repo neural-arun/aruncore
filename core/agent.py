@@ -3,7 +3,18 @@ import json
 import requests
 import queue
 import threading
+import socket
 from typing import Dict, Any, List, Optional, Tuple
+
+try:
+    _orig_getaddrinfo = socket.getaddrinfo
+    def _ipv4_only_getaddrinfo(*args, **kwargs):
+        res = _orig_getaddrinfo(*args, **kwargs)
+        ipv4_res = [r for r in res if r[0] == socket.AF_INET]
+        return ipv4_res or res
+    socket.getaddrinfo = _ipv4_only_getaddrinfo
+except Exception:
+    pass
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -186,7 +197,8 @@ def _send_telegram_message(
                 res = session.post(
                     f"https://api.telegram.org/bot{token}/sendMessage",
                     json=payload,
-                    timeout=10,
+                    headers={"Connection": "close"},
+                    timeout=(5.0, 20.0),
                 )
                 if res.status_code == 200 and res.json().get("ok"):
                     sent_chunk = True
@@ -210,7 +222,8 @@ def _send_telegram_message(
                 res = session.post(
                     f"https://api.telegram.org/bot{token}/sendMessage",
                     json=fallback_payload,
-                    timeout=10,
+                    headers={"Connection": "close"},
+                    timeout=(5.0, 20.0),
                 )
                 if res.status_code == 200 and res.json().get("ok"):
                     sent_chunk = True

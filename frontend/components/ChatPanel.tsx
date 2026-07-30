@@ -44,10 +44,26 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isStreaming]);
 
+  // Focus text input on initial page load / mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      textareaRef.current?.focus();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Re-focus text input whenever AI finishes streaming a response
+  useEffect(() => {
+    if (!isStreaming) {
+      textareaRef.current?.focus();
+    }
+  }, [isStreaming]);
+
   useEffect(() => {
     if (activePrompt) {
       setInputText(activePrompt);
       setActivePrompt("");
+      textareaRef.current?.focus();
     }
   }, [activePrompt, setActivePrompt]);
 
@@ -96,6 +112,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     setInputText("");
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
+      textareaRef.current.focus();
     }
   };
 
