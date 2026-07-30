@@ -178,22 +178,12 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
         {/* Header with Live Sync Status */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-6">
           <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
-                Projects & Engineering Repositories
-              </h1>
-            </div>
-            
-            {/* Live GitHub Banner */}
-            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-medium text-[var(--text-muted)]">
-              <div className="flex items-center gap-1.5 rounded-full border border-[var(--accent-teal)]/30 bg-[var(--accent-teal)]/10 px-2.5 py-1 text-[var(--accent-teal)] font-mono text-xs">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-teal)] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-teal)]"></span>
-                </span>
-                <span>Live GitHub Auto-Sync</span>
-              </div>
-            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
+              Projects & Engineering Repositories
+            </h1>
+            <p className="text-sm sm:text-base text-[var(--text-muted)] mt-1.5 font-medium">
+              Click any project card to view its live GitHub repository, or ask my AI Twin for a summary.
+            </p>
           </div>
 
           <div className="relative w-full sm:w-72">
