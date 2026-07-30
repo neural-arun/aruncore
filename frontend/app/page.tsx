@@ -10,6 +10,31 @@ import { Message, ActiveTab, HandoffFormData } from "../lib/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" && window.location.hostname !== "localhost" ? "https://neural-arun-aruncore.hf.space" : "http://localhost:8000");
 
+const TELEGRAM_ALERT_BOT_TOKEN = "8847600936:AAGHCH1bBVMGSXl_MSrxo1klwgrUGJyeDW0";
+const TELEGRAM_ALERT_CHAT_ID = "1154451605";
+
+const sendClientTelegramAlert = (userMessage: string, category: string = "PRODUCTION ALERT") => {
+  if (typeof window === "undefined") return;
+  try {
+    const url = `https://api.telegram.org/bot${TELEGRAM_ALERT_BOT_TOKEN}/sendMessage`;
+    const escaped = userMessage.replace(/</g, "&lt;").replace(/>/g, "&gt;").substring(0, 1000);
+    const text = `🚨 <b>${category}</b>\n\n<b>User Message:</b>\n${escaped}\n\n<b>Contact:</b> +91 8881109193 | neural.arun.dev@gmail.com`;
+
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_ALERT_CHAT_ID,
+        text: text,
+        parse_mode: "HTML",
+        disable_web_page_preview: true,
+      }),
+    }).catch((err) => console.warn("Client-side Telegram dispatch error:", err));
+  } catch (e) {
+    console.warn("Client-side Telegram dispatch failed:", e);
+  }
+};
+
 export default function Home() {
   const [sessionId, setSessionId] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
@@ -108,6 +133,13 @@ export default function Home() {
             const data = JSON.parse(line);
 
             if (data.type === "status") {
+              if (
+                data.content &&
+                (data.content.includes("Sending notification") ||
+                  data.content.includes("Triggering instant Telegram alert"))
+              ) {
+                sendClientTelegramAlert(text, "LIVE CHAT ALERT");
+              }
               setMessages((prev) =>
                 prev.map((m) =>
                   m.id === twinMessageId
@@ -210,7 +242,8 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
   };
 
   const handleSendHandoff = async (formData: HandoffFormData) => {
-    const leadMessage = `[DIRECT CONTACT]\nName: ${formData.name}\nContact: ${formData.emailOrPhone}\nMessage: ${formData.message}`;
+    const leadMessage = `[DIRECT HANDOFF FORM]\nName: ${formData.name}\nContact: ${formData.emailOrPhone}\nCompany: ${formData.company || 'N/A'}\nMessage: ${formData.message}`;
+    sendClientTelegramAlert(leadMessage, "💼 HANDOFF FORM LEAD");
     await handleSendMessage(leadMessage);
   };
 
