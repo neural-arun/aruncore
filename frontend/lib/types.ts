@@ -28,6 +28,10 @@ export interface ProjectItem {
   suggestedPrompt: string;
   updatedAt: string; // ISO date string e.g. 2026-07-24T10:19:09Z
   updatedAtLabel: string; // e.g. "Updated Jul 2026"
+  stars?: number;
+  forks?: number;
+  relativeTime?: string;
+  isRecentActivity?: boolean;
 }
 
 export type ActiveTab = "chat" | "projects" | "manifesto";

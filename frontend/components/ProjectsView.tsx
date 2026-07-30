@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PROJECTS_DATA } from "../lib/projectsData";
-import { ActiveTab } from "../lib/types";
-import { ExternalLink, Search, Sparkles, ArrowRight } from "lucide-react";
+import { ProjectItem, ActiveTab } from "../lib/types";
+import { ExternalLink, Search, Sparkles, ArrowRight, Star, GitFork, Activity, Flame, RefreshCw } from "lucide-react";
 
 const GithubIcon = () => (
   <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -16,30 +16,157 @@ interface ProjectsViewProps {
   setActiveTab: (tab: ActiveTab) => void;
 }
 
+function formatRelativeTime(dateString: string): { label: string; isRecent: boolean } {
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return { label: "Recently updated", isRecent: false };
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffHours < 1) return { label: "Pushed < 1h ago", isRecent: true };
+    if (diffHours < 24) return { label: `Pushed ${diffHours}h ago`, isRecent: true };
+    if (diffDays === 1) return { label: "Pushed yesterday", isRecent: true };
+    if (diffDays <= 7) return { label: `Pushed ${diffDays}d ago`, isRecent: true };
+    if (diffDays < 30) return { label: `Pushed ${diffDays}d ago`, isRecent: false };
+    const months = Math.floor(diffDays / 30);
+    if (months === 1) return { label: "Pushed 1m ago", isRecent: false };
+    if (months < 12) return { label: `Pushed ${months}m ago`, isRecent: false };
+    return { label: `Pushed ${Math.floor(months / 12)}y ago`, isRecent: false };
+  } catch {
+    return { label: "Recently updated", isRecent: false };
+  }
+}
+
 export const ProjectsView: React.FC<ProjectsViewProps> = ({
   onSelectPrompt,
   setActiveTab,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [sortBy, setSortBy] = useState<"recent" | "stars">("recent");
+  const [projects, setProjects] = useState<ProjectItem[]>(PROJECTS_DATA);
+  const [isSyncing, setIsSyncing] = useState<boolean>(true);
+  const [lastSyncedTime, setLastSyncedTime] = useState<string>("");
 
   const categories = ["All", "Healthcare", "Education", "RAG & AI", "Agents & Tools", "Automation & Scraping"];
 
-  const filteredProjects = PROJECTS_DATA.filter((project) => {
-    const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
-    const matchesSearch =
-      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.techStack.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
+  // Live GitHub Repository Sync
+  useEffect(() => {
+    let isMounted = true;
+    async function syncGitHubRepos() {
+      setIsSyncing(true);
+      try {
+        const res = await fetch("https://api.github.com/users/neural-arun/repos?sort=pushed&direction=desc&per_page=100");
+        if (!res.ok) throw new Error(`GitHub API HTTP ${res.status}`);
+        const githubRepos: any[] = await res.json();
+
+        if (!isMounted) return;
+
+        // Map GitHub repo details onto local projects & discover unlisted repos
+        const repoMap = new Map<string, any>();
+        githubRepos.forEach((r) => {
+          repoMap.set(r.name.toLowerCase(), r);
+        });
+
+        const updatedList: ProjectItem[] = PROJECTS_DATA.map((proj) => {
+          const matchingRepo = repoMap.get(proj.name.toLowerCase()) || repoMap.get(proj.id.toLowerCase());
+          if (matchingRepo) {
+            const pushedDate = matchingRepo.pushed_at || matchingRepo.updated_at || proj.updatedAt;
+            const { label, isRecent } = formatRelativeTime(pushedDate);
+            return {
+              ...proj,
+              updatedAt: pushedDate,
+              updatedAtLabel: label,
+              relativeTime: label,
+              isRecentActivity: isRecent,
+              stars: matchingRepo.stargazers_count ?? 0,
+              forks: matchingRepo.forks_count ?? 0,
+            };
+          } else {
+            const { label, isRecent } = formatRelativeTime(proj.updatedAt);
+            return {
+              ...proj,
+              relativeTime: label,
+              isRecentActivity: isRecent,
+            };
+          }
+        });
+
+        // Check for public repos not in static dataset and add them automatically
+        const knownNames = new Set(PROJECTS_DATA.map((p) => p.name.toLowerCase()));
+        githubRepos.forEach((r) => {
+          if (!knownNames.has(r.name.toLowerCase()) && !r.fork && !r.private) {
+            const { label, isRecent } = formatRelativeTime(r.pushed_at || r.updated_at);
+            updatedList.push({
+              id: r.name,
+              name: r.name,
+              title: r.name.replace(/[-_]/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase()),
+              category: "Agents & Tools",
+              description: r.description || "Public software repository by Arun Yadav.",
+              githubUrl: r.html_url,
+              techStack: [r.language || "Python", "GitHub"],
+              highlights: [`Live repository from github.com/neural-arun/${r.name}`],
+              suggestedPrompt: `Tell me about the ${r.name} project on GitHub!`,
+              updatedAt: r.pushed_at || r.updated_at,
+              updatedAtLabel: label,
+              relativeTime: label,
+              isRecentActivity: isRecent,
+              stars: r.stargazers_count ?? 0,
+              forks: r.forks_count ?? 0,
+            });
+          }
+        });
+
+        setProjects(updatedList);
+        setLastSyncedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+      } catch (err) {
+        console.warn("GitHub live sync fallback to static dataset:", err);
+        // Calculate relative times for static data
+        setProjects(
+          PROJECTS_DATA.map((proj) => {
+            const { label, isRecent } = formatRelativeTime(proj.updatedAt);
+            return { ...proj, relativeTime: label, isRecentActivity: isRecent };
+          })
+        );
+      } finally {
+        if (isMounted) setIsSyncing(false);
+      }
+    }
+
+    syncGitHubRepos();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Filter and Sort Projects
+  const processedProjects = projects
+    .filter((project) => {
+      const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
+      const matchesSearch =
+        project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        project.techStack.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesCategory && matchesSearch;
+    })
+    .sort((a, b) => {
+      if (sortBy === "stars") {
+        return (b.stars || 0) - (a.stars || 0);
+      }
+      // Default: Sort by latest commit date descending (most recent first!)
+      const dateA = new Date(a.updatedAt).getTime() || 0;
+      const dateB = new Date(b.updatedAt).getTime() || 0;
+      return dateB - dateA;
+    });
 
   const handleCardClick = (githubUrl: string) => {
     window.open(githubUrl, "_blank", "noopener,noreferrer");
   };
 
   const handleAskTwin = (e: React.MouseEvent, title: string, repoName: string) => {
-    e.stopPropagation(); // Don't trigger GitHub redirect on button click
+    e.stopPropagation();
     const prompt = `Can you give me a comprehensive summary of the ${title} project (${repoName}) based on its repository README and technical architecture?`;
     onSelectPrompt(prompt);
     setActiveTab("chat");
@@ -48,15 +175,28 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
   return (
     <div className="h-full overflow-y-auto px-4 py-6 sm:py-8 sm:px-8">
       <div className="mx-auto max-w-4xl space-y-6">
-        {/* Header */}
+        {/* Header with Live Sync Status */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
-              Projects & Engineering Repositories
-            </h1>
-            <p className="text-sm sm:text-base text-[var(--text-muted)] mt-1.5 font-medium">
-              Click any project card to view its live GitHub repository, or ask my AI Twin for a summary.
-            </p>
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
+                Projects & Engineering Repositories
+              </h1>
+            </div>
+            
+            {/* Live GitHub Banner */}
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-medium text-[var(--text-muted)]">
+              <div className="flex items-center gap-1.5 rounded-full border border-[var(--accent-teal)]/30 bg-[var(--accent-teal)]/10 px-2.5 py-1 text-[var(--accent-teal)] font-mono text-xs">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-teal)] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-teal)]"></span>
+                </span>
+                <span>Live GitHub Auto-Sync</span>
+              </div>
+
+              <span>• Ordered by recent commit activity</span>
+              {lastSyncedTime && <span className="text-[var(--text-dim)]">(Synced at {lastSyncedTime})</span>}
+            </div>
           </div>
 
           <div className="relative w-full sm:w-72">
@@ -71,52 +211,116 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
           </div>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {categories.map((cat) => (
+        {/* Sort & Category Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          {/* Category Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`rounded-lg px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+                  selectedCategory === cat
+                    ? "bg-[var(--accent-teal)] text-white shadow-sm"
+                    : "bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-hover)]"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Sort Selector */}
+          <div className="flex items-center gap-1.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-1 shrink-0">
             <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`rounded-lg px-3.5 py-1.5 text-xs sm:text-sm font-semibold transition-all ${
-                selectedCategory === cat
-                  ? "bg-[var(--accent-teal)] text-white shadow-sm"
-                  : "bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-surface-hover)]"
+              onClick={() => setSortBy("recent")}
+              className={`flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+                sortBy === "recent"
+                  ? "bg-[var(--bg-surface-hover)] text-[var(--accent-green)] font-bold shadow-xs"
+                  : "text-[var(--text-muted)] hover:text-[var(--text-main)]"
               }`}
             >
-              {cat}
+              <Flame className="h-3.5 w-3.5" />
+              <span>Latest Commits</span>
             </button>
-          ))}
+            <button
+              onClick={() => setSortBy("stars")}
+              className={`flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all ${
+                sortBy === "stars"
+                  ? "bg-[var(--bg-surface-hover)] text-[var(--accent-amber)] font-bold shadow-xs"
+                  : "text-[var(--text-muted)] hover:text-[var(--text-main)]"
+              }`}
+            >
+              <Star className="h-3.5 w-3.5" />
+              <span>Stars</span>
+            </button>
+          </div>
         </div>
 
         {/* Project Cards */}
         <div className="space-y-5">
-          {filteredProjects.map((proj) => (
+          {processedProjects.map((proj) => (
             <div
               key={proj.id}
               onClick={() => handleCardClick(proj.githubUrl)}
               className="group cursor-pointer rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 transition-all hover:border-[var(--border-accent)] hover:bg-[var(--bg-surface-hover)] hover:shadow-xl"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
+                <div className="space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="rounded-md border border-[var(--border-subtle)] bg-[var(--bg-main)] px-2.5 py-0.5 font-mono text-xs font-semibold text-[var(--accent-amber)]">
                       {proj.category}
                     </span>
+
+                    {/* Dynamic Commit Activity Badge */}
+                    <span
+                      className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-0.5 font-mono text-xs font-semibold transition-all ${
+                        proj.isRecentActivity
+                          ? "bg-[var(--accent-green)]/15 border border-[var(--accent-green)]/30 text-[var(--accent-green)]"
+                          : "bg-[var(--bg-main)] border border-[var(--border-subtle)] text-[var(--text-muted)]"
+                      }`}
+                    >
+                      {proj.isRecentActivity ? (
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-green)] opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-green)]"></span>
+                        </span>
+                      ) : (
+                        <Activity className="h-3 w-3 text-[var(--text-dim)]" />
+                      )}
+                      <span>{proj.relativeTime || proj.updatedAtLabel}</span>
+                    </span>
                   </div>
-                  {/* Larger Title */}
+
+                  {/* Title */}
                   <h3 className="font-heading text-xl sm:text-2xl font-bold text-[var(--text-main)] group-hover:text-[var(--accent-green)] transition-colors">
                     {proj.title}
                   </h3>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--text-muted)] group-hover:text-[var(--text-main)] transition-colors shrink-0">
-                  <GithubIcon />
-                  <span className="font-mono">{proj.name}</span>
-                  <ExternalLink className="h-3.5 w-3.5 ml-1" />
+                {/* GitHub Specs & External Link */}
+                <div className="flex items-center gap-3 text-xs font-semibold text-[var(--text-muted)] group-hover:text-[var(--text-main)] transition-colors shrink-0">
+                  {typeof proj.stars === "number" && proj.stars > 0 && (
+                    <span className="flex items-center gap-1 text-[var(--accent-amber)]">
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                      <span>{proj.stars}</span>
+                    </span>
+                  )}
+                  {typeof proj.forks === "number" && proj.forks > 0 && (
+                    <span className="flex items-center gap-1 text-[var(--text-muted)]">
+                      <GitFork className="h-3.5 w-3.5" />
+                      <span>{proj.forks}</span>
+                    </span>
+                  )}
+                  <div className="flex items-center gap-1.5">
+                    <GithubIcon />
+                    <span className="font-mono">{proj.name}</span>
+                    <ExternalLink className="h-3.5 w-3.5 ml-0.5" />
+                  </div>
                 </div>
               </div>
 
-              {/* Larger Description */}
+              {/* Description */}
               <p className="mt-3 text-sm sm:text-base text-[var(--text-muted)] leading-relaxed font-normal">
                 {proj.description}
               </p>
