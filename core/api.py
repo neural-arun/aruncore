@@ -31,6 +31,7 @@ from core.agent import (
 
 HUMAN_MESSAGES_STORE: Dict[str, List[Dict[str, Any]]] = {}
 SESSION_CHAT_STORE: Dict[str, List[Dict[str, Any]]] = {}
+HUMAN_CONTROL_SESSIONS: Dict[str, bool] = {}
 
 def record_session_message(session_id: str, sender: str, text: str, name: str = "", thoughts: Optional[List[str]] = None) -> Dict[str, Any]:
     import time, datetime
@@ -344,6 +345,24 @@ async def chat_endpoint(req: ChatRequest):
     memory = active_sessions[req.session_id]
     record_session_message(req.session_id, "user", req.message)
 
+    if HUMAN_CONTROL_SESSIONS.get(req.session_id, False):
+        queue_automated_chat_alert(
+            session_id=req.session_id,
+            user_input=req.message,
+            assistant_response="[Real Arun is currently in live control of this chat session. AI Twin paused.]",
+        )
+
+        async def generate_human_controlled_pause():
+            yield json.dumps({"type": "status", "content": "🟢 Real Arun is in control of this session. AI Twin paused. Waiting for Real Arun or /answer command..."}) + "\n"
+            yield json.dumps({
+                "type": "final",
+                "reply": "",
+                "thoughts": ["Real Arun in live control. AI Twin paused."],
+                "session_id": req.session_id,
+            }) + "\n"
+
+        return StreamingResponse(generate_human_controlled_pause(), media_type="application/x-ndjson")
+
     async def generate_response():
         thoughts = []
         try:
@@ -556,6 +575,54 @@ class HumanMessageRequest(BaseModel):
     admin_token: str
     message: str
 
+async def trigger_ai_answer(session_id: str, extra_prompt: str = "") -> str:
+    if session_id not in active_sessions:
+        summary_llm = ChatOpenAI(temperature=0.0, model="gpt-4.1-nano", api_key=os.getenv("OPENAI_API_KEY"))
+        active_sessions[session_id] = RollingMemory(summary_llm=summary_llm)
+
+    memory = active_sessions[session_id]
+    main_llm, prompt, _, _ = init_agent()
+
+    session_msgs = SESSION_CHAT_STORE.get(session_id, [])
+    transcript_lines = []
+    last_user_input = ""
+    for m in session_msgs:
+        sender_label = "Visitor" if m.get("sender") == "user" else "Real Arun Yadav (👨‍💻)" if m.get("sender") == "human_arun" else "Arun's AI Assistant"
+        transcript_lines.append(f"{sender_label}: {m.get('text')}")
+        if m.get("sender") == "user":
+            last_user_input = m.get("text")
+
+    full_transcript = "\n".join(transcript_lines)
+
+    system_notice = SystemMessage(content=(
+        f"🟢 3-WAY CHAT INSTRUCTION FOR AI TWIN:\n"
+        f"Real Arun Yadav issued the /answer command for you to respond to the visitor's question.\n"
+        f"Read the full 3-party conversation transcript below (Visitor, Real Arun Yadav, and AI Twin):\n\n"
+        f"--- FULL 3-WAY CHAT TRANSCRIPT ---\n{full_transcript}\n\n"
+        f"MANDATORY INSTRUCTIONS FOR AI TWIN:\n"
+        f"1. Synthesize all context from the visitor's question and Real Arun Yadav's live comments.\n"
+        f"2. Generate an accurate, helpful, and natural response for the visitor.\n"
+        f"3. Acknowledge Real Arun Yadav's live presence if relevant."
+    ))
+
+    messages = prompt.format_messages(
+        running_summary=memory.running_summary,
+        chat_history=memory.get_messages(),
+        input=extra_prompt or last_user_input or "Please answer the visitor's question based on our 3-way conversation.",
+        agent_scratchpad=[],
+    )
+    messages.insert(1, system_notice)
+
+    ai_msg = await asyncio.to_thread(main_llm.invoke, messages)
+    final_reply = ai_msg.content.strip()
+
+    if final_reply:
+        record_session_message(session_id, "twin", final_reply, thoughts=["AI Twin triggered via /answer command."])
+        memory.add_interaction(last_user_input or "Visitor Query", final_reply)
+
+    return final_reply
+
+
 @app.post("/chat/human-message")
 async def post_human_message(req: HumanMessageRequest):
     if not verify_admin_token(req.session_id, req.admin_token):
@@ -565,6 +632,24 @@ async def post_human_message(req: HumanMessageRequest):
     if not clean_text:
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
 
+    lowered = clean_text.lower().strip()
+
+    # Command: /release or /resume -> Hand control back to AI Twin
+    if lowered in ("/release", "/resume"):
+        HUMAN_CONTROL_SESSIONS[req.session_id] = False
+        rel_entry = record_session_message(req.session_id, "human_arun", "[Handed back auto-response control to AI Twin]", name="Arun Yadav")
+        return {"status": "success", "entry": rel_entry, "human_control": False}
+
+    # Command: /answer -> Trigger AI Twin to answer reading all 3 participants' chat history
+    if lowered.startswith("/answer"):
+        HUMAN_CONTROL_SESSIONS[req.session_id] = True
+        extra_prompt = clean_text[7:].strip()
+        cmd_entry = record_session_message(req.session_id, "human_arun", f"/answer {extra_prompt}".strip(), name="Arun Yadav")
+        ai_reply = await trigger_ai_answer(req.session_id, extra_prompt)
+        return {"status": "success", "entry": cmd_entry, "ai_reply": ai_reply, "human_control": True}
+
+    # Real Arun's first human message activates Human Control Mode!
+    HUMAN_CONTROL_SESSIONS[req.session_id] = True
     entry = record_session_message(req.session_id, "human_arun", clean_text, name="Arun Yadav")
     if req.session_id not in HUMAN_MESSAGES_STORE:
         HUMAN_MESSAGES_STORE[req.session_id] = []
@@ -589,7 +674,7 @@ async def post_human_message(req: HumanMessageRequest):
     memory = get_or_create_memory(req.session_id)
     memory.add_interaction(f"[REAL ARUN JOINED LIVE]: {clean_text}", "Acknowledged real Arun input.")
 
-    return {"status": "success", "entry": entry, "rag_updated": bool(last_user_msg)}
+    return {"status": "success", "entry": entry, "human_control": True}
 
 
 @app.get("/chat/history")

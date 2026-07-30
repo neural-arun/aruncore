@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Image from "next/image";
 import { Message } from "../lib/types";
-import { Send, Copy, Check, ChevronDown, ChevronRight, Sparkles, Terminal, PhoneCall, ArrowRight, Activity, Cpu, Volume2, Square, Loader2, Mic, MicOff } from "lucide-react";
+import { Send, Copy, Check, ChevronDown, ChevronRight, Sparkles, Terminal, PhoneCall, ArrowRight, Activity, Cpu, Volume2, Square, Loader2, Mic, MicOff, RotateCcw } from "lucide-react";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" && window.location.hostname !== "localhost" ? "https://neural-arun-aruncore.hf.space" : "http://localhost:8000");
 
@@ -687,7 +687,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             </div>
 
             {isAdminMode && (
-              <div className="mt-3 border-t-2 border-emerald-500/60 bg-emerald-950/30 p-2.5 sm:p-3 shrink-0 rounded-2xl shadow-xl">
+              <div className="mt-3 border-t-2 border-emerald-500/60 bg-emerald-950/30 p-2.5 sm:p-3 shrink-0 rounded-2xl shadow-xl space-y-2">
                 <div className="mx-auto max-w-4xl flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                   <div className="flex items-center gap-2 flex-1 rounded-xl border-2 border-emerald-500/50 bg-[var(--bg-surface)] px-3.5 py-1.5 shadow-md">
                     <span className="font-mono text-xs font-extrabold text-emerald-400 shrink-0">👨‍💻 REAL ARUN:</span>
@@ -701,7 +701,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                           setAdminInputText("");
                         }
                       }}
-                      placeholder="Type live response to client..."
+                      placeholder="Type live response or command (/answer, /release)..."
                       className="flex-1 bg-transparent py-1.5 text-xs sm:text-sm text-[var(--text-main)] placeholder-[var(--text-dim)] font-semibold focus:outline-none"
                     />
                   </div>
@@ -716,6 +716,26 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   >
                     <span>SEND AS REAL ARUN</span>
                     <Send className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+
+                <div className="mx-auto max-w-4xl flex items-center justify-end gap-2 text-[11px] font-mono">
+                  <button
+                    onClick={() => onSendAdminMessage?.("/answer")}
+                    className="rounded-lg border border-emerald-500/50 bg-emerald-900/40 hover:bg-emerald-800/60 px-2.5 py-1 text-emerald-300 font-bold transition-all flex items-center gap-1.5 shadow-sm active:scale-95"
+                    title="Trigger AI Twin to answer reading the 3-way transcript"
+                  >
+                    <Cpu className="h-3 w-3 text-emerald-400" />
+                    <span>🤖 Trigger AI Answer (/answer)</span>
+                  </button>
+
+                  <button
+                    onClick={() => onSendAdminMessage?.("/release")}
+                    className="rounded-lg border border-amber-500/50 bg-amber-950/40 hover:bg-amber-900/60 px-2.5 py-1 text-amber-300 font-bold transition-all flex items-center gap-1.5 shadow-sm active:scale-95"
+                    title="Hand control back to AI Twin auto-responses"
+                  >
+                    <RotateCcw className="h-3 w-3 text-amber-400" />
+                    <span>🔄 Hand Back to AI (/release)</span>
                   </button>
                 </div>
               </div>
