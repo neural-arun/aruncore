@@ -8,5 +8,20 @@
     "question": "How does MedCoach work?",
     "answer": "MedCoach uses simulated patient interaction graphs and clinical reasoning evaluation.",
     "timestamp": "2026-07-30T01:06:16.229451Z"
+  },
+  {
+    "question": "Automated Test Question 1785399027",
+    "answer": "This is a verified test answer ingested by the automated test suite.",
+    "timestamp": "2026-07-30T08:10:27.797137Z"
+  },
+  {
+    "question": "Automated Test Question 1785399039",
+    "answer": "This is a verified test answer ingested by the automated test suite.",
+    "timestamp": "2026-07-30T08:10:39.680568Z"
+  },
+  {
+    "question": "Automated Test Question 1785399073",
+    "answer": "This is a verified test answer ingested by the automated test suite.",
+    "timestamp": "2026-07-30T08:11:13.562636Z"
   }
 ]
