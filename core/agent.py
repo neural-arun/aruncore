@@ -124,6 +124,21 @@ def _chunk_text(text: str, limit: int = 2200) -> List[str]:
     return parts or ["(empty)"]
 
 
+TELEGRAM_DELIVERY_LOGS: List[Dict[str, Any]] = []
+
+def _record_telegram_log(label: str, status: str, detail: str):
+    import time
+    entry = {
+        "time": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()),
+        "label": label,
+        "status": status,
+        "detail": detail,
+    }
+    TELEGRAM_DELIVERY_LOGS.append(entry)
+    if len(TELEGRAM_DELIVERY_LOGS) > 30:
+        TELEGRAM_DELIVERY_LOGS.pop(0)
+
+
 def _send_telegram_message(
     token: str,
     chat_id: str,
@@ -135,6 +150,18 @@ def _send_telegram_message(
 ) -> str:
     import urllib3
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+    token = (token or "").strip()
+    if token.lower().startswith("bot"):
+        token = token[3:].strip()
+
+    chat_id = (chat_id or "").strip()
+
+    if not token or not chat_id:
+        msg = f"FAILED: Token or Chat ID empty (token_len={len(token)}, chat_id_len={len(chat_id)})"
+        _record_telegram_log(delivery_label, "MISSING_CREDS", msg)
+        print(f"[TELEGRAM:{delivery_label}] {msg}")
+        return msg
 
     session = requests.Session()
     session.verify = False
@@ -191,10 +218,13 @@ def _send_telegram_message(
                 last_error = f"Fallback error: {e}"
 
         if not sent_chunk:
-            print(f"[TELEGRAM:{delivery_label}] FAILED chunk {idx}/{total_chunks}: {last_error}")
-            return f"FAILED: {last_error}"
+            err_msg = f"FAILED chunk {idx}/{total_chunks}: {last_error}"
+            print(f"[TELEGRAM:{delivery_label}] {err_msg}")
+            _record_telegram_log(delivery_label, "ERROR", err_msg)
+            return err_msg
 
     print(f"[TELEGRAM:{delivery_label}] SUCCESS")
+    _record_telegram_log(delivery_label, "SUCCESS", f"Delivered {total_chunks} chunk(s)")
     return "SUCCESS: message delivered."
 
 
