@@ -1,8 +1,8 @@
-# 🚀 ArunCore Operations & Update Guide
+# 🚀 ArunCore — Operations & Update Guide
 
-Welcome to the **Master Operations & Maintenance Guide** for **ArunCore AI Assistant**. 
+Welcome to the **Master Operations & Maintenance Guide** for **ArunCore AI Assistant**.
 
-This document explains step-by-step how to update your LinkedIn data, sync fresh GitHub projects, re-index vector database memory, and push updates to **GitHub**, **Hugging Face Spaces**, and **Vercel**.
+This document covers everything: updating LinkedIn/GitHub data, re-indexing vector memory, deploying to all platforms, managing the Telegram Active Learning Loop, and CI/CD pipeline reference.
 
 ---
 
@@ -16,138 +16,168 @@ This document explains step-by-step how to update your LinkedIn data, sync fresh
 | **Run 30-Question Eval Suite** | `PYTHONPATH=. python scripts/evaluate_30_questions.py` |
 | **Run Local Backend (FastAPI)** | `.venv/bin/uvicorn core.api:app --host 0.0.0.0 --port 8000 --reload` |
 | **Run Local Frontend (Next.js)** | `cd frontend && npm run dev` |
-| **Push Code to GitHub** | `git add . && git commit -m "update" && git push origin main` |
+| **Deploy EVERYTHING** | `git add . && git commit -m "update" && git push origin main` |
 
 ---
 
-## 1. 💼 How to Update & Re-Sync LinkedIn Data
+## 1. 💼 How to Update LinkedIn Data
 
-When you publish new posts, articles, or career updates on LinkedIn, follow these steps to make your AI assistant aware of them:
+When you publish new posts or career updates on LinkedIn:
 
-### Step 1: Add or Sync LinkedIn Posts
-- If you use Apify automated sync, run:
-  ```bash
-  python scripts/sync_linkedin.py
-  ```
-- Or edit [data/static/public_profile.md](file:///home/arun/projects/profile/data/static/public_profile.md) directly to add major achievements or post summaries under `# Social Insights & LinkedIn Posts`.
+### Step 1: Sync LinkedIn Posts
+```bash
+python scripts/sync_linkedin.py
+```
+Or manually edit [`data/static/public_profile.md`](data/static/public_profile.md) to add new achievements.
 
-### Step 2: Re-Compile Vector DB Memory
-After modifying any markdown file in `data/`, compile the new embeddings into ChromaDB:
+### Step 2: Re-Compile Vector Memory
 ```bash
 python core/ingest.py
 ```
-*(You will see `Upsert complete. Ingestion sequence complete.`)*
+*(You will see: `Upsert complete. Ingestion sequence complete.`)*
 
 ### Step 3: Push to Production
-Push the updated knowledge base to GitHub and Hugging Face (see Section 4 & 5).
+```bash
+git add . && git commit -m "data: update LinkedIn posts" && git push origin main
+```
+This automatically updates Vercel + Hugging Face via GitHub Actions.
 
 ---
 
-## 2. 🐙 How to Update & Re-Sync GitHub Project Data
+## 2. 🐙 How to Update GitHub Project Data
 
-When you create a new GitHub repository or update a project's `README.md`:
+When you create a new repo or update an existing project's `README.md`:
 
-### Step 1: Run the GitHub Data Sync Script
+### Step 1: Run GitHub Sync Script
 ```bash
 python scripts/sync_github_data.py
 ```
-This fetches the latest `README.md` and metadata from all public repositories under `neural-arun` and writes them into `data/github/`.
+Fetches latest `README.md` and metadata from all public repos under `neural-arun`.
 
-### Step 2: Re-Compile Vector DB Memory
+### Step 2: Re-Compile Vector Memory
 ```bash
 python core/ingest.py
 ```
 
 ### Step 3: Push to Production
-Push the updated project files to GitHub and Hugging Face (see Section 4 & 5).
+```bash
+git add . && git commit -m "data: sync github projects" && git push origin main
+```
 
 ---
 
-## 3. 🧪 How to Stress-Test & Evaluate Responses
+## 3. 🧠 Telegram Active Learning Loop
 
-To verify that your AI Assistant responds accurately with your witty persona and zero hallucinations across 30 standard questions:
+This is the easiest way to teach the AI new things — **directly from your phone**.
 
+### How It Works:
+1. A user asks something unknown on the web chat or Telegram.
+2. You receive an **instant alert** on Telegram (`@ai_twin_alert_bot`) with the question.
+3. **Swipe right on the alert → Reply with your answer.**
+4. The bot automatically:
+   - Saves the Q&A pair to `data/raw/unknown_questions.json`
+   - Re-ingests it into ChromaDB vector memory
+   - Confirms: *"✅ Answer Saved & Ingested into AI Memory!"*
+5. Next time anyone asks that question, the AI answers using your exact words.
+
+### Manual Edit (if needed):
+Edit `data/raw/unknown_questions.json` directly:
+```json
+[
+  {
+    "question": "What is your freelance rate?",
+    "answer": "Project-based, starting at ₹50K for small scopes.",
+    "timestamp": "2026-07-30T01:00:00Z"
+  }
+]
+```
+Then re-ingest:
+```bash
+python core/ingest.py
+```
+
+---
+
+## 4. 🔁 Unknown Questions & Lead Capture Flow
+
+When a visitor asks something the AI doesn't know:
+
+1. **AI alerts Arun** on Telegram instantly via `@ai_twin_alert_bot`.
+2. **AI asks the user** for their Name, Email or Phone/WhatsApp so Arun can follow up.
+3. Arun **replies on Telegram** with the answer → AI learns it automatically (Section 3 above).
+
+---
+
+## 5. 🧪 How to Stress-Test & Evaluate Responses
+
+To verify the AI answers accurately across 30 standard questions:
 ```bash
 PYTHONPATH=. python scripts/evaluate_30_questions.py
 ```
-
-This generates `test_output_30.json` containing detailed answers, tools called, and response speeds.
+Generates `test_output_30.json` with detailed answers, tools called, and response speeds.
 
 ---
 
-## 4. 🐙 How to Push Updates to GitHub
-
-Whenever you edit code or data files locally, push your changes to GitHub:
+## 6. 🔄 Automated CI/CD Pipeline — One Command to Rule Them All
 
 ```bash
-git add .
-git commit -m "feat: add new LinkedIn post and update knowledge base"
-git push origin main
+git add . && git commit -m "your message" && git push origin main
 ```
 
-*(Repository URL: `https://github.com/neural-arun/ArunCore`)*
+| Platform | Trigger | What Happens | URL |
+| :--- | :--- | :--- | :--- |
+| **GitHub** | `git push` | Source code updated | [github.com/neural-arun/ArunCore](https://github.com/neural-arun/ArunCore) |
+| **Vercel** | Auto GitHub webhook | Frontend rebuilt & deployed | [aruncore.vercel.app](https://aruncore.vercel.app) |
+| **Hugging Face** | GitHub Actions (`.github/workflows/deploy.yml`) | Backend synced & redeployed | [huggingface.co/spaces/neural-arun/ArunCore](https://huggingface.co/spaces/neural-arun/ArunCore) |
+
+### Required Secret (already set ✅):
+- `HF_TOKEN` in [GitHub → Settings → Secrets → Actions](https://github.com/neural-arun/ArunCore/settings/secrets/actions)
 
 ---
 
-## 5. 🤗 How to Deploy Updates to Hugging Face Spaces
+## 7. 🔐 Environment Variables & Secrets Reference
 
-Hugging Face Spaces (`neural-arun/ArunCore`) runs your app in a Docker container on port `7860`.
+### Local `.env` file:
+```ini
+OPENAI_API_KEY=your_openai_api_key
+COHERE_API_KEY=your_cohere_api_key
 
-Because Hugging Face rejects large binary files (like local SQLite databases), we use an **orphan deployment branch** script to push source code cleanly:
+# Telegram Chat Log Bot (full execution trace logging)
+TELEGRAM_BOT_TOKEN=your_log_bot_token
+TELEGRAM_CHAT_ID=your_chat_id
 
-### Deployment Commands (Run from Project Root):
-
-```bash
-# 1. Ensure your local main branch is committed
-git add . && git commit -m "production update" || true
-
-# 2. Push orphan deployment branch to Hugging Face
-git checkout --orphan hf-deploy-v13
-git rm -rf --cached Images/ db/ *.png 2>/dev/null || true
-git rm --cached frontend/public/logo.jpg frontend/public/next.svg frontend/public/vercel.svg 2>/dev/null || true
-git commit -m "deploy: update Hugging Face Space"
-git push --force https://neural-arun:hf_your_huggingface_access_token@huggingface.co/spaces/neural-arun/ArunCore hf-deploy-v13:main
-
-# 3. Switch back to your working main branch
-git checkout -f main
+# Telegram Lead Alert Bot (@ai_twin_alert_bot)
+TELEGRAM_ALERT_BOT_TOKEN=your_alert_bot_token
+TELEGRAM_ALERT_CHAT_ID=your_chat_id
 ```
 
-👉 **Live Hugging Face Space URL**: [`https://huggingface.co/spaces/neural-arun/ArunCore`](https://huggingface.co/spaces/neural-arun/ArunCore)
+### Hugging Face Space Secrets (Space Settings → Variables and Secrets):
+| Secret Name | Purpose |
+| :--- | :--- |
+| `OPENAI_API_KEY` | LLM reasoning (`gpt-4.1-nano`) & Embeddings |
+| `COHERE_API_KEY` | Vector search reranking (Cohere V3) |
+| `TELEGRAM_BOT_TOKEN` | Chat history logging & full execution trace |
+| `TELEGRAM_CHAT_ID` | Telegram log chat target ID |
+| `TELEGRAM_ALERT_BOT_TOKEN` | Instant phone alerts (`@ai_twin_alert_bot`) |
+| `TELEGRAM_ALERT_CHAT_ID` | Alert phone target ID |
+
+### GitHub Repository Secrets (for CI/CD):
+| Secret Name | Purpose |
+| :--- | :--- |
+| `HF_TOKEN` | Hugging Face Write Token for auto-deploy |
 
 ---
 
-## 6. 🌐 How to Deploy Frontend Updates to Vercel
+## 8. 📱 Mobile UI Notes
 
-If you host the Next.js UI on Vercel ([aruncore.vercel.app](https://aruncore.vercel.app)):
-
-### Automatic Deployment:
-Every time you run `git push origin main` (Section 4), Vercel automatically detects the push and rebuilds the site!
-
-### Requirements in Vercel Settings:
-1. **Root Directory**: Must be set to `frontend` under **Vercel Project Settings > General**.
-2. **Environment Variables**:
-   - `NEXT_PUBLIC_API_URL` = `https://neural-arun-aruncore.hf.space` *(or your local API backend)*.
+The chat UI is fully optimized for both mobile and desktop:
+- **Mobile**: Full-width touch buttons, compact hero card, 2-line prompt cards, sticky STT input container.
+- **Desktop/Laptop**: Layout completely unchanged from original design.
 
 ---
 
-## 🔑 Environment Variables & Secrets Reference
+## 9. 🗣️ Language Behavior
 
-When setting up a new environment or deploying on Hugging Face Spaces (**Space Settings > Variables and Secrets**), enter these keys:
-
-| Secret Name | Purpose | Value Example |
-| :--- | :--- | :--- |
-| `OPENAI_API_KEY` | LLM reasoning (`gpt-4.1-nano`) & Embeddings | `sk-proj-...` |
-| `COHERE_API_KEY` | Vector search reranking (Cohere V3) | `your_cohere_key` |
-| `TELEGRAM_BOT_TOKEN` | Chat history logging & debug traces | `8678897707:AAGir63LUcbL-w9TILmkoPSxHgBXfhC8on4` |
-| `TELEGRAM_CHAT_ID` | Telegram chat target ID | `1154451605` |
-| `TELEGRAM_ALERT_BOT_TOKEN` | Instant phone alerts for hiring leads (`@ai_twin_alert_bot`) | `8847600936:AAGHCH1bBVMGSXl_MSrxo1klwgrUGJyeDW0` |
-| `TELEGRAM_ALERT_CHAT_ID` | Alert phone target ID | `1154451605` |
-
----
-
-## 7. Automated Multi-Platform CI/CD Pipeline
-
-Whenever you push code updates to `git push origin main`:
-1. **GitHub Repository**: Receives latest source code and documentation updates.
-2. **GitHub Actions Workflow**: Automatically triggers `.github/workflows/deploy.yml` using your `HF_TOKEN` secret to push and deploy directly to Hugging Face Spaces.
-3. **Vercel Production**: Automatically builds and deploys the Next.js frontend from the GitHub webhook!
+- **English queries** → 100% clean, professional English. No Hindi slang.
+- **Hindi / Hinglish queries** → Natural, witty Hinglish.
+- Tone and persona remain consistent. Only the language adapts.
