@@ -4,6 +4,7 @@ import requests
 import queue
 import threading
 import socket
+import hashlib
 from typing import Dict, Any, List, Optional, Tuple
 
 try:

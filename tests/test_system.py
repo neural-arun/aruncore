@@ -62,10 +62,14 @@ def test_active_learning_loop():
 
 def test_telegram_delivery():
     print("\n--- [TEST 4/5] Telegram Alert Delivery Engine ---")
-    from core.agent import _deliver_notify_arun
+    from core.agent import _deliver_notify_arun, send_automated_chat_alert
     status = _deliver_notify_arun("SYSTEM_ALERT", "Automated system integration test run")
     print(f"Telegram Delivery Output: {status}")
     assert "SUCCESS" in status or "SKIPPED" in status, f"Telegram delivery failed: {status}"
+    
+    auto_status = send_automated_chat_alert("test_sys_session", "System test query", "System test response")
+    print(f"Automated Chat Alert Output: {auto_status}")
+    assert "SUCCESS" in auto_status or "SKIPPED" in auto_status, f"Automated chat alert failed: {auto_status}"
     print("✅ [PASS] Telegram Alert Engine working cleanly!")
 
 def test_agent_execution():
