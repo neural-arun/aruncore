@@ -52,17 +52,29 @@ export default function Home() {
       const urlSession = urlParams.get("session_id");
       const urlToken = urlParams.get("admin_token");
 
-      if (urlSession && urlToken) {
+      if (urlSession) {
         setSessionId(urlSession);
-        setAdminToken(urlToken);
-        fetch(`${API_BASE_URL}/chat/verify-admin-token?session_id=${encodeURIComponent(urlSession)}&admin_token=${encodeURIComponent(urlToken)}`)
+        if (urlToken) {
+          setAdminToken(urlToken);
+          fetch(`${API_BASE_URL}/chat/verify-admin-token?session_id=${encodeURIComponent(urlSession)}&admin_token=${encodeURIComponent(urlToken)}`)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data && data.valid) {
+                setIsAdminMode(true);
+              }
+            })
+            .catch((err) => console.warn("Admin verify error:", err));
+        }
+
+        // Instantly load existing chat history for this exact session
+        fetch(`${API_BASE_URL}/chat/history?session_id=${encodeURIComponent(urlSession)}`)
           .then((res) => res.json())
           .then((data) => {
-            if (data && data.valid) {
-              setIsAdminMode(true);
+            if (data && data.messages && data.messages.length > 0) {
+              setMessages(data.messages);
             }
           })
-          .catch((err) => console.warn("Admin verify error:", err));
+          .catch((err) => console.warn("Fetch chat history error:", err));
       } else {
         const newSession = `session_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
         setSessionId(newSession);
@@ -77,16 +89,20 @@ export default function Home() {
     if (!sessionId) return;
 
     const interval = setInterval(async () => {
+      if (isStreaming) return;
+
       try {
-        const res = await fetch(`${API_BASE_URL}/chat/human-messages?session_id=${encodeURIComponent(sessionId)}`);
+        const res = await fetch(`${API_BASE_URL}/chat/history?session_id=${encodeURIComponent(sessionId)}`);
         if (res.ok) {
           const data = await res.json();
           if (data.messages && data.messages.length > 0) {
             setMessages((prev) => {
-              const existingIds = new Set(prev.map((m) => m.id));
-              const newHumanMsgs = data.messages.filter((m: any) => !existingIds.has(m.id));
-              if (newHumanMsgs.length > 0) {
-                return [...prev, ...newHumanMsgs];
+              if (data.messages.length >= prev.length) {
+                const prevIds = prev.map((m) => m.id).join(",");
+                const newIds = data.messages.map((m: any) => m.id).join(",");
+                if (prevIds !== newIds) {
+                  return data.messages;
+                }
               }
               return prev;
             });
@@ -95,10 +111,10 @@ export default function Home() {
       } catch (e) {
         // Silent poll error
       }
-    }, 2500);
+    }, 1500);
 
     return () => clearInterval(interval);
-  }, [sessionId]);
+  }, [sessionId, isStreaming]);
 
   const handleSendAdminMessage = async (adminText: string) => {
     if (!adminText.trim() || !isAdminMode || !sessionId || !adminToken) return;

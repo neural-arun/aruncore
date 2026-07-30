@@ -30,6 +30,25 @@ from core.agent import (
 )
 
 HUMAN_MESSAGES_STORE: Dict[str, List[Dict[str, Any]]] = {}
+SESSION_CHAT_STORE: Dict[str, List[Dict[str, Any]]] = {}
+
+def record_session_message(session_id: str, sender: str, text: str, name: str = "", thoughts: Optional[List[str]] = None) -> Dict[str, Any]:
+    import time, datetime
+    now_str = datetime.datetime.now().strftime("%I:%M %p")
+    entry = {
+        "id": f"msg_{sender}_{int(time.time() * 1000)}_{len(SESSION_CHAT_STORE.get(session_id, []))}",
+        "sender": sender,
+        "name": name or ("Arun Yadav" if sender == "human_arun" else "Arun's AI Assistant" if sender == "twin" else "You"),
+        "text": text,
+        "timestamp": now_str,
+    }
+    if thoughts:
+        entry["thoughts"] = thoughts
+
+    if session_id not in SESSION_CHAT_STORE:
+        SESSION_CHAT_STORE[session_id] = []
+    SESSION_CHAT_STORE[session_id].append(entry)
+    return entry
 
 _GLOBAL_VECTORSTORE = None
 _GLOBAL_BM25 = None
@@ -323,6 +342,7 @@ async def chat_endpoint(req: ChatRequest):
         active_sessions[req.session_id] = RollingMemory(summary_llm=summary_llm)
 
     memory = active_sessions[req.session_id]
+    record_session_message(req.session_id, "user", req.message)
 
     async def generate_response():
         thoughts = []
@@ -420,6 +440,7 @@ async def chat_endpoint(req: ChatRequest):
                 final_response = "I encountered a processing limit. How else can I help?"
 
             memory.add_interaction(req.message, final_response)
+            record_session_message(req.session_id, "twin", final_response, thoughts=thoughts)
 
             queue_chat_history_to_telegram(
                 session_id=req.session_id,
@@ -526,15 +547,7 @@ async def post_human_message(req: HumanMessageRequest):
     if not clean_text:
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
 
-    import time, datetime
-    entry = {
-        "id": f"msg_human_{int(time.time() * 1000)}",
-        "sender": "human_arun",
-        "name": "Arun Yadav",
-        "text": clean_text,
-        "timestamp": datetime.datetime.now().strftime("%I:%M %p"),
-    }
-
+    entry = record_session_message(req.session_id, "human_arun", clean_text, name="Arun Yadav")
     if req.session_id not in HUMAN_MESSAGES_STORE:
         HUMAN_MESSAGES_STORE[req.session_id] = []
     HUMAN_MESSAGES_STORE[req.session_id].append(entry)
@@ -543,6 +556,12 @@ async def post_human_message(req: HumanMessageRequest):
     memory.add_interaction(f"[REAL ARUN JOINED LIVE]: {clean_text}", "Acknowledged real Arun input.")
 
     return {"status": "success", "entry": entry}
+
+
+@app.get("/chat/history")
+async def get_chat_history(session_id: str):
+    msgs = SESSION_CHAT_STORE.get(session_id, [])
+    return {"session_id": session_id, "messages": msgs}
 
 
 @app.get("/chat/human-messages")
