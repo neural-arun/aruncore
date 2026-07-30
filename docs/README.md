@@ -1,12 +1,17 @@
-# /docs: System Documentation
+# 📖 /docs: System Documentation & Evaluation Manuals
 
-This folder contains high-level documentation and operation manuals for maintaining ArunCore.
+This folder contains high-level architectural blueprints, operational manuals, and benchmark test suites for **ArunCore**.
 
-## 📖 Available Docs
+---
 
-- **/workflows**: Contains step-by-step guides on technical operations:
-  - `adding_new_data.md`: How to expand the AI's knowledge base.
-- `system_design.md`: The architectural blueprint of the entire ecosystem.
+## 📁 Directory Structure & Key Files
+
+- `docs/operations/master_operations_guide.md`: Master architectural guide detailing SSE/NDJSON token streaming, Vercel Serverless Egress Relay, 1-Click Telegram Magic Links, and 3-Way Live Chat Takeover.
+- `docs/test_set/README.md`: Evaluation suite guide explaining how precision, recall, and zero-hallucination accuracy are benchmarked.
+- `docs/test_set/eval_set.json`: 30-question gold standard benchmark dataset for RAG and persona accuracy testing.
+- `docs/test_set/evaluation_report.json`: Results report from automated evaluation runs.
+
+---
 
 ## 📐 Purpose
-While the READMEs in each folder explain the "How" and the "File Structure," the documents in this `/docs` folder explain the **Engineering Philosophy** and the **Long-term Maintenance Strategy**.
+While individual folder READMEs describe file-level implementations, `/docs/` explains the **System Architecture**, **Human-in-the-Loop State Machine**, and **Long-term Maintenance Strategy**.

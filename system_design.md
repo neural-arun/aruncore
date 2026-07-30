@@ -1,6 +1,6 @@
-# ArunCore: High-Level System Design
+# ArunCore: High-Level System Design & Architecture
 
-This document outlines the production architecture, component interactions, and data flow for the ArunCore personal AI assistant.
+This document outlines the production architecture, component interactions, state machine, and data flows for **ArunCore**.
 
 ---
 
@@ -8,14 +8,23 @@ This document outlines the production architecture, component interactions, and 
 
 ```mermaid
 graph TD
-    User["User Interface<br/>(Next.js 16 • Voice Studio TTS/STT)"] -->|HTTP /chat NDJSON| API["FastAPI Web Server<br/>(Local :8000 / HF Docker :7860)"]
+    User["User Interface<br/>(Next.js 16 • 3-Way Live Chat)"] -->|HTTP /chat NDJSON| API["FastAPI Web Server<br/>(Local :8000 / HF Docker :7860)"]
     
+    %% 3-Way Live Chat Takeover
+    TelegramAlert["Telegram Alert Bot<br/>(@ai_twin_alert_bot)"] -->|1-Click Magic Join Link| AdminMode["1-Click Admin Mode<br/>(aruncore.vercel.app/?session_id=...&admin_token=...)"]
+    AdminMode -->|POST /chat/human-message| API
+    API -->|1.5s Polling GET /chat/history| User
+
+    %% Vercel Relay
+    API -->|Outbound Alerts| VercelRelay["Vercel Egress Relay<br/>(/api/telegram)"]
+    VercelRelay --> TelegramAlert
+
     %% Intent & Tool Routing
     API --> Agent["Agentic Execution Loop<br/>(LLM: gpt-4.1-nano)"]
     
     Agent -->|Tool: search_arun_knowledge| HybridRAG["Hybrid RAG Pipeline"]
     Agent -->|Tool: get_github_live_data| GitHubAPI["GitHub Live API"]
-    Agent -->|Tool: notify_arun| TelegramAlert["Dual Telegram Engine<br/>(@ai_twin_alert_bot)"]
+    Agent -->|Tool: notify_arun| TelegramAlert
 
     %% Hybrid RAG Pipeline
     subgraph Hybrid RAG Pipeline
@@ -27,6 +36,11 @@ graph TD
         Rerank --> TopContext["High-Confidence Context (Top 3-5)"]
     end
 
+    %% Active Learning
+    AdminMode -->|Auto-Ingest Q&A| UnknownJSON["data/raw/unknown_questions.json"]
+    TelegramAlert -->|Swipe Reply Q&A| UnknownJSON
+    UnknownJSON -->|Background Re-Ingest| ChromaDB["ChromaDB Vector Memory"]
+
     %% Value-First Synthesizer
     TopContext --> Synthesizer["Value-First Prompt Synthesizer<br/>(Problem Solved • Time Saved • Business Impact)"]
     GitHubAPI --> Synthesizer
@@ -34,49 +48,28 @@ graph TD
     Synthesizer --> Agent
     Agent -->|Token Stream & Thoughts| API
     API -->|NDJSON Stream| User
-    
-    %% Voice Studio
-    User -->|HTTP POST /tts| TTS["OpenAI Studio Neural Speech<br/>(tts-1 • alloy voice)"]
-    TTS -->|Audio Buffer| User
-
-    classDef db fill:#0F383E,stroke:#257A52,stroke-width:2px,color:#fff;
-    classDef llm fill:#111726,stroke:#38BDF8,stroke-width:2px,color:#fff;
-    classDef alert fill:#7C2D12,stroke:#F59E0B,stroke-width:2px,color:#fff;
-    class HybridRAG,ChromaDB db;
-    class Agent llm;
-    class TelegramAlert alert;
 ```
 
 ---
 
 ## 📁 Component Breakdown
 
-### 1. 💻 User Interface (Next.js 16 • Turbopack)
-- **Default Light Mode**: Executive styling with high contrast tokens.
-- **Voice Studio**:
-  - **Speech-to-Text (STT)**: Real-time browser Microphone (`[ 🎙️ ]`) transcription.
-  - **Text-to-Speech (TTS)**: High-definition neural studio voice button (`[ 🔊 Listen (HD Voice) ]`).
-- **Real-Time NDJSON Streaming**: Token-by-token response rendering with live execution trace drawer.
+### 1. 💻 User Interface (Next.js 16 • Vercel Deployment)
+- **3-Way Live Chat**: Unified chat room displaying messages for Web Visitor (`user`), AI Assistant (`twin`), and Real Arun (`human_arun`) with a glowing green verified badge (`👨‍💻 Arun Yadav [VERIFIED HUMAN] 🟢`).
+- **1-Click Magic Link Admin Mode**: Tapping a Telegram magic link opens `aruncore.vercel.app` in Admin Mode, unlocking the Admin Reply Bar (`[ 👨‍💻 SEND AS REAL ARUN ]`, `[ 🤖 Trigger AI Answer (/answer) ]`, `[ 🔄 Hand Back to AI (/release) ]`).
+- **Voice Studio**: STT microphone button with duplicate-free transcription & HD neural TTS voice button (`/tts` endpoint).
 
 ### 2. 🌐 FastAPI Backend Server (`core/api.py`)
-- Mounts Next.js static export (`frontend/out`) at root `/`.
-- Exposes `/chat` (NDJSON token streaming) and `/tts` (audio synthesis).
-- Operates on port `8000` locally and port `7860` inside Hugging Face Docker containers.
+- Manages real-time NDJSON streaming (`/chat`), 3-way transcript persistence (`GET /chat/history`), human message submission (`POST /chat/human-message`), and admin token verification (`GET /chat/verify-admin-token`).
 
-### 3. 🧠 Agentic Reasoning Core (`core/agent.py`)
-- Powered by OpenAI's **`gpt-4.1-nano`** model ($0.05/1M input, $0.15/1M output).
-- **Persona & Tone**: Casual, witty, cool-friend Indian boy vibe with zero corporate fluff.
-- **Dynamic Language Matching**: Natural Hinglish for Hindi queries, clean articulate English for international/corporate queries.
-- **Value & Problem-Solving First Rule**: On all project inquiries, the assistant leads with **real-world business value, problem-solving impact, and time/cost savings** before code specs.
+### 3. 🕹️ Deterministic Human Control State Machine
+- **Normal Default Mode**: AI Twin answers visitor questions automatically.
+- **Human Control Mode**: Real Arun's first response pauses the AI Twin. Visitor questions wait for Real Arun's reply or command.
+- **`/answer` Command**: Triggers the AI Twin to synthesize all 3 participants' messages and generate a response.
+- **`/release` Command**: Hands control back to automatic AI Twin responses.
 
-### 4. 🔍 Hybrid RAG Pipeline
-- **Dense Retrieval**: ChromaDB storing `text-embedding-3-small` vector embeddings.
-- **Sparse Retrieval**: BM25 keyword matching.
-- **Reranker Core**: **Cohere English V3 Reranker** filtering candidate chunks down to top 3–5 high-confidence snippets.
+### 4. 🌐 Vercel Serverless Egress Relay (`frontend/app/api/telegram/route.ts`)
+- Routes outbound Telegram POST requests through Vercel serverless functions, bypassing Hugging Face Space firewall drop timeouts.
 
-### 5. 🚨 Dual Telegram Alert & Logging Engine
-- **Lead Alert Bot (`@ai_twin_alert_bot`)**: Fires instant phone alerts when visitors request hiring, consulting, or project collaborations.
-- **Log Bot**: Asynchronously logs conversation transcripts and debug traces in the background.
-
-### 6. 🐙 Live GitHub Engine (`get_github_live_data`)
-- Fetches real-time public repositories, commit timestamps, and project activity directly from GitHub API.
+### 5. 🧠 Real-Time Active Learning & RAG Memory
+- Real Arun's answers (from website Admin Reply Bar or Telegram swipe replies) are automatically saved to `data/raw/unknown_questions.json` and re-ingested into ChromaDB in real time.
