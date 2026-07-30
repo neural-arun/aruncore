@@ -142,37 +142,37 @@ export const ManifestoView: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-2">
                 <h3 className="text-base sm:text-lg font-bold text-[var(--accent-amber)]">
-                  1. I Look At Problems
+                  1. I Solve High-Impact Operational Problems
                 </h3>
                 <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  I start by looking at real problems in healthcare and education problems that cost a lot of money rather than just following the latest trend.
+                  Rather than chasing tech trends, I focus on solving critical bottlenecks in healthcare and education—targeting high-friction workflows that cost organizations valuable time, accuracy, and human energy.
                 </p>
               </div>
 
               <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-2">
                 <h3 className="text-base sm:text-lg font-bold text-[var(--accent-amber)]">
-                  2. Trust Is More Important Than Hype
+                  2. Trust & Safety Outweigh Hype
                 </h3>
                 <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  Healthcare and education need systems that're reliable. So every system I build includes verification, guardrails and human oversight to make sure everything is safe and trustworthy.
+                  Healthcare and education demand high-stakes reliability. Every system I build incorporates deterministic verification, multi-layer guardrails, and human oversight to ensure complete safety and accuracy.
                 </p>
               </div>
 
               <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-2">
                 <h3 className="text-base sm:text-lg font-bold text-[var(--accent-amber)]">
-                  3. I Build Complete Products
+                  3. I Build End-to-End Complete Products
                 </h3>
                 <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  Software is only useful if people actually use it. That means I have to think about infrastructure, security and user experience not the AI model.
+                  Software is only valuable if people actually rely on it daily. That means I engineer resilient infrastructure, enterprise security, fast latency, and intuitive UX—not just standalone AI models.
                 </p>
               </div>
 
               <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-2">
                 <h3 className="text-base sm:text-lg font-bold text-[var(--accent-amber)]">
-                  4. I Ship, Learn, And Improve
+                  4. I Ship, Learn, and Iterate Rapidly
                 </h3>
                 <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  When I release my software to users I get feedback faster than if I just planned everything out for months without showing it to anyone.
+                  Value is proven in production, not in static design docs. Releasing functional software to real users yields rapid feedback loops to harden, refine, and scale systems continuously.
                 </p>
               </div>
             </div>

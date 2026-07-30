@@ -10,7 +10,7 @@ import { Message, ActiveTab, HandoffFormData } from "../lib/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" && window.location.hostname !== "localhost" ? "https://neural-arun-aruncore.hf.space" : "http://localhost:8000");
 
-const TELEGRAM_ALERT_BOT_TOKEN = "8847600936:AAGHCH1bBVMGSXl_MSrxo1klwgrUGJyeDW0";
+const TELEGRAM_ALERT_BOT_TOKEN = "8847600936:AAHHy0cy98JkPo86Iuld1IRQML5NaSsMbqo";
 const TELEGRAM_ALERT_CHAT_ID = "1154451605";
 
 const sendClientTelegramAlert = (userMessage: string, category: string = "PRODUCTION ALERT") => {

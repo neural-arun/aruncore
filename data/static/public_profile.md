@@ -114,20 +114,20 @@ Building intelligent learning systems that help institutions and learners:
 
 # Core Principles
 
-### 1. Problems Before Technology
-I start with expensive, real-world problems in healthcare and education.
+### 1. Solve High-Impact Operational Problems
+I start by identifying real bottlenecks in healthcare and education—targeting high-friction workflows that cost organizations time, accuracy, and human energy rather than chasing short-lived tech trends.
 
 ---
 
-### 2. Trust Over Hype
-Healthcare and education demand reliability. Every system includes verification, guardrails, and appropriate human oversight.
+### 2. Trust & Safety Outweigh Hype
+Healthcare and education demand high-stakes reliability. Every AI system I build incorporates deterministic verification, multi-layer guardrails, and human oversight.
 
 ---
 
-### 3. Build Complete Products
-Software creates value only when people can actually use it. Infrastructure, UX, workflows, deployment, and adoption matter as much as the model itself.
+### 3. Build End-to-End Complete Products
+Software creates value only when people actually rely on it daily. Resilient cloud infrastructure, enterprise security, fast latency, and intuitive UX matter as much as the model itself.
 
 ---
 
-### 4. Ship. Learn. Improve.
-Shipping to real users creates more learning than months of planning. Iteration beats perfection.
+### 4. Ship, Learn, and Iterate Rapidly
+Value is proven in production, not in static design docs. Releasing functional software to real users yields rapid feedback loops to harden, refine, and scale systems continuously.

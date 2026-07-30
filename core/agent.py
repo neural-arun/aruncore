@@ -184,6 +184,7 @@ def _send_telegram_message(
 
     for idx, chunk in enumerate(chunks, 1):
         payload: Dict[str, Any] = {
+            "token": token,
             "chat_id": chat_id,
             "text": chunk,
             "disable_web_page_preview": True,
@@ -194,33 +195,60 @@ def _send_telegram_message(
         sent_chunk = False
         last_error = ""
 
-        for attempt in range(1, max_attempts + 1):
-            try:
-                url = f"https://api.telegram.org/bot{token}/sendMessage"
-                data = json.dumps(payload).encode("utf-8")
-                req = urllib.request.Request(
-                    url,
-                    data=data,
-                    headers={
-                        "Content-Type": "application/json",
-                        "User-Agent": "ArunCore/1.0",
-                        "Connection": "close",
-                    },
-                )
-                with urllib.request.urlopen(req, timeout=12, context=ssl_ctx) as resp:
-                    resp_bytes = resp.read()
-                    resp_data = json.loads(resp_bytes.decode("utf-8"))
-                    if resp.status == 200 and resp_data.get("ok"):
-                        sent_chunk = True
-                        break
-                    else:
-                        last_error = f"HTTP {resp.status}: {resp_bytes.decode('utf-8')[:200]}"
-            except Exception as e:
-                last_error = str(e)
+        # Attempt 1: Try Vercel Serverless Relay (bypasses HF Space Telegram firewall block)
+        relay_url = "https://aruncore.vercel.app/api/telegram"
+        try:
+            relay_data = json.dumps(payload).encode("utf-8")
+            relay_req = urllib.request.Request(
+                relay_url,
+                data=relay_data,
+                headers={"Content-Type": "application/json", "User-Agent": "ArunCore/1.0", "Connection": "close"},
+            )
+            with urllib.request.urlopen(relay_req, timeout=8, context=ssl_ctx) as resp:
+                resp_bytes = resp.read()
+                resp_data = json.loads(resp_bytes.decode("utf-8"))
+                if resp.status == 200 and resp_data.get("ok"):
+                    sent_chunk = True
+        except Exception as e:
+            last_error = f"Vercel Relay error: {e}"
 
-            if attempt < max_attempts:
-                import time
-                time.sleep(retry_sleep_seconds)
+        if not sent_chunk:
+            # Direct Telegram API Fallback
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    url = f"https://api.telegram.org/bot{token}/sendMessage"
+                    direct_payload = {
+                        "chat_id": chat_id,
+                        "text": chunk,
+                        "disable_web_page_preview": True,
+                    }
+                    if parse_mode:
+                        direct_payload["parse_mode"] = parse_mode
+
+                    data = json.dumps(direct_payload).encode("utf-8")
+                    req = urllib.request.Request(
+                        url,
+                        data=data,
+                        headers={
+                            "Content-Type": "application/json",
+                            "User-Agent": "ArunCore/1.0",
+                            "Connection": "close",
+                        },
+                    )
+                    with urllib.request.urlopen(req, timeout=10, context=ssl_ctx) as resp:
+                        resp_bytes = resp.read()
+                        resp_data = json.loads(resp_bytes.decode("utf-8"))
+                        if resp.status == 200 and resp_data.get("ok"):
+                            sent_chunk = True
+                            break
+                        else:
+                            last_error = f"HTTP {resp.status}: {resp_bytes.decode('utf-8')[:200]}"
+                except Exception as e:
+                    last_error = str(e)
+
+                if attempt < max_attempts:
+                    import time
+                    time.sleep(retry_sleep_seconds)
 
         if not sent_chunk and parse_mode == "HTML":
             fallback_payload = {
