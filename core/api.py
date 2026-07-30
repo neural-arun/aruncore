@@ -419,7 +419,14 @@ async def tts_endpoint(req: TTSRequest):
 
 @app.get("/health")
 def health_check():
-    return {"status": "online", "active_sessions": len(active_sessions)}
+    return {
+        "status": "online",
+        "active_sessions": len(active_sessions),
+        "telegram_alert_bot_set": bool(os.getenv("TELEGRAM_ALERT_BOT_TOKEN")),
+        "telegram_alert_chat_set": bool(os.getenv("TELEGRAM_ALERT_CHAT_ID")),
+        "telegram_bot_set": bool(os.getenv("TELEGRAM_BOT_TOKEN")),
+        "telegram_chat_set": bool(os.getenv("TELEGRAM_CHAT_ID")),
+    }
 
 
 # Mount static frontend export if built (for Hugging Face Spaces production deployment)
