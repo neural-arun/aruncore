@@ -350,6 +350,7 @@ async def chat_endpoint(req: ChatRequest):
             final_response = ""
             executed_tools = []
             retrieved_chunks = []
+            github_data = []
 
             while iterations < max_iterations:
                 messages = prompt.format_messages(
@@ -386,6 +387,8 @@ async def chat_endpoint(req: ChatRequest):
 
                         if tool_name == "search_arun_knowledge" and tool_result:
                             retrieved_chunks.append(str(tool_result)[:1000])
+                        elif tool_name == "get_github_live_data" and tool_result:
+                            github_data.append(str(tool_result)[:1000])
 
                         scratchpad.append({
                             "role": "tool",
@@ -420,6 +423,7 @@ async def chat_endpoint(req: ChatRequest):
                 thoughts=thoughts,
                 tool_calls=executed_tools,
                 retrieved_chunks=retrieved_chunks,
+                github_data=github_data,
             )
 
             yield json.dumps({
