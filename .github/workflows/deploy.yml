@@ -21,7 +21,8 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
           git checkout --orphan hf-deploy-temp
-          git rm -rf --cached Images/ db/ 2>/dev/null || true
-          find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) -exec git rm --cached {} + 2>/dev/null || true
-          git commit -m "deploy: automated sync from github main"
+          git rm -rf --cached . 2>/dev/null || true
+          git add -A
+          git reset -- Images/ db/ *.png *.jpg *.jpeg 2>/dev/null || true
+          git commit -m "deploy: automated sync from github main" || true
           git push --force https://neural-arun:${HF_TOKEN}@huggingface.co/spaces/neural-arun/ArunCore hf-deploy-temp:main
