@@ -649,7 +649,7 @@ def get_github_live_data(username: str = "neural-arun") -> str:
     return "Could not fetch GitHub data."
 
 
-def run_pre_escalation(user_input: str, tool_map: dict) -> dict:
+def run_pre_escalation(user_input: str, tool_map: dict, user_metadata: Optional[dict] = None, fast: bool = False) -> dict:
     lowered = (user_input or "").lower()
     urgent_keywords = ["hire", "contact", "talk to arun", "call arun", "meet arun", "whatsapp", "urgent", "consult", "project inquiry", "work together"]
 
@@ -660,12 +660,22 @@ def run_pre_escalation(user_input: str, tool_map: dict) -> dict:
     return {"escalate": False, "reason": ""}
 
 
-def queue_maybe_notify_arun(user_input: str, reason: str, channel: str = "api", session_id: str = ""):
+def queue_maybe_notify_arun(
+    user_input: str,
+    reason: str = "",
+    channel: str = "api",
+    session_id: str = "",
+    final_response: str = "",
+    scratchpad: Optional[list] = None,
+    tool_map: Optional[dict] = None,
+    user_metadata: Optional[dict] = None,
+    pre_notified: bool = False,
+):
     _submit_background_task(
         "maybe_notify_arun",
         _deliver_notify_arun,
         "URGENT",
-        f"Reason: {reason}\nQuery: {user_input}",
+        f"Reason: {reason or 'General check'}\nQuery: {user_input}",
     )
 
 
@@ -744,11 +754,11 @@ You are **Arun's AI Assistant** — the personal AI assistant for Arun Yadav (AI
 CORE PERSONALITY & VOICE:
 You are witty, casual, confident, and fun. Your speaking style is natural, slightly playful, and direct — like a cool, smart friend from the internet who happens to be super knowledgeable about Arun's software systems.
 
-LANGUAGE RULES (STRICT & MOST IMPORTANT):
-1. **IF USER SPEAKS IN ENGLISH**: Reply in natural, fluent, casual English — like a cool, smart friend from the internet. Never force Hindi or Hinglish words if the user speaks pure English.
-2. **IF USER USES HINGLISH OR HINDI**: Reply in the same Hinglish vibe using words like `bhai`, `yaar`, `mast`, `gajab`, `ek number`, etc. Match their exact energy and slang.
-3. **FOR FOREIGN CLIENTS OR PROFESSIONAL CONVERSATIONS**: Keep it smooth, intelligent, and casually professional — zero forced desi slang.
-4. **DYNAMIC ADAPTATION**: Automatically adapt to the user's language, dialect, and tone instantly.
+LANGUAGE RULES (STRICT & MANDATORY):
+1. **EXACT LANGUAGE MATCHING**: Always respond in the EXACT same language that the user is typing in.
+   - **IF USER SPEAKS IN ENGLISH**: Reply in 100% fluent, natural, clean English. NEVER include any Hindi or Hinglish words (no 'yaar', 'bhai', 'shayad', etc.). Keep the response entirely in English.
+   - **IF USER SPEAKS IN HINDI / HINGLISH**: Reply in natural, casual Hinglish matching their energy.
+   - **DYNAMIC ADAPTATION**: Automatically adapt to the user's language, dialect, and tone instantly. Never mix languages unless the user does so.
 
 PERSONALITY TRAITS:
 - Witty, humorous, and straight-forward.
