@@ -159,8 +159,9 @@ def _send_telegram_message(
     delivery_label: str = "default",
     retry_sleep_seconds: float = 1.0,
 ) -> str:
-    import urllib3
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    import urllib.request
+    import urllib.parse
+    import ssl
 
     token = (token or "").strip()
     if token.lower().startswith("bot"):
@@ -174,11 +175,12 @@ def _send_telegram_message(
         print(f"[TELEGRAM:{delivery_label}] {msg}")
         return msg
 
-    session = requests.Session()
-    session.verify = False
-
     chunks = _chunk_text(text)
     total_chunks = len(chunks)
+
+    ssl_ctx = ssl.create_default_context()
+    ssl_ctx.check_hostname = False
+    ssl_ctx.verify_mode = ssl.CERT_NONE
 
     for idx, chunk in enumerate(chunks, 1):
         payload: Dict[str, Any] = {
@@ -194,17 +196,25 @@ def _send_telegram_message(
 
         for attempt in range(1, max_attempts + 1):
             try:
-                res = session.post(
-                    f"https://api.telegram.org/bot{token}/sendMessage",
-                    json=payload,
-                    headers={"Connection": "close"},
-                    timeout=(30.0, 60.0),
+                url = f"https://api.telegram.org/bot{token}/sendMessage"
+                data = json.dumps(payload).encode("utf-8")
+                req = urllib.request.Request(
+                    url,
+                    data=data,
+                    headers={
+                        "Content-Type": "application/json",
+                        "User-Agent": "ArunCore/1.0",
+                        "Connection": "close",
+                    },
                 )
-                if res.status_code == 200 and res.json().get("ok"):
-                    sent_chunk = True
-                    break
-                else:
-                    last_error = f"HTTP {res.status_code}: {res.text}"
+                with urllib.request.urlopen(req, timeout=12, context=ssl_ctx) as resp:
+                    resp_bytes = resp.read()
+                    resp_data = json.loads(resp_bytes.decode("utf-8"))
+                    if resp.status == 200 and resp_data.get("ok"):
+                        sent_chunk = True
+                        break
+                    else:
+                        last_error = f"HTTP {resp.status}: {resp_bytes.decode('utf-8')[:200]}"
             except Exception as e:
                 last_error = str(e)
 
@@ -219,14 +229,22 @@ def _send_telegram_message(
                 "disable_web_page_preview": True,
             }
             try:
-                res = session.post(
-                    f"https://api.telegram.org/bot{token}/sendMessage",
-                    json=fallback_payload,
-                    headers={"Connection": "close"},
-                    timeout=(30.0, 60.0),
+                url = f"https://api.telegram.org/bot{token}/sendMessage"
+                data = json.dumps(fallback_payload).encode("utf-8")
+                req = urllib.request.Request(
+                    url,
+                    data=data,
+                    headers={
+                        "Content-Type": "application/json",
+                        "User-Agent": "ArunCore/1.0",
+                        "Connection": "close",
+                    },
                 )
-                if res.status_code == 200 and res.json().get("ok"):
-                    sent_chunk = True
+                with urllib.request.urlopen(req, timeout=12, context=ssl_ctx) as resp:
+                    resp_bytes = resp.read()
+                    resp_data = json.loads(resp_bytes.decode("utf-8"))
+                    if resp.status == 200 and resp_data.get("ok"):
+                        sent_chunk = True
             except Exception as e:
                 last_error = f"Fallback error: {e}"
 
