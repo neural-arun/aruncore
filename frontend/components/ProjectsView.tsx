@@ -193,9 +193,6 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                 </span>
                 <span>Live GitHub Auto-Sync</span>
               </div>
-
-              <span>• Ordered by recent commit activity</span>
-              {lastSyncedTime && <span className="text-[var(--text-dim)]">(Synced at {lastSyncedTime})</span>}
             </div>
           </div>
 
