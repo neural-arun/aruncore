@@ -542,11 +542,9 @@ def search_arun_knowledge(query: str) -> str:
             with open(target_readme, "r", encoding="utf-8") as f:
                 results.append(f"--- Project: {matched_project_folder} ---\n{f.read()}")
 
-    profile_path = os.path.join(data_dir, "static", "public_profile.md")
-    if os.path.exists(profile_path):
-        with open(profile_path, "r", encoding="utf-8") as f:
-            prof_content = f.read()
-            results.append(f"--- Public Profile ---\n{prof_content}")
+    # Check verified Q&A pairs in unknown_questions.json
+    stop_words = {"how", "does", "the", "a", "an", "is", "for", "to", "of", "with", "work", "what", "tell", "me", "about", "can", "you", "who", "where", "why", "arun"}
+    significant_words = [w.strip("?,.!") for w in cleaned_query.split() if w.strip("?,.!") not in stop_words and len(w) > 2]
 
     unknown_questions_path = os.path.join(data_dir, "raw", "unknown_questions.json")
     if os.path.exists(unknown_questions_path):
@@ -557,13 +555,12 @@ def search_arun_knowledge(query: str) -> str:
                     for item in uq_data:
                         q_item = item.get("question", "")
                         a_item = item.get("answer", "")
-                        results.append(f"--- Verified Q&A Pair ---\nQuestion: {q_item}\nAnswer: {a_item}")
+                        if any(w in q_item.lower() or w in a_item.lower() for w in significant_words):
+                            results.append(f"--- Verified Q&A Pair ---\nQuestion: {q_item}\nAnswer: {a_item}")
         except Exception as e:
             print(f"[UNKNOWN QUESTIONS READ ERROR] {e}")
 
-    stop_words = {"how", "does", "the", "a", "an", "is", "for", "to", "of", "with", "work", "what", "tell", "me", "about"}
-    significant_words = [w.strip("?,.!") for w in cleaned_query.split() if w.strip("?,.!") not in stop_words and len(w) > 2]
-    
+    # Check Markdown files across data directory for significant word matches
     if significant_words:
         for root, _, files in os.walk(data_dir):
             for file in files:
@@ -571,14 +568,23 @@ def search_arun_knowledge(query: str) -> str:
                     file_path = os.path.join(root, file)
                     with open(file_path, "r", encoding="utf-8") as f:
                         content = f.read()
-                        if any(w in content.lower() for w in significant_words):
+                        # Count matching words to ensure true relevance
+                        matches = [w for w in significant_words if w in content.lower()]
+                        if len(matches) >= min(2, len(significant_words)):
                             results.append(f"--- File: {os.path.basename(file_path)} ---\n{content[:1500]}")
 
     if results:
         unique_results = list(dict.fromkeys(results))
         return "\n\n".join(unique_results[:3])
         
-    return "No exact match found in knowledge base. Recommend asking Arun directly."
+    # Auto-trigger Telegram notification for unknown questions
+    _submit_background_task(
+        "notify_arun_bg",
+        _deliver_notify_arun,
+        "UNKNOWN_QUESTION",
+        f"Unknown Question (No KB Match): {query}",
+    )
+    return "No exact match found in knowledge base. Auto-triggered UNKNOWN_QUESTION alert to Arun's phone. YOU MUST CALL notify_arun AND ASK THE USER FOR THEIR CONTACT INFO (Name, Email, Phone/WhatsApp)."
 
 
 def save_unknown_question_answer(question: str, answer: str) -> str:
