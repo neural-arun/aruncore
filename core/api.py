@@ -552,10 +552,26 @@ async def post_human_message(req: HumanMessageRequest):
         HUMAN_MESSAGES_STORE[req.session_id] = []
     HUMAN_MESSAGES_STORE[req.session_id].append(entry)
 
+    # Extract last user message to pair with Real Arun's answer for RAG vector DB ingestion
+    last_user_msg = ""
+    session_history = SESSION_CHAT_STORE.get(req.session_id, [])
+    for m in reversed(session_history):
+        if m.get("sender") == "user":
+            last_user_msg = m.get("text", "")
+            break
+
+    if last_user_msg:
+        try:
+            from core.agent import save_unknown_question_answer
+            save_unknown_question_answer(last_user_msg, clean_text)
+            print(f"[RAG AUTO-UPDATE] Saved Q&A pair to unknown_questions.json & triggered ChromaDB re-ingestion.")
+        except Exception as e:
+            print(f"[RAG AUTO-UPDATE ERROR] Failed to auto-ingest admin answer: {e}")
+
     memory = get_or_create_memory(req.session_id)
     memory.add_interaction(f"[REAL ARUN JOINED LIVE]: {clean_text}", "Acknowledged real Arun input.")
 
-    return {"status": "success", "entry": entry}
+    return {"status": "success", "entry": entry, "rag_updated": bool(last_user_msg)}
 
 
 @app.get("/chat/history")
