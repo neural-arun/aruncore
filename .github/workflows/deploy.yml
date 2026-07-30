@@ -26,3 +26,18 @@ jobs:
           git reset -- Images/ db/ *.png *.jpg *.jpeg 2>/dev/null || true
           git commit -m "deploy: automated sync from github main" || true
           git push --force https://neural-arun:${HF_TOKEN}@huggingface.co/spaces/neural-arun/ArunCore hf-deploy-temp:main
+
+      - name: Restart Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          echo "Triggering Space restart to apply new code..."
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "https://huggingface.co/api/spaces/neural-arun/ArunCore/restart?factory=true" \
+            -H "Authorization: Bearer ${HF_TOKEN}")
+          echo "HF Restart API response: $STATUS"
+          if [ "$STATUS" = "200" ] || [ "$STATUS" = "204" ]; then
+            echo "✅ Space restart triggered successfully!"
+          else
+            echo "⚠️ Restart returned status $STATUS — Space may need a manual restart."
+          fi
