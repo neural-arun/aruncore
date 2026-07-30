@@ -420,13 +420,18 @@ async def tts_endpoint(req: TTSRequest):
 @app.get("/health")
 def health_check():
     from core.agent import TELEGRAM_DELIVERY_LOGS
+    alert_tok = os.getenv("TELEGRAM_ALERT_BOT_TOKEN", "")
+    bot_tok = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    alert_cid = os.getenv("TELEGRAM_ALERT_CHAT_ID", "")
+    bot_cid = os.getenv("TELEGRAM_CHAT_ID", "")
+
     return {
         "status": "online",
         "active_sessions": len(active_sessions),
-        "telegram_alert_bot_set": bool(os.getenv("TELEGRAM_ALERT_BOT_TOKEN")),
-        "telegram_alert_chat_set": bool(os.getenv("TELEGRAM_ALERT_CHAT_ID")),
-        "telegram_bot_set": bool(os.getenv("TELEGRAM_BOT_TOKEN")),
-        "telegram_chat_set": bool(os.getenv("TELEGRAM_CHAT_ID")),
+        "telegram_alert_bot_preview": f"{alert_tok[:6]}...{alert_tok[-4:]}" if alert_tok else "MISSING",
+        "telegram_alert_chat_id": alert_cid or "MISSING",
+        "telegram_bot_preview": f"{bot_tok[:6]}...{bot_tok[-4:]}" if bot_tok else "MISSING",
+        "telegram_chat_id": bot_cid or "MISSING",
         "telegram_logs": TELEGRAM_DELIVERY_LOGS[-10:],
     }
 
