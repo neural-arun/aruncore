@@ -142,3 +142,12 @@ When setting up a new environment or deploying on Hugging Face Spaces (**Space S
 | `TELEGRAM_CHAT_ID` | Telegram chat target ID | `1154451605` |
 | `TELEGRAM_ALERT_BOT_TOKEN` | Instant phone alerts for hiring leads (`@ai_twin_alert_bot`) | `8847600936:AAGHCH1bBVMGSXl_MSrxo1klwgrUGJyeDW0` |
 | `TELEGRAM_ALERT_CHAT_ID` | Alert phone target ID | `1154451605` |
+
+---
+
+## 7. Automated Multi-Platform CI/CD Pipeline
+
+Whenever you push code updates to `git push origin main`:
+1. **GitHub Repository**: Receives latest source code and documentation updates.
+2. **GitHub Actions Workflow**: Automatically triggers `.github/workflows/deploy.yml` using your `HF_TOKEN` secret to push and deploy directly to Hugging Face Spaces.
+3. **Vercel Production**: Automatically builds and deploys the Next.js frontend from the GitHub webhook!
