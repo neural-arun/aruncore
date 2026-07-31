@@ -130,8 +130,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <h2 className="text-sm font-extrabold text-[var(--text-main)] tracking-tight truncate leading-tight">
               Arun Yadav
             </h2>
-            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 truncate leading-tight mt-0.5">
-              AI Systems Engineer & Entrepreneur
+            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 leading-tight mt-0.5">
+              AI Systems Architect • Healthcare & Education
             </p>
             <p className="text-[11px] text-[var(--text-dim)] mt-1 flex items-center gap-1 leading-none">
               <ShieldCheck className="h-3 w-3 text-emerald-500 shrink-0" />
