@@ -106,33 +106,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="hidden lg:flex w-80 shrink-0 h-full flex-col gap-4 overflow-y-auto p-4 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-main)] transition-colors duration-200 shadow-sm custom-scrollbar">
+    <aside className="hidden lg:flex w-80 shrink-0 h-full flex-col gap-4 overflow-y-auto p-4 pb-24 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-main)] transition-colors duration-200 shadow-sm custom-scrollbar">
       {/* Profile Header Card */}
-      <div className="relative overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-sm">
+      <div className="relative flex flex-col gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-sm">
         <div className="flex items-center gap-3.5">
-          <div className="relative">
-            <div className="h-12 w-12 overflow-hidden rounded-xl border border-emerald-500/30 bg-slate-100 dark:bg-slate-800 shadow-md">
+          <div className="relative shrink-0">
+            <div className="h-12 w-12 overflow-hidden rounded-full border-2 border-emerald-500/40 bg-slate-100 dark:bg-slate-800 shadow-sm">
               <Image
                 src="/profile_photo.png"
                 alt="Arun Yadav"
                 width={48}
                 height={48}
                 className="h-full w-full object-cover"
+                priority
               />
             </div>
-            <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-[var(--bg-surface)]">
+            <span className="absolute bottom-0 right-0 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-[var(--bg-card)]">
               <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
             </span>
           </div>
 
           <div className="flex-1 min-w-0">
-            <h2 className="text-sm font-extrabold text-[var(--text-main)] tracking-tight truncate">
+            <h2 className="text-sm font-extrabold text-[var(--text-main)] tracking-tight truncate leading-tight">
               Arun Yadav
             </h2>
-            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 truncate">
+            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 truncate leading-tight mt-0.5">
               AI Systems Engineer & Entrepreneur
             </p>
-            <p className="text-[11px] text-[var(--text-dim)] mt-0.5 flex items-center gap-1">
+            <p className="text-[11px] text-[var(--text-dim)] mt-1 flex items-center gap-1 leading-none">
               <ShieldCheck className="h-3 w-3 text-emerald-500 shrink-0" />
               Stateful RAG • Zero-Hallucination
             </p>
@@ -140,7 +141,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Social Links */}
-        <div className="mt-3 flex items-center justify-between border-t border-[var(--border-subtle)] pt-2.5">
+        <div className="flex items-center justify-between border-t border-[var(--border-subtle)] pt-3">
           <a
             href="https://github.com/neural-arun"
             target="_blank"
