@@ -2,7 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
-import { MessageCircle, Sparkles, RefreshCw, Layers, ShieldCheck, HeartPulse, GraduationCap, Scale, Briefcase } from "lucide-react";
+import { MessageCircle, Sparkles, RefreshCw, Layers, ShieldCheck, HeartPulse, GraduationCap, Scale, Briefcase, Bot, FolderGit2, User, PhoneCall, ChevronRight } from "lucide-react";
+import { ActiveTab } from "../lib/types";
 
 // Inline Brand SVGs for bulletproof icon rendering
 const GithubIcon = () => (
@@ -24,20 +25,47 @@ const TwitterIcon = () => (
 );
 
 interface SidebarProps {
+  activeTab: ActiveTab;
+  setActiveTab: (tab: ActiveTab) => void;
+  openHandoffModal: () => void;
   onSelectPrompt: (prompt: string) => void;
   onResetSession: () => void;
   messageCount: number;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
+  activeTab,
+  setActiveTab,
+  openHandoffModal,
   onSelectPrompt,
   onResetSession,
   messageCount,
 }) => {
+  const navItems = [
+    {
+      id: "chat" as ActiveTab,
+      label: "AI Assistant",
+      icon: <Bot className="h-4 w-4" />,
+      description: "Interactive 3-Way Digital Twin",
+    },
+    {
+      id: "projects" as ActiveTab,
+      label: "Projects",
+      icon: <FolderGit2 className="h-4 w-4" />,
+      description: "22+ Production Systems",
+    },
+    {
+      id: "manifesto" as ActiveTab,
+      label: "About & Manifesto",
+      icon: <User className="h-4 w-4" />,
+      description: "Engineering Principles & Bio",
+    },
+  ];
+
   const promptCategories = [
     {
       category: "Healthcare & MedTech",
-      icon: <HeartPulse className="h-3.5 w-3.5 text-rose-400" />,
+      icon: <HeartPulse className="h-3.5 w-3.5 text-rose-500" />,
       prompts: [
         "How do you build trusted AI software for healthcare?",
         "Tell me about your Clinical Patient Task Manager.",
@@ -45,7 +73,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       category: "RAG & AI Architecture",
-      icon: <Layers className="h-3.5 w-3.5 text-amber-400" />,
+      icon: <Layers className="h-3.5 w-3.5 text-amber-500" />,
       prompts: [
         "Explain your zero-hallucination hybrid RAG architecture.",
         "How does ArunCore re-rank chunks using Cohere?",
@@ -53,7 +81,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       category: "Legal & Professional AI",
-      icon: <Scale className="h-3.5 w-3.5 text-indigo-400" />,
+      icon: <Scale className="h-3.5 w-3.5 text-indigo-500" />,
       prompts: [
         "How did you build the Indian Legal RAG System?",
         "What is your approach to document-aware chunking?",
@@ -61,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       category: "Education & Learning",
-      icon: <GraduationCap className="h-3.5 w-3.5 text-cyan-400" />,
+      icon: <GraduationCap className="h-3.5 w-3.5 text-cyan-500" />,
       prompts: [
         "Tell me about NEET Bot & clinical learning systems.",
         "How does your YouTube Notes Extractor work?",
@@ -69,7 +97,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       category: "Working With Arun",
-      icon: <Briefcase className="h-3.5 w-3.5 text-emerald-400" />,
+      icon: <Briefcase className="h-3.5 w-3.5 text-emerald-500" />,
       prompts: [
         "What are your core engineering principles?",
         "How can I work with or consult Arun for a project?",
@@ -78,52 +106,46 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="flex flex-col gap-4 overflow-y-auto p-4 text-slate-300">
-      {/* Profile Card */}
-      <div className="relative overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-b from-slate-900/90 to-slate-950/90 p-4 shadow-xl backdrop-blur-md">
-        <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-amber-500/10 blur-2xl pointer-events-none" />
-
+    <aside className="hidden lg:flex w-80 shrink-0 h-full flex-col gap-4 overflow-y-auto p-4 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-main)] transition-colors duration-200 shadow-sm custom-scrollbar">
+      {/* Profile Header Card */}
+      <div className="relative overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-sm">
         <div className="flex items-center gap-3.5">
           <div className="relative">
-            <div className="h-14 w-14 overflow-hidden rounded-xl border border-amber-500/40 bg-slate-800 shadow-md">
+            <div className="h-12 w-12 overflow-hidden rounded-xl border border-emerald-500/30 bg-slate-100 dark:bg-slate-800 shadow-md">
               <Image
                 src="/profile_photo.png"
                 alt="Arun Yadav"
-                width={56}
-                height={56}
+                width={48}
+                height={48}
                 className="h-full w-full object-cover"
               />
             </div>
-            <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-slate-950">
-              <span className="h-2 w-2 rounded-full bg-white" />
+            <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-[var(--bg-surface)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
             </span>
           </div>
 
           <div className="flex-1 min-w-0">
-            <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-1.5 truncate">
+            <h2 className="text-sm font-extrabold text-[var(--text-main)] tracking-tight truncate">
               Arun Yadav
             </h2>
-            <p className="text-xs font-medium text-amber-400 truncate">
-              Systems Builder & AI Entrepreneur
+            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 truncate">
+              AI Systems Engineer & Entrepreneur
             </p>
-            <p className="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1">
-              <ShieldCheck className="h-3 w-3 text-emerald-400 shrink-0" />
+            <p className="text-[11px] text-[var(--text-dim)] mt-0.5 flex items-center gap-1">
+              <ShieldCheck className="h-3 w-3 text-emerald-500 shrink-0" />
               Stateful RAG • Zero-Hallucination
             </p>
           </div>
         </div>
 
-        <p className="mt-3 text-xs leading-relaxed text-slate-300">
-          Building AI-powered software systems for Healthcare & Education that organizations trust to automate complex workflows and scale expertise.
-        </p>
-
         {/* Social Links */}
-        <div className="mt-3.5 flex items-center justify-between border-t border-white/5 pt-3">
+        <div className="mt-3 flex items-center justify-between border-t border-[var(--border-subtle)] pt-2.5">
           <a
             href="https://github.com/neural-arun"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[11px] font-medium text-slate-400 transition-colors hover:text-amber-400"
+            className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
           >
             <GithubIcon />
             <span>GitHub</span>
@@ -133,7 +155,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             href="https://linkedin.com/in/neuralarun"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[11px] font-medium text-slate-400 transition-colors hover:text-amber-400"
+            className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
           >
             <LinkedinIcon />
             <span>LinkedIn</span>
@@ -143,7 +165,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             href="https://x.com/Neural_Arun"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[11px] font-medium text-slate-400 transition-colors hover:text-amber-400"
+            className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
           >
             <TwitterIcon />
             <span>X / Twitter</span>
@@ -151,17 +173,67 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
+      {/* Main Laptop Sidebar Navigation Section */}
+      <div className="flex flex-col gap-1.5">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-dim)] px-2">
+          Navigation
+        </span>
+
+        {navItems.map((item) => {
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`flex items-center justify-between p-3 rounded-xl font-medium text-xs transition-all text-left group ${
+                isActive
+                  ? "bg-emerald-500/15 border-2 border-emerald-500/60 text-emerald-700 dark:text-emerald-300 font-bold shadow-sm"
+                  : "border border-transparent hover:border-[var(--border-subtle)] hover:bg-[var(--bg-card)] text-[var(--text-main)]"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className={`p-2 rounded-lg ${isActive ? "bg-emerald-500 text-white" : "bg-[var(--bg-card)] text-[var(--text-dim)] group-hover:text-emerald-600"}`}>
+                  {item.icon}
+                </span>
+                <div>
+                  <p className="font-extrabold leading-tight text-xs">{item.label}</p>
+                  <p className="text-[10px] text-[var(--text-dim)] font-normal">{item.description}</p>
+                </div>
+              </div>
+              <ChevronRight className={`h-3.5 w-3.5 transition-transform ${isActive ? "text-emerald-600 translate-x-0.5" : "text-[var(--text-dim)] opacity-40 group-hover:opacity-100"}`} />
+            </button>
+          );
+        })}
+
+        {/* Contact Handoff Trigger Button */}
+        <button
+          onClick={openHandoffModal}
+          className="mt-1 flex items-center justify-between p-3 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all active:scale-98"
+        >
+          <div className="flex items-center gap-3">
+            <span className="p-2 rounded-lg bg-emerald-700/60 text-white">
+              <PhoneCall className="h-4 w-4" />
+            </span>
+            <div className="text-left">
+              <p className="font-extrabold text-xs">Contact & Consult</p>
+              <p className="text-[10px] text-emerald-100 opacity-90 font-normal">Hire Arun for Custom AI Systems</p>
+            </div>
+          </div>
+          <ChevronRight className="h-3.5 w-3.5 opacity-80" />
+        </button>
+      </div>
+
       {/* Suggested Prompts Section */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2.5 mt-2 pt-3 border-t border-[var(--border-subtle)]">
         <div className="flex items-center justify-between px-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-            Ask My Digital Twin
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
+            Suggested Questions
           </span>
           {messageCount > 0 && (
             <button
               onClick={onResetSession}
-              className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-amber-400 transition-colors"
+              className="flex items-center gap-1 text-[11px] text-[var(--text-dim)] hover:text-emerald-600 transition-colors font-medium"
               title="Reset conversation session"
             >
               <RefreshCw className="h-3 w-3" />
@@ -170,19 +242,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2.5">
           {promptCategories.map((cat, idx) => (
-            <div key={idx} className="rounded-xl border border-white/5 bg-slate-900/50 p-2.5">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-200 mb-2">
+            <div key={idx} className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--text-main)] mb-1.5">
                 {cat.icon}
                 <span>{cat.category}</span>
               </div>
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-1">
                 {cat.prompts.map((p, pIdx) => (
                   <button
                     key={pIdx}
-                    onClick={() => onSelectPrompt(p)}
-                    className="text-left text-xs text-slate-300 hover:text-amber-300 hover:bg-amber-500/10 border border-transparent hover:border-amber-500/20 rounded-lg p-2 transition-all leading-snug"
+                    onClick={() => {
+                      setActiveTab("chat");
+                      onSelectPrompt(p);
+                    }}
+                    className="text-left text-[11px] text-[var(--text-dim)] hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-500/10 border border-transparent hover:border-emerald-500/20 rounded-lg p-1.5 transition-all leading-snug font-medium"
                   >
                     "{p}"
                   </button>

@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import { ChatPanel } from "../components/ChatPanel";
 import { ProjectsView } from "../components/ProjectsView";
 import { ManifestoView } from "../components/ManifestoView";
+import { Sidebar } from "../components/Sidebar";
 import { HandoffModal } from "../components/HandoffModal";
 import { Message, ActiveTab, HandoffFormData } from "../lib/types";
 
@@ -359,30 +360,49 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
         toggleTheme={toggleTheme}
       />
 
-      {/* Main Content View */}
-      <main className="flex-1 overflow-hidden">
-        {activeTab === "chat" && (
-          <ChatPanel
-            messages={messages}
-            onSendMessage={handleSendMessage}
-            isStreaming={isStreaming}
-            onResetSession={handleResetSession}
-            activePrompt={activePrompt}
-            setActivePrompt={setActivePrompt}
-            openHandoffModal={() => setIsHandoffOpen(true)}
-            isAdminMode={isAdminMode}
-            onSendAdminMessage={handleSendAdminMessage}
-          />
-        )}
+      {/* Main Content View with Laptop Sidebar */}
+      <main className="flex-1 overflow-hidden flex flex-col lg:flex-row">
+        {/* Laptop Sidebar Navigation (Hidden on Mobile, Visible on Desktop/Laptop) */}
+        <Sidebar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          openHandoffModal={() => setIsHandoffOpen(true)}
+          onSelectPrompt={(p) => {
+            setActivePrompt(p);
+            setActiveTab("chat");
+          }}
+          onResetSession={handleResetSession}
+          messageCount={messages.length}
+        />
 
-        {activeTab === "projects" && (
-          <ProjectsView
-            onSelectPrompt={(p) => setActivePrompt(p)}
-            setActiveTab={setActiveTab}
-          />
-        )}
+        {/* Dynamic Content Panel */}
+        <div className="flex-1 h-full overflow-hidden">
+          {activeTab === "chat" && (
+            <ChatPanel
+              messages={messages}
+              onSendMessage={handleSendMessage}
+              isStreaming={isStreaming}
+              onResetSession={handleResetSession}
+              activePrompt={activePrompt}
+              setActivePrompt={setActivePrompt}
+              openHandoffModal={() => setIsHandoffOpen(true)}
+              isAdminMode={isAdminMode}
+              onSendAdminMessage={handleSendAdminMessage}
+            />
+          )}
 
-        {activeTab === "manifesto" && <ManifestoView />}
+          {activeTab === "projects" && (
+            <ProjectsView
+              onSelectPrompt={(p) => {
+                setActivePrompt(p);
+                setActiveTab("chat");
+              }}
+              setActiveTab={setActiveTab}
+            />
+          )}
+
+          {activeTab === "manifesto" && <ManifestoView />}
+        </div>
       </main>
 
       {/* Contact Handoff Modal */}
