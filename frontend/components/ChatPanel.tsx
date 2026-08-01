@@ -321,16 +321,16 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   return (
     <div className="flex h-full flex-col justify-between overflow-hidden bg-[var(--bg-main)]">
       {messages.length === 0 ? (
-        /* Executive Connected Landing Layout (Rule 1, Rule 14: 8pt Grid, Rule 16: 600ms Entrance Animation) */
-        <div className="flex-1 flex flex-col justify-between p-4 sm:p-8 overflow-hidden h-full">
-          <div className="mx-auto max-w-4xl w-full flex flex-col justify-between h-full my-auto gap-4 sm:gap-6 animate-fade-slide">
+        /* Refactored Zero-Scroll Mobile Viewport Layout */
+        <div className="flex-1 flex flex-col justify-start p-3 sm:p-6 overflow-y-auto sm:overflow-hidden h-full">
+          <div className="mx-auto max-w-4xl w-full flex flex-col justify-start gap-2.5 sm:gap-4 my-auto animate-fade-slide">
             
-            {/* Rule 2 & 11: AI Card with Clear Hierarchy & 64px Avatar */}
-            <div className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 sm:p-6 backdrop-blur-md shadow-xs space-y-4 shrink-0">
-              <div className="flex flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-4 min-w-0">
-                  {/* Rule 11: 64px Avatar Size */}
-                  <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-emerald-500/40 bg-slate-800 shrink-0 shadow-xs">
+            {/* AI Twin Card (Vertical Height Compressed ~25%) */}
+            <div className="rounded-2xl sm:rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3.5 sm:p-5 backdrop-blur-md shadow-xs space-y-2.5 sm:space-y-3.5 shrink-0">
+              <div className="flex flex-row items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  {/* 48px Mobile Avatar, 64px Desktop */}
+                  <div className="relative h-12 w-12 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-emerald-500/40 bg-slate-800 shrink-0 shadow-xs">
                     <Image
                       src="/profile_photo.png"
                       alt="Arun Yadav"
@@ -342,73 +342,68 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   </div>
 
                   <div className="space-y-0.5 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {/* Rule 10: Title 20-22px */}
-                      <h1 className="font-heading text-lg sm:text-xl font-extrabold text-[var(--text-main)] tracking-tight">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <h1 className="font-heading text-base sm:text-xl font-extrabold text-[var(--text-main)] tracking-tight">
                         Arun's AI Twin
                       </h1>
-                      {/* Rule 2: Smaller Online Badge */}
-                      <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 shadow-xs shrink-0">
+                      <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shadow-xs shrink-0">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                         <span>Online</span>
                       </span>
                     </div>
 
-                    {/* Rule 10: Subtitle 14px */}
-                    <p className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 leading-tight">
+                    <p className="text-[11px] sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 leading-tight truncate">
                       Healthcare AI Systems Architect
                     </p>
                   </div>
                 </div>
 
-                {/* Rule 3 & 18: Contact Button -> "💼 Hire Arun" */}
                 <button
                   onClick={openHandoffModal}
-                  className="flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-3.5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition-all shrink-0 active:scale-95"
+                  className="flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 sm:px-3.5 sm:py-2 text-[11px] sm:text-sm font-bold text-white shadow-sm transition-all shrink-0 active:scale-95"
                 >
-                  <Briefcase className="h-4 w-4" />
+                  <Briefcase className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   <span className="hidden sm:inline">Hire Arun</span>
                   <span className="sm:hidden">Hire</span>
                 </button>
               </div>
 
-              <div className="border-t border-[var(--border-subtle)] pt-3">
-                {/* Rule 17: Natural Persona Message */}
-                <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium leading-relaxed">
+              <div className="border-t border-[var(--border-subtle)] pt-2 sm:pt-2.5">
+                <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium leading-normal">
                   Hi! I'm Arun's AI Twin. I can explain his projects, architecture decisions, healthcare AI work, or help you decide if he's the right person for your project.
                 </p>
               </div>
             </div>
 
-            {/* Rule 5 & 13: ChatGPT Style Suggestion Chips with Lucide Icons */}
-            <div className="space-y-2 shrink-0">
+            {/* Suggested Questions Section (Compact Gaps & Cards) */}
+            <div className="space-y-1.5 shrink-0">
               <div className="flex items-center justify-between px-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
+                  <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-500" />
                   <span>Suggested Questions</span>
                 </span>
               </div>
 
               {/* ChatGPT Style Chips Grid */}
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
                 {[
                   {
-                    icon: <HeartPulse className="h-4 w-4 text-emerald-500 shrink-0" />,
+                    icon: <HeartPulse className="h-3.5 w-3.5 text-emerald-500 shrink-0" />,
                     label: "Healthcare AI",
                     query: starterPrompts[0].query,
                   },
                   {
-                    icon: <Layers className="h-4 w-4 text-emerald-500 shrink-0" />,
+                    icon: <Layers className="h-3.5 w-3.5 text-emerald-500 shrink-0" />,
                     label: "Zero-Hallucination RAG",
                     query: starterPrompts[1].query,
                   },
                   {
-                    icon: <Scale className="h-4 w-4 text-emerald-500 shrink-0" />,
+                    icon: <Scale className="h-3.5 w-3.5 text-emerald-500 shrink-0" />,
                     label: "Legal AI",
                     query: starterPrompts[2].query,
                   },
                   {
-                    icon: <Briefcase className="h-4 w-4 text-emerald-500 shrink-0" />,
+                    icon: <Briefcase className="h-3.5 w-3.5 text-emerald-500 shrink-0" />,
                     label: "Work with Arun",
                     query: starterPrompts[3].query,
                   },
@@ -416,28 +411,28 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   <button
                     key={idx}
                     onClick={() => onSendMessage(item.query)}
-                    className="group text-left flex items-center gap-2.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3.5 py-3 transition-all hover:border-emerald-500/50 hover:bg-emerald-500/5 active:scale-[0.98] shadow-xs"
+                    className="group text-left flex items-center gap-2 rounded-xl sm:rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-2 sm:px-3.5 sm:py-2.5 transition-all hover:border-emerald-500/50 hover:bg-emerald-500/5 active:scale-[0.98] shadow-xs"
                   >
                     {item.icon}
-                    <span className="text-xs sm:text-sm text-[var(--text-main)] font-semibold truncate flex-1">
+                    <span className="text-[11px] sm:text-sm text-[var(--text-main)] font-semibold truncate flex-1">
                       {item.label}
                     </span>
-                    <ArrowRight className="h-3.5 w-3.5 text-emerald-500 opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
+                    <ArrowRight className="h-3 w-3 text-emerald-500 opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Rule 7 & 15: Sleek ChatGPT Style Sticky Input Box */}
-            <div className="shrink-0 pt-1 sticky bottom-0 z-20">
+            {/* Chat Input Box Immediately Below Suggested Questions */}
+            <div className="shrink-0 pt-0.5 sm:pt-1">
               {isListening && (
-                <div className="mb-1.5 flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1 text-xs font-mono font-bold text-rose-600 animate-pulse">
+                <div className="mb-1 flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1 text-xs font-mono font-bold text-rose-600 animate-pulse">
                   <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
                   <span>Listening to your voice... Speak now!</span>
                 </div>
               )}
 
-              <div className="input-box-container relative flex items-center px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-2xl border border-[var(--input-border)] bg-[var(--input-bg)] shadow-xs">
+              <div className="input-box-container relative flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl sm:rounded-2xl border border-[var(--input-border)] bg-[var(--input-bg)] shadow-xs">
                 <textarea
                   ref={textareaRef}
                   value={inputText}
@@ -445,30 +440,30 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   onKeyDown={handleKeyDown}
                   placeholder={isListening ? "Listening..." : "Ask Arun's AI Assistant..."}
                   rows={1}
-                  className="flex-1 resize-none bg-transparent py-1.5 text-xs sm:text-base text-[var(--text-main)] placeholder-[var(--text-dim)] font-medium focus:outline-none max-h-24 min-h-[38px] sm:min-h-[40px]"
+                  className="flex-1 resize-none bg-transparent py-1 text-xs sm:text-base text-[var(--text-main)] placeholder-[var(--text-dim)] font-medium focus:outline-none max-h-24 min-h-[34px] sm:min-h-[40px]"
                 />
 
                 {/* Microphone STT Button */}
                 <button
                   onClick={handleToggleListening}
-                  className={`ml-1.5 flex h-9 w-9 items-center justify-center rounded-xl font-bold transition-all shadow-xs shrink-0 touch-manipulation ${
+                  className={`ml-1 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg sm:rounded-xl font-bold transition-all shadow-xs shrink-0 touch-manipulation ${
                     isListening
                       ? "bg-rose-500 text-white animate-pulse"
                       : "bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)] text-[var(--text-main)] hover:border-emerald-500"
                   }`}
                   title={isListening ? "Stop listening" : "Click to speak (Voice to text)"}
                 >
-                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4 text-[var(--text-dim)]" />}
+                  {isListening ? <MicOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Mic className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[var(--text-dim)]" />}
                 </button>
 
                 {/* Send Message Button */}
                 <button
                   onClick={handleSend}
                   disabled={!inputText.trim() || isStreaming}
-                  className="ml-1.5 flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all active:scale-95 disabled:opacity-30 shadow-xs shrink-0 touch-manipulation"
+                  className="ml-1 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg sm:rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all active:scale-95 disabled:opacity-30 shadow-xs shrink-0 touch-manipulation"
                   title="Send Message"
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
               </div>
             </div>
