@@ -431,7 +431,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             {/* Rule 7 & 15: Sleek ChatGPT Style Sticky Input Box */}
             <div className="shrink-0 pt-1 sticky bottom-0 z-20">
               {isListening && (
-                <div className="mb-2 flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1 text-xs font-mono font-bold text-rose-600 animate-pulse">
+                <div className="mb-1.5 flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1 text-xs font-mono font-bold text-rose-600 animate-pulse">
                   <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
                   <span>Listening to your voice... Speak now!</span>
                 </div>
@@ -470,10 +470,6 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 >
                   <Send className="h-4 w-4" />
                 </button>
-              </div>
-
-              <div className="mt-1 flex justify-between text-[10px] sm:text-[11px] text-[var(--text-dim)] font-medium px-1">
-                <span>Press <kbd className="rounded bg-[var(--bg-surface-hover)] px-1 py-0.5 font-mono border border-[var(--border-subtle)] text-[var(--text-main)] font-semibold">Enter</kbd> or 🎙️ Mic</span>
               </div>
             </div>
 
