@@ -2,207 +2,134 @@
 
 import React from "react";
 import Image from "next/image";
+import { Sparkles } from "lucide-react";
 
 export const ManifestoView: React.FC = () => {
   return (
-    <div className="h-full overflow-y-auto px-4 py-6 sm:py-8 sm:px-8 pb-20 sm:pb-8">
-      <div className="mx-auto max-w-4xl space-y-8">
-        {/* Profile Intro Card */}
-        <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 sm:p-8 backdrop-blur-md shadow-xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-            <div className="h-20 w-20 overflow-hidden rounded-2xl border-2 border-[var(--border-accent)] bg-slate-800 shrink-0 shadow-md">
-              <Image
-                src="/profile_photo.png"
-                alt="Arun Yadav"
-                width={80}
-                height={80}
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="space-y-1">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
-                Arun Yadav
-              </h1>
-              <p className="text-base sm:text-lg font-bold text-[var(--accent-green)]">
-                AI Systems Architect • Healthcare & Education
-              </p>
-              <p className="text-sm sm:text-base text-[var(--text-muted)] font-medium">
-                I design AI software that people can trust I also work on RAG pipelines and automated workflows.
-              </p>
-            </div>
+    <div className="h-full overflow-y-auto px-4 py-8 sm:px-12 pb-24 sm:pb-12 bg-[var(--bg-main)] text-[var(--text-main)]">
+      <div className="mx-auto max-w-3xl space-y-8 animate-fade-slide">
+        
+        {/* Header Hero Layout (Ed Donner Style) */}
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-6 border-b border-[var(--border-subtle)]">
+          <div className="relative h-32 w-32 sm:h-36 sm:w-36 overflow-hidden rounded-full border-4 border-emerald-500/40 shadow-xl shrink-0">
+            <Image
+              src="/profile_photo.png"
+              alt="Arun Yadav"
+              width={144}
+              height={144}
+              className="h-full w-full object-cover"
+              priority
+            />
           </div>
-        </div>
 
-        {/* Quote Block */}
-        <div className="rounded-xl border-l-4 border-[var(--accent-green)] bg-[var(--bg-surface)] p-5 shadow-sm">
-          <p className="text-base sm:text-lg text-[var(--text-main)] leading-relaxed font-semibold">
-            "I create AI-powered software systems for Healthcare and Education that organizations trust to make decisions, automate complex workflows and scale expertise."
-          </p>
-        </div>
-
-        {/* Technical Skills & Expertise Section */}
-        <section>
-          <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)] border-b border-[var(--border-subtle)] pb-2 mb-4">
-            Technical Skills & Core Stack
-          </h2>
-          <p className="text-sm sm:text-base text-[var(--text-muted)] mb-4 font-medium leading-relaxed">
-            I have worked extensively across the AI software stack, building production pipelines, stateful agents, and reliable backend infrastructure:
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-[var(--accent-amber)] uppercase tracking-wider">Core Engineering</span>
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-[var(--accent-green)]">
-                Python & FastAPI Backend
-              </h3>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed font-normal">
-                I write clean, async Python code and engineer stateful backend microservices using FastAPI, Pydantic, and Uvicorn for low-latency streaming endpoints.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-[var(--accent-amber)] uppercase tracking-wider">Retrieval Systems</span>
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-[var(--accent-green)]">
-                Hybrid RAG Architecture
-              </h3>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed font-normal">
-                I design zero-hallucination RAG pipelines combining dense vector embeddings (ChromaDB), keyword retrieval (BM25), and neural rerankers (Cohere V3).
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-[var(--accent-amber)] uppercase tracking-wider">Agent Systems</span>
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-[var(--accent-green)]">
-                Stateful Agentic Workflows
-              </h3>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed font-normal">
-                I build autonomous multi-step AI agents equipped with tool calling, memory compression loops, and human-in-the-loop escalation guardrails.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-[var(--accent-amber)] uppercase tracking-wider">Quality & Reliability</span>
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-[var(--accent-green)]">
-                LLM Evaluation & Guardrails
-              </h3>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed font-normal">
-                I set up rigorous LLM evaluation frameworks, safety verification layers, hallucination checks, and schema validation to ensure model outputs are accurate.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-[var(--accent-amber)] uppercase tracking-wider">Protocol Standards</span>
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-[var(--accent-green)]">
-                Model Context Protocol (MCP)
-              </h3>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed font-normal">
-                I build custom MCP server integrations that allow AI systems to securely query local databases, inspect code repositories, and automate external APIs.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold text-[var(--accent-amber)] uppercase tracking-wider">Infrastructure</span>
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-[var(--accent-green)]">
-                Monitoring & Telegram Alerts
-              </h3>
-              <p className="text-sm text-[var(--text-muted)] leading-relaxed font-normal">
-                I build background event queues, automated lead handoffs, and instant Telegram alert channels to keep human operators informed in real time.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Bio Essay */}
-        <div className="space-y-8">
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)] border-b border-[var(--border-subtle)] pb-2 mb-3">
-              My Engineering Approach
-            </h2>
-            <p className="text-base sm:text-lg text-[var(--text-muted)] leading-relaxed font-normal">
-              Most people just build a chatbot and stop there. But I build software systems. I combine AI models, data pipelines, verification layers, human oversight and reliable infrastructure to make sure everything works well.
+          <div className="space-y-3 text-center sm:text-left min-w-0 flex-1">
+            <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-[var(--text-main)] tracking-tight">
+              Who Am I. Arun Yadav
+            </h1>
+            <p className="text-base sm:text-lg font-bold text-emerald-600 dark:text-emerald-400">
+              AI Systems Builder • Healthcare & Education
             </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)] border-b border-[var(--border-subtle)] pb-2 mb-4">
-              Core Operating Principles
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-2">
-                <h3 className="text-base sm:text-lg font-bold text-[var(--accent-amber)]">
-                  1. I Solve High-Impact Operational Problems
-                </h3>
-                <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  Rather than chasing tech trends, I focus on solving critical bottlenecks in healthcare and education—targeting high-friction workflows that cost organizations valuable time, accuracy, and human energy.
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-2">
-                <h3 className="text-base sm:text-lg font-bold text-[var(--accent-amber)]">
-                  2. Trust & Safety Outweigh Hype
-                </h3>
-                <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  Healthcare and education demand high-stakes reliability. Every system I build incorporates deterministic verification, multi-layer guardrails, and human oversight to ensure complete safety and accuracy.
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-2">
-                <h3 className="text-base sm:text-lg font-bold text-[var(--accent-amber)]">
-                  3. I Build End-to-End Complete Products
-                </h3>
-                <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  Software is only valuable if people actually rely on it daily. That means I engineer resilient infrastructure, enterprise security, fast latency, and intuitive UX—not just standalone AI models.
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm space-y-2">
-                <h3 className="text-base sm:text-lg font-bold text-[var(--accent-amber)]">
-                  4. I Ship, Learn, and Iterate Rapidly
-                </h3>
-                <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-                  Value is proven in production, not in static design docs. Releasing functional software to real users yields rapid feedback loops to harden, refine, and scale systems continuously.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-xl sm:text-2xl font-bold text-[var(--text-main)] border-b border-[var(--border-subtle)] pb-2 mb-4">
-              Primary Focus Sectors
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm">
-                <h3 className="text-lg font-bold text-[var(--text-main)]">
-                  Healthcare Systems
-                </h3>
-                <p className="text-sm sm:text-base text-[var(--text-muted)] mt-2 leading-relaxed">
-                  I work on reducing tasks for doctors organizing medical knowledge and automating clinical workflows.
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-5 shadow-sm">
-                <h3 className="text-lg font-bold text-[var(--text-main)]">
-                  Medical & Professional Education
-                </h3>
-                <p className="text-sm sm:text-base text-[var(--text-muted)] mt-2 leading-relaxed">
-                  I create personalized learning tools, question generators and trusted search engines, for institutions and students so they can learn better.
-                </p>
-              </div>
-            </div>
-          </section>
+            <p className="text-sm sm:text-base text-[var(--text-muted)] font-medium leading-relaxed">
+              Well, hi there! 👋
+            </p>
+            <p className="text-sm sm:text-base text-[var(--text-muted)] font-medium leading-relaxed">
+              I am Arun Yadav, an AI Systems Builder engineering trust, production-grade software. From zero-hallucination RAG engines and clinical reasoning AI tutors to automated workflow pipelines that solve high-stakes problems in Healthcare and Education.
+            </p>
+          </div>
         </div>
+
+        {/* Highlighted Projects */}
+        <div className="space-y-4">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-emerald-500" />
+            <span>🚀 Highlighted Projects:</span>
+          </h2>
+
+          <div className="grid grid-cols-1 gap-3">
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-xs transition-all hover:border-emerald-500/40">
+              <h3 className="font-bold text-base sm:text-lg text-[var(--text-main)] flex items-center gap-2">
+                <span>🤖 ArunCore</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1 font-medium leading-relaxed">
+                Zero-hallucination hybrid RAG engine combining ChromaDB vector search, BM25 keyword matching and Cohere reranking.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-xs transition-all hover:border-emerald-500/40">
+              <h3 className="font-bold text-base sm:text-lg text-[var(--text-main)] flex items-center gap-2">
+                <span>🏥 NEET Medical Bot</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1 font-medium leading-relaxed">
+                AI practice & diagnostic ecosystem for entrance exams with 10,000+ NCERT questions, spaced repetition and solution breakdowns.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-xs transition-all hover:border-emerald-500/40">
+              <h3 className="font-bold text-base sm:text-lg text-[var(--text-main)] flex items-center gap-2">
+                <span>🩺 MedCoach</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1 font-medium leading-relaxed">
+                Reasoning AI tutor and diagnostic workflow assistant built with guardrails & execution traces.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-xs transition-all hover:border-emerald-500/40">
+              <h3 className="font-bold text-base sm:text-lg text-[var(--text-main)] flex items-center gap-2">
+                <span>📝 AI Note. Legal RAG</span>
+              </h3>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1 font-medium leading-relaxed">
+                Automated structured note generation and Indian legal document retrieval pipelines.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* How I Work */}
+        <div className="space-y-4 pt-2">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
+            🧭 How I Work:
+          </h2>
+
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-xs space-y-1">
+              <h3 className="font-bold text-sm sm:text-base text-emerald-600 dark:text-emerald-400">
+                1. Understand Before Building
+              </h3>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium leading-relaxed">
+                Deep domain understanding and user friction analysis before writing code.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-xs space-y-1">
+              <h3 className="font-bold text-sm sm:text-base text-emerald-600 dark:text-emerald-400">
+                2. High Trust & Verification
+              </h3>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium leading-relaxed">
+                In healthcare and education AI must be verifiable. I build systems with guardrails and human oversight.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 shadow-xs space-y-1">
+              <h3 className="font-bold text-sm sm:text-base text-emerald-600 dark:text-emerald-400">
+                3. Finish & Ship
+              </h3>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium leading-relaxed">
+                Clean, deployed, production-ready software that delivers business leverage.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Call to Action (Ed Donner Style) */}
+        <div className="rounded-3xl border border-emerald-500/40 bg-emerald-500/5 p-6 sm:p-8 space-y-3 text-center sm:text-left">
+          <h3 className="text-lg sm:text-xl font-extrabold text-[var(--text-main)]">
+            Looking for an AI Systems Architect to build custom software for your team or agency? Let’s talk!
+          </h3>
+          <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium leading-relaxed">
+            Feel free to chat with my AI Digital Twin here, on this site or click Consult Arun to connect directly.
+          </p>
+        </div>
+
       </div>
     </div>
   );
