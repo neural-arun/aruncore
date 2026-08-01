@@ -321,15 +321,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   return (
     <div className="flex h-full flex-col justify-between overflow-hidden bg-[var(--bg-main)]">
       {messages.length === 0 ? (
-        /* Symmetrical Single-Viewport Landing (Mobile & Laptop Optimized) */
-        <div className="flex-1 flex flex-col justify-center px-3 py-2 sm:px-8 sm:py-3 overflow-y-auto sm:overflow-hidden">
-          <div className="mx-auto max-w-4xl w-full flex flex-col justify-center gap-3 sm:gap-4 my-auto">
+        /* Single-Viewport Landing (Locks 100% inside portrait viewport on mobile, spacious on laptop) */
+        <div className="flex-1 flex flex-col justify-between p-2.5 sm:p-8 overflow-hidden h-full">
+          <div className="mx-auto max-w-4xl w-full flex flex-col justify-between h-full my-auto gap-2 sm:gap-4">
             
-            {/* Big Clean Welcome Hero Banner */}
-            <div className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-6 backdrop-blur-md shadow-xl space-y-3.5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-                <div className="flex items-center gap-3.5 sm:gap-4">
-                  <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-md">
+            {/* Clean Welcome Hero Banner */}
+            <div className="rounded-2xl sm:rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3 sm:p-6 backdrop-blur-md shadow-md space-y-2 sm:space-y-3.5 shrink-0">
+              <div className="flex flex-row items-center justify-between gap-2 sm:gap-4">
+                <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                  <div className="relative h-10 w-10 sm:h-16 sm:w-16 overflow-hidden rounded-xl sm:rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-sm">
                     <Image
                       src="/profile_photo.png"
                       alt="Arun Yadav"
@@ -340,78 +340,79 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                     />
                   </div>
 
-                  <div className="space-y-0.5">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h1 className="font-heading text-lg sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
+                  <div className="space-y-0.5 min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <h1 className="font-heading text-xs sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight truncate">
                         Welcome to ArunCore! 👋
                       </h1>
-                      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 shadow-xs">
-                        <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span>AI Assistant Online</span>
+                      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shadow-xs shrink-0">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        <span>Online</span>
                       </span>
                     </div>
 
-                    <p className="text-xs sm:text-sm font-bold text-[var(--accent-amber)] leading-tight">
-                      Arun Yadav • AI Systems Architect (Healthcare & Education)
+                    <p className="text-[10px] sm:text-sm font-bold text-[var(--accent-amber)] leading-tight truncate">
+                      Arun Yadav • AI Systems Architect
                     </p>
                   </div>
                 </div>
 
                 <button
                   onClick={openHandoffModal}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-[var(--accent-green)] px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-md hover:opacity-90 transition-all shrink-0 w-full sm:w-auto"
+                  className="flex items-center justify-center gap-1.5 rounded-xl bg-[var(--accent-green)] px-2.5 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-sm font-bold text-white shadow-md hover:opacity-90 transition-all shrink-0"
                 >
-                  <PhoneCall className="h-4 w-4" />
-                  <span>Contact & Consult Arun</span>
+                  <PhoneCall className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline">Contact & Consult Arun</span>
+                  <span className="sm:hidden">Contact</span>
                 </button>
               </div>
 
-              {/* Big Clean Welcome Message */}
-              <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/5 p-3.5 sm:p-4 text-xs sm:text-sm text-[var(--text-main)] font-medium leading-relaxed">
-                <p className="font-extrabold text-sm sm:text-base text-[var(--text-main)] mb-1">
+              {/* Clean Welcome Message */}
+              <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-2 sm:p-4 text-[11px] sm:text-sm text-[var(--text-main)] font-medium leading-relaxed">
+                <p className="font-extrabold text-[11px] sm:text-base text-[var(--text-main)] mb-0.5 sm:mb-1 truncate">
                   Explore Arun's AI Systems & Real-Time Data 🚀
                 </p>
-                <p className="text-[var(--text-muted)]">
+                <p className="text-[var(--text-muted)] line-clamp-2 sm:line-clamp-none">
                   Hi! I am Arun's AI Digital Twin. Ask me anything about all of Arun's AI projects, live GitHub activity, medical & legal RAG engines, or how to hire Arun for custom AI software development!
                 </p>
               </div>
             </div>
 
             {/* Suggested Questions Section Below Big Welcome Message */}
-            <div className="space-y-1.5">
+            <div className="space-y-1 sm:space-y-1.5 shrink-0">
               <div className="flex items-center justify-between px-1">
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
-                  Suggested Questions You Can Ask
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1">
+                  <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-500" />
+                  Suggested Questions
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {starterPrompts.map((item, idx) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
+                {starterPrompts.slice(0, 4).map((item, idx) => (
                   <button
                     key={idx}
                     onClick={() => onSendMessage(item.query)}
-                    className="group text-left flex items-center justify-between gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3.5 py-2.5 transition-all hover:border-[var(--accent-green)] hover:bg-[var(--bg-surface-hover)] active:scale-[0.99] shadow-xs"
+                    className="group text-left flex items-center justify-between gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-1.5 sm:px-3.5 sm:py-2.5 transition-all hover:border-[var(--accent-green)] hover:bg-[var(--bg-surface-hover)] active:scale-[0.99] shadow-xs"
                   >
-                    <span className="text-xs sm:text-sm text-[var(--text-main)] font-semibold truncate">
+                    <span className="text-[10px] sm:text-sm text-[var(--text-main)] font-semibold truncate">
                       "{item.query}"
                     </span>
-                    <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-green)] opacity-60 group-hover:opacity-100 transition-opacity shrink-0" />
+                    <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-[var(--accent-green)] opacity-60 group-hover:opacity-100 transition-opacity shrink-0" />
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Prominent Input Bar with STT Microphone Button */}
-            <div>
+            {/* Sticky Input Bar with STT Microphone Button */}
+            <div className="shrink-0 pt-0.5">
               {isListening && (
-                <div className="mb-2 flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1.5 text-xs font-mono font-bold text-rose-600 animate-pulse">
+                <div className="mb-1 flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1 text-xs font-mono font-bold text-rose-600 animate-pulse">
                   <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
                   <span>Listening to your voice... Speak now!</span>
                 </div>
               )}
 
-              <div className="input-box-container relative flex items-center px-3 py-1.5 sm:px-4 sm:py-2">
+              <div className="input-box-container relative flex items-center px-2.5 py-1 sm:px-4 sm:py-2">
                 <textarea
                   ref={textareaRef}
                   value={inputText}
@@ -419,35 +420,35 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   onKeyDown={handleKeyDown}
                   placeholder={isListening ? "Listening..." : "Ask Arun's AI Assistant..."}
                   rows={1}
-                  className="flex-1 resize-none bg-transparent py-1.5 text-xs sm:text-base text-[var(--text-main)] placeholder-[var(--text-dim)] font-medium focus:outline-none max-h-28 min-h-[38px] sm:min-h-[40px]"
+                  className="flex-1 resize-none bg-transparent py-1 text-xs sm:text-base text-[var(--text-main)] placeholder-[var(--text-dim)] font-medium focus:outline-none max-h-24 min-h-[34px] sm:min-h-[40px]"
                 />
 
                 {/* Microphone STT Button */}
                 <button
                   onClick={handleToggleListening}
-                  className={`ml-1.5 sm:ml-2 flex h-9 w-9 sm:h-9 sm:w-9 items-center justify-center rounded-xl font-bold transition-all shadow-sm shrink-0 touch-manipulation ${
+                  className={`ml-1.5 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl font-bold transition-all shadow-sm shrink-0 touch-manipulation ${
                     isListening
                       ? "bg-rose-500 text-white animate-pulse"
                       : "bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)] text-[var(--text-main)] hover:border-[var(--border-accent)]"
                   }`}
                   title={isListening ? "Stop listening" : "Click to speak (Voice to text)"}
                 >
-                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  {isListening ? <MicOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Mic className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                 </button>
 
                 {/* Send Message Button */}
                 <button
                   onClick={handleSend}
                   disabled={!inputText.trim() || isStreaming}
-                  className="ml-1.5 sm:ml-2 flex h-9 w-9 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-[var(--accent-green)] text-white font-bold transition-all hover:opacity-95 active:scale-95 disabled:opacity-30 shadow-md shrink-0 touch-manipulation"
+                  className="ml-1.5 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-[var(--accent-green)] text-white font-bold transition-all hover:opacity-95 active:scale-95 disabled:opacity-30 shadow-md shrink-0 touch-manipulation"
                   title="Send Message"
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
               </div>
 
-              <div className="mt-1 flex justify-between text-[10px] sm:text-[11px] text-[var(--text-dim)] font-medium px-1">
-                <span>Press <kbd className="rounded bg-[var(--bg-surface-hover)] px-1 py-0.5 text-[9px] sm:text-[10px] font-mono border border-[var(--border-subtle)] text-[var(--text-main)] font-semibold">Enter</kbd> or 🎙️ Mic</span>
+              <div className="mt-0.5 flex justify-between text-[9px] sm:text-[11px] text-[var(--text-dim)] font-medium px-1">
+                <span>Press <kbd className="rounded bg-[var(--bg-surface-hover)] px-1 py-0.5 font-mono border border-[var(--border-subtle)] text-[var(--text-main)] font-semibold">Enter</kbd> or 🎙️ Mic</span>
               </div>
             </div>
 

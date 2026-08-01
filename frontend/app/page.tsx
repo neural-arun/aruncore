@@ -340,7 +340,7 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
   };
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-200">
+    <div className="flex h-[100dvh] h-screen flex-col overflow-hidden bg-[var(--bg-main)] text-[var(--text-main)] transition-colors duration-200">
       {isAdminMode && (
         <div className="bg-emerald-600/90 text-white font-mono text-xs px-4 py-2 flex items-center justify-between shadow-md shrink-0">
           <span className="flex items-center gap-2 font-bold">
