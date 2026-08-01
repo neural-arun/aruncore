@@ -370,7 +370,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
               <div className="border-t border-[var(--border-subtle)] pt-2.5">
                 <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium leading-normal">
-                  Hi! I'm Arun's AI Twin. I can explain his projects, architecture decisions, healthcare AI work, or help you decide if he's the right person for your project.
+                  Hi! I'm Arun's AI Twin. I can explain his projects, architecture decisions, and healthcare AI work — plus, the real Arun monitors this channel and can jump in live to chat with you directly if needed!
                 </p>
               </div>
             </div>
