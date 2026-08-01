@@ -589,8 +589,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
         )}
       </div>
 
-      {/* 2. Permanently Fixed Bottom Chat Input Bar (Docked above bottom navigation on mobile) */}
-      <div className="fixed bottom-[54px] lg:bottom-0 left-0 right-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-xl border-t border-[var(--border-subtle)] px-3 py-2.5 sm:px-6 sm:py-3 shadow-2xl transition-colors duration-200">
+      {/* 2. Permanently Fixed Bottom Chat Input Bar (Docked above bottom navigation on mobile, aligned to main panel on desktop) */}
+      <div className="fixed bottom-[54px] lg:bottom-0 left-0 lg:left-80 right-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-xl border-t border-[var(--border-subtle)] px-3 py-2.5 sm:px-6 sm:py-3 shadow-2xl transition-all duration-200">
         <div className="mx-auto max-w-4xl w-full space-y-1.5">
           {isListening && (
             <div className="flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1 text-xs font-mono font-bold text-rose-600 animate-pulse">
