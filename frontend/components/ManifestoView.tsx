@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const ManifestoView: React.FC = () => {
   return (
-    <div className="h-full overflow-y-auto px-4 py-6 sm:py-8 sm:px-8">
+    <div className="h-full overflow-y-auto px-4 py-6 sm:py-8 sm:px-8 pb-20 sm:pb-8">
       <div className="mx-auto max-w-4xl space-y-8">
         {/* Profile Intro Card */}
         <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 sm:p-8 backdrop-blur-md shadow-xl">

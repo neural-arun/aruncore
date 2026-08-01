@@ -6,6 +6,7 @@ import { ChatPanel } from "../components/ChatPanel";
 import { ProjectsView } from "../components/ProjectsView";
 import { ManifestoView } from "../components/ManifestoView";
 import { Sidebar } from "../components/Sidebar";
+import { MobileBottomNav } from "../components/MobileBottomNav";
 import { HandoffModal } from "../components/HandoffModal";
 import { Message, ActiveTab, HandoffFormData } from "../lib/types";
 
@@ -376,7 +377,7 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
         />
 
         {/* Dynamic Content Panel */}
-        <div className="flex-1 h-full overflow-hidden">
+        <div className="flex-1 h-full overflow-hidden pb-14 lg:pb-0">
           {activeTab === "chat" && (
             <ChatPanel
               messages={messages}
@@ -410,6 +411,13 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
         isOpen={isHandoffOpen}
         onClose={() => setIsHandoffOpen(false)}
         onSendHandoff={handleSendHandoff}
+      />
+
+      {/* Mobile Bottom Navigation Bar (App-like 1-tap switching on mobile) */}
+      <MobileBottomNav
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        openHandoffModal={() => setIsHandoffOpen(true)}
       />
     </div>
   );

@@ -173,7 +173,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
   };
 
   return (
-    <div className="h-full overflow-y-auto px-4 py-6 sm:py-8 sm:px-8">
+    <div className="h-full overflow-y-auto px-4 py-6 sm:py-8 sm:px-8 pb-20 sm:pb-8">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header with Live Sync Status */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[var(--border-subtle)] pb-6">
