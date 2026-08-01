@@ -321,15 +321,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   return (
     <div className="flex h-full flex-col justify-between overflow-hidden bg-[var(--bg-main)]">
       {messages.length === 0 ? (
-        /* Symmetrical Spacious Landing (Mobile & Laptop Optimized) */
-        <div className="flex-1 flex flex-col justify-between p-3.5 py-3 sm:p-8 overflow-y-auto sm:overflow-hidden h-full">
-          <div className="mx-auto max-w-4xl w-full flex flex-col justify-between h-full my-auto gap-3 sm:gap-4">
+        /* Guaranteed Zero-Scroll Single-Viewport Landing */
+        <div className="flex-1 flex flex-col justify-between p-3 sm:p-8 overflow-hidden h-full">
+          <div className="mx-auto max-w-4xl w-full flex flex-col justify-between h-full my-auto gap-2 sm:gap-4">
             
             {/* Clean Welcome Hero Banner */}
-            <div className="rounded-2xl sm:rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-6 backdrop-blur-md shadow-lg space-y-3 sm:space-y-3.5 shrink-0">
-              <div className="flex flex-row items-center justify-between gap-3 sm:gap-4">
-                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                  <div className="relative h-13 w-13 sm:h-16 sm:w-16 overflow-hidden rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-md">
+            <div className="rounded-2xl sm:rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3 sm:p-6 backdrop-blur-md shadow-md space-y-2 sm:space-y-3.5 shrink-0">
+              <div className="flex flex-row items-center justify-between gap-2.5 sm:gap-4">
+                <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
+                  <div className="relative h-11 w-11 sm:h-16 sm:w-16 overflow-hidden rounded-xl sm:rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-sm">
                     <Image
                       src="/profile_photo.png"
                       alt="Arun Yadav"
@@ -342,16 +342,16 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
                   <div className="space-y-0.5 min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <h1 className="font-heading text-base sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
+                      <h1 className="font-heading text-sm sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
                         Welcome to ArunCore! 👋
                       </h1>
-                      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shadow-xs shrink-0">
+                      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shadow-xs shrink-0">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                         <span>Online</span>
                       </span>
                     </div>
 
-                    <p className="text-xs sm:text-sm font-bold text-[var(--accent-amber)] leading-tight">
+                    <p className="text-[11px] sm:text-sm font-bold text-[var(--accent-amber)] leading-tight truncate">
                       Arun Yadav • AI Systems Architect
                     </p>
                   </div>
@@ -359,27 +359,27 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
 
                 <button
                   onClick={openHandoffModal}
-                  className="flex items-center justify-center gap-1.5 rounded-xl bg-[var(--accent-green)] px-3 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold text-white shadow-md hover:opacity-90 transition-all shrink-0"
+                  className="flex items-center justify-center gap-1.5 rounded-xl bg-[var(--accent-green)] px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-sm font-bold text-white shadow-md hover:opacity-90 transition-all shrink-0"
                 >
-                  <PhoneCall className="h-4 w-4" />
+                  <PhoneCall className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   <span className="hidden sm:inline">Contact & Consult Arun</span>
                   <span className="sm:hidden">Contact</span>
                 </button>
               </div>
 
               {/* Clean Welcome Message */}
-              <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-3 sm:p-4 text-xs sm:text-sm text-[var(--text-main)] font-medium leading-relaxed">
-                <p className="font-extrabold text-xs sm:text-base text-[var(--text-main)] mb-1">
+              <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-2.5 sm:p-4 text-xs sm:text-sm text-[var(--text-main)] font-medium leading-relaxed">
+                <p className="font-extrabold text-xs sm:text-base text-[var(--text-main)] mb-0.5 sm:mb-1">
                   Explore Arun's AI Systems & Real-Time Data 🚀
                 </p>
-                <p className="text-[var(--text-muted)]">
+                <p className="text-[var(--text-muted)] leading-normal">
                   Hi! I am Arun's AI Digital Twin. Ask me anything about all of Arun's AI projects, live GitHub activity, medical & legal RAG engines, or how to hire Arun for custom AI software development!
                 </p>
               </div>
             </div>
 
-            {/* Suggested Questions Section Below Big Welcome Message */}
-            <div className="space-y-1.5 sm:space-y-2 shrink-0">
+            {/* Suggested Questions Section (2 Prompts on Mobile, 4 on Desktop) */}
+            <div className="space-y-1 sm:space-y-2 shrink-0">
               <div className="flex items-center justify-between px-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
                   <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
@@ -387,14 +387,31 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {starterPrompts.slice(0, 4).map((item, idx) => (
+              {/* Mobile View: 2 Compact Prompts */}
+              <div className="grid sm:hidden grid-cols-1 gap-1.5">
+                {starterPrompts.slice(0, 2).map((item, idx) => (
                   <button
                     key={idx}
                     onClick={() => onSendMessage(item.query)}
-                    className="group text-left flex items-center justify-between gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3.5 py-2.5 sm:px-4 sm:py-3 transition-all hover:border-[var(--accent-green)] hover:bg-[var(--bg-surface-hover)] active:scale-[0.99] shadow-xs"
+                    className="group text-left flex items-center justify-between gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-2 transition-all hover:border-[var(--accent-green)] active:scale-[0.99] shadow-xs"
                   >
-                    <span className="text-xs sm:text-sm text-[var(--text-main)] font-semibold truncate">
+                    <span className="text-xs text-[var(--text-main)] font-semibold truncate">
+                      "{item.query}"
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-green)] opacity-60 shrink-0" />
+                  </button>
+                ))}
+              </div>
+
+              {/* Desktop View: 4 Prompts */}
+              <div className="hidden sm:grid grid-cols-2 gap-2">
+                {starterPrompts.map((item, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => onSendMessage(item.query)}
+                    className="group text-left flex items-center justify-between gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-4 py-3 transition-all hover:border-[var(--accent-green)] hover:bg-[var(--bg-surface-hover)] active:scale-[0.99] shadow-xs"
+                  >
+                    <span className="text-sm text-[var(--text-main)] font-semibold truncate">
                       "{item.query}"
                     </span>
                     <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-green)] opacity-60 group-hover:opacity-100 transition-opacity shrink-0" />
@@ -404,9 +421,9 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             </div>
 
             {/* Input Bar with STT Microphone Button */}
-            <div className="shrink-0 pt-1">
+            <div className="shrink-0 pt-0.5 sm:pt-1">
               {isListening && (
-                <div className="mb-1.5 flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1 text-xs font-mono font-bold text-rose-600 animate-pulse">
+                <div className="mb-1 flex items-center justify-center gap-2 rounded-xl bg-rose-500/10 border border-rose-500/30 py-1 text-xs font-mono font-bold text-rose-600 animate-pulse">
                   <span className="h-2 w-2 rounded-full bg-rose-500 animate-ping" />
                   <span>Listening to your voice... Speak now!</span>
                 </div>
@@ -420,30 +437,30 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   onKeyDown={handleKeyDown}
                   placeholder={isListening ? "Listening..." : "Ask Arun's AI Assistant..."}
                   rows={1}
-                  className="flex-1 resize-none bg-transparent py-1 text-xs sm:text-base text-[var(--text-main)] placeholder-[var(--text-dim)] font-medium focus:outline-none max-h-24 min-h-[38px] sm:min-h-[40px]"
+                  className="flex-1 resize-none bg-transparent py-1 text-xs sm:text-base text-[var(--text-main)] placeholder-[var(--text-dim)] font-medium focus:outline-none max-h-24 min-h-[36px] sm:min-h-[40px]"
                 />
 
                 {/* Microphone STT Button */}
                 <button
                   onClick={handleToggleListening}
-                  className={`ml-1.5 sm:ml-2 flex h-9 w-9 items-center justify-center rounded-xl font-bold transition-all shadow-sm shrink-0 touch-manipulation ${
+                  className={`ml-1.5 sm:ml-2 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl font-bold transition-all shadow-sm shrink-0 touch-manipulation ${
                     isListening
                       ? "bg-rose-500 text-white animate-pulse"
                       : "bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)] text-[var(--text-main)] hover:border-[var(--border-accent)]"
                   }`}
                   title={isListening ? "Stop listening" : "Click to speak (Voice to text)"}
                 >
-                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  {isListening ? <MicOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Mic className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                 </button>
 
                 {/* Send Message Button */}
                 <button
                   onClick={handleSend}
                   disabled={!inputText.trim() || isStreaming}
-                  className="ml-1.5 sm:ml-2 flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--accent-green)] text-white font-bold transition-all hover:opacity-95 active:scale-95 disabled:opacity-30 shadow-md shrink-0 touch-manipulation"
+                  className="ml-1.5 sm:ml-2 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-[var(--accent-green)] text-white font-bold transition-all hover:opacity-95 active:scale-95 disabled:opacity-30 shadow-md shrink-0 touch-manipulation"
                   title="Send Message"
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
               </div>
 
