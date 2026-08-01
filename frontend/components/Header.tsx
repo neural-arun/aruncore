@@ -42,7 +42,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-main)]/90 backdrop-blur-md transition-colors duration-200">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-8">
+      <div className="mx-auto flex h-13 sm:h-16 max-w-7xl items-center justify-between px-3 sm:px-8">
         
         {/* Left Profile Identity */}
         <div className="flex items-center gap-3">
