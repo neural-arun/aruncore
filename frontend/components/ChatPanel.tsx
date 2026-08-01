@@ -322,12 +322,12 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
     <div className="flex h-full flex-col justify-between overflow-hidden bg-[var(--bg-main)]">
       {messages.length === 0 ? (
         /* Guaranteed Zero-Scroll Single-Viewport Landing */
-        <div className="flex-1 flex flex-col justify-between p-2.5 sm:p-8 overflow-hidden h-full">
-          <div className="mx-auto max-w-4xl w-full flex flex-col justify-between h-full gap-2 sm:gap-4">
+        <div className="flex-1 flex flex-col justify-between p-3 sm:p-8 overflow-hidden h-full">
+          <div className="mx-auto max-w-4xl w-full flex flex-col justify-between h-full gap-2.5 sm:gap-4">
             
-            {/* Clean Welcome Hero Banner */}
+            {/* Top Box: Super Short Welcome Card */}
             <div className="rounded-2xl sm:rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3 sm:p-6 backdrop-blur-md shadow-md space-y-2 sm:space-y-3.5 shrink-0">
-              <div className="flex flex-row items-center justify-between gap-2 sm:gap-4">
+              <div className="flex flex-row items-center justify-between gap-2.5 sm:gap-4">
                 <div className="flex items-center gap-2.5 sm:gap-4 min-w-0">
                   <div className="relative h-10 w-10 sm:h-16 sm:w-16 overflow-hidden rounded-xl sm:rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-sm">
                     <Image
@@ -341,18 +341,18 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   </div>
 
                   <div className="space-y-0.5 min-w-0">
-                    <div className="flex items-center gap-1 flex-wrap">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       <h1 className="font-heading text-xs sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
-                        Welcome to ArunCore! 👋
+                        Arun's AI Twin 👋
                       </h1>
-                      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-1.5 py-0.5 font-mono text-[9px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shadow-xs shrink-0">
+                      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 font-mono text-[9px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shadow-xs shrink-0">
                         <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                         <span>Online</span>
                       </span>
                     </div>
 
                     <p className="text-[10px] sm:text-sm font-bold text-[var(--accent-amber)] leading-tight truncate">
-                      Arun Yadav • AI Systems Architect
+                      AI Systems Architect • Healthcare & Education
                     </p>
                   </div>
                 </div>
@@ -367,18 +367,13 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 </button>
               </div>
 
-              {/* Clean Welcome Message */}
-              <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-2 sm:p-4 text-[11px] sm:text-sm text-[var(--text-main)] font-medium leading-normal">
-                <p className="font-extrabold text-[11px] sm:text-base text-[var(--text-main)] mb-0.5 sm:mb-1">
-                  Explore Arun's AI Systems & Real-Time Data 🚀
-                </p>
-                <p className="text-[var(--text-muted)] line-clamp-2 sm:line-clamp-none">
-                  Hi! I am Arun's AI Digital Twin. Ask me anything about Arun's AI projects, live GitHub activity, medical & legal RAG engines, or how to hire Arun!
-                </p>
+              {/* Super Short Welcome Text */}
+              <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-2 sm:p-4 text-[11px] sm:text-sm text-[var(--text-main)] font-medium leading-tight">
+                Hi! Ask me about Arun's 22+ AI systems, RAG architecture, or how to hire him!
               </div>
             </div>
 
-            {/* Suggested Questions Section (2 Prompts on Mobile, 4 on Desktop) */}
+            {/* Middle Box: 2-3 Word Question Suggestion Chips */}
             <div className="space-y-1 sm:space-y-2 shrink-0">
               <div className="flex items-center justify-between px-1">
                 <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1">
@@ -387,23 +382,28 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                 </span>
               </div>
 
-              {/* Mobile View: 2 Compact Prompts */}
-              <div className="grid sm:hidden grid-cols-1 gap-1">
-                {starterPrompts.slice(0, 2).map((item, idx) => (
+              {/* Mobile View: 2-3 Word Question Chips */}
+              <div className="grid sm:hidden grid-cols-2 gap-1.5">
+                {[
+                  { label: "🏥 Healthcare AI Tutors", query: starterPrompts[0].query },
+                  { label: "⚡ Zero-Hallucination RAG", query: starterPrompts[1].query },
+                  { label: "⚖️ Indian Legal RAG", query: starterPrompts[2].query },
+                  { label: "💼 Hire or Consult Arun", query: starterPrompts[3].query },
+                ].map((item, idx) => (
                   <button
                     key={idx}
                     onClick={() => onSendMessage(item.query)}
-                    className="group text-left flex items-center justify-between gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-1.5 transition-all hover:border-[var(--accent-green)] active:scale-[0.99] shadow-xs"
+                    className="group text-left flex items-center justify-between gap-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-2.5 py-2 transition-all hover:border-[var(--accent-green)] active:scale-[0.99] shadow-xs"
                   >
-                    <span className="text-[11px] text-[var(--text-main)] font-semibold truncate">
-                      "{item.query}"
+                    <span className="text-[11px] text-[var(--text-main)] font-bold truncate">
+                      {item.label}
                     </span>
                     <ArrowRight className="h-3 w-3 text-[var(--accent-green)] opacity-60 shrink-0" />
                   </button>
                 ))}
               </div>
 
-              {/* Desktop View: 4 Prompts */}
+              {/* Desktop View: Full 4 Question Cards (Unchanged) */}
               <div className="hidden sm:grid grid-cols-2 gap-2">
                 {starterPrompts.map((item, idx) => (
                   <button
