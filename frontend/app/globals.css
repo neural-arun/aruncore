@@ -1,45 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  /* Default Light Mode (High Contrast, Distinct Section Shades) */
-  --bg-main: #F4F2EB;
-  --bg-sidebar: #EAE7DF;
+  /* Ultra-Modern Light Mode (#F8F9FB background & Single Emerald Green Accent #10B981) */
+  --bg-main: #F8F9FB;
+  --bg-sidebar: #F1F4F9;
   --bg-surface: #FFFFFF;
-  --bg-surface-hover: #F0EEE6;
-  --bg-card: #F9F8F5;
-  --bg-card-hover: #EFECE4;
-  --border-subtle: #D3CEBF;
-  --border-accent: #257A52;
-  --text-main: #0C1E23;
-  --text-muted: #3B5257;
-  --text-dim: #657C81;
-  --accent-teal: #0F383E;
-  --accent-green: #257A52;
-  --accent-amber: #D97706;
+  --bg-surface-hover: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F1F5F9;
+  --border-subtle: #E2E8F0;
+  --border-accent: #10B981;
+  --text-main: #0F172A;
+  --text-muted: #475569;
+  --text-dim: #64748B;
+  --accent-teal: #10B981;
+  --accent-green: #10B981;
+  --accent-amber: #10B981;
   --input-bg: #FFFFFF;
-  --input-border: #1E4D40;
-  --input-shadow: 0 10px 25px -5px rgba(15, 56, 62, 0.08);
+  --input-border: #E2E8F0;
+  --input-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
 .dark {
-  /* Dark Obsidian Mode (Distinct Visual Depth) */
-  --bg-main: #070A12;
-  --bg-sidebar: #0B101D;
-  --bg-surface: #101728;
-  --bg-surface-hover: #19233B;
-  --bg-card: #141C30;
-  --bg-card-hover: #1E2A47;
-  --border-subtle: rgba(255, 255, 255, 0.12);
-  --border-accent: rgba(245, 158, 11, 0.4);
+  /* Dark Obsidian Mode (Single Emerald Accent) */
+  --bg-main: #090D16;
+  --bg-sidebar: #0E1424;
+  --bg-surface: #121A2D;
+  --bg-surface-hover: #1A243F;
+  --bg-card: #141D32;
+  --bg-card-hover: #1E2B49;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --border-accent: #10B981;
   --text-main: #F8FAFC;
   --text-muted: #94A3B8;
   --text-dim: #64748B;
-  --accent-teal: #38BDF8;
+  --accent-teal: #10B981;
   --accent-green: #10B981;
-  --accent-amber: #F59E0B;
-  --input-bg: #101728;
-  --input-border: rgba(255, 255, 255, 0.2);
-  --input-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+  --accent-amber: #10B981;
+  --input-bg: #121A2D;
+  --input-border: rgba(255, 255, 255, 0.15);
+  --input-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-slide {
+  animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 body {
