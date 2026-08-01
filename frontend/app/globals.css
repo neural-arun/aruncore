@@ -1,11 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  /* Default Light Mode (High Contrast & Clean Executive Feel) */
-  --bg-main: #F7F6F1;
+  /* Default Light Mode (High Contrast, Distinct Section Shades) */
+  --bg-main: #F4F2EB;
+  --bg-sidebar: #EAE7DF;
   --bg-surface: #FFFFFF;
   --bg-surface-hover: #F0EEE6;
-  --border-subtle: #D8D4C7;
+  --bg-card: #F9F8F5;
+  --bg-card-hover: #EFECE4;
+  --border-subtle: #D3CEBF;
   --border-accent: #257A52;
   --text-main: #0C1E23;
   --text-muted: #3B5257;
@@ -19,10 +22,13 @@
 }
 
 .dark {
-  /* Dark Obsidian Mode */
-  --bg-main: #090D16;
-  --bg-surface: #111726;
-  --bg-surface-hover: #192235;
+  /* Dark Obsidian Mode (Distinct Visual Depth) */
+  --bg-main: #070A12;
+  --bg-sidebar: #0B101D;
+  --bg-surface: #101728;
+  --bg-surface-hover: #19233B;
+  --bg-card: #141C30;
+  --bg-card-hover: #1E2A47;
   --border-subtle: rgba(255, 255, 255, 0.12);
   --border-accent: rgba(245, 158, 11, 0.4);
   --text-main: #F8FAFC;
@@ -31,7 +37,7 @@
   --accent-teal: #38BDF8;
   --accent-green: #10B981;
   --accent-amber: #F59E0B;
-  --input-bg: #111726;
+  --input-bg: #101728;
   --input-border: rgba(255, 255, 255, 0.2);
   --input-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
 }

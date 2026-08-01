@@ -86,7 +86,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="hidden lg:flex w-80 shrink-0 h-full flex-col gap-4 overflow-y-auto p-4 pb-20 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-main)] transition-colors duration-200 shadow-sm custom-scrollbar">
+    <aside className="hidden lg:flex w-80 shrink-0 h-full flex-col gap-4 overflow-y-auto p-4 pb-20 border-r border-[var(--border-subtle)] bg-[var(--bg-sidebar)] text-[var(--text-main)] transition-colors duration-200 shadow-sm custom-scrollbar">
       
       {/* Profile Header & Welcome Card */}
       <div className="relative flex flex-col gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-sm">
@@ -119,17 +119,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
               Stateful RAG • Zero-Hallucination
             </p>
           </div>
-        </div>
-
-        {/* Awesome Welcome Message Banner */}
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs leading-relaxed text-[var(--text-main)]">
-          <p className="font-bold text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5 mb-1">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-            <span>Welcome to ArunCore!</span>
-          </p>
-          <p className="text-[11px] text-[var(--text-dim)] font-medium">
-            I am Arun's AI Digital Twin. Ask me about Arun's 22+ AI systems, RAG architecture, or how to hire him for your team!
-          </p>
         </div>
 
         {/* Social Links */}

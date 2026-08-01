@@ -325,87 +325,78 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
         <div className="flex-1 flex flex-col justify-center px-3 py-2 sm:px-8 sm:py-3 overflow-y-auto sm:overflow-hidden">
           <div className="mx-auto max-w-4xl w-full flex flex-col justify-center gap-3 sm:gap-4 my-auto">
             
-            {/* Hero Card */}
-            <div className="rounded-2xl border-2 border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3.5 sm:p-6 backdrop-blur-md shadow-lg space-y-3 sm:space-y-3.5">
-              <div className="flex flex-row items-center sm:items-center gap-3 sm:gap-4">
-                <div className="relative h-14 w-14 sm:h-20 sm:w-20 overflow-hidden rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-md">
-                  <Image
-                    src="/profile_photo.png"
-                    alt="Arun Yadav"
-                    width={80}
-                    height={80}
-                    className="h-full w-full object-cover"
-                    priority
-                  />
-                </div>
-
-                <div className="space-y-0.5 sm:space-y-1 flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h1 className="font-heading text-xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
-                      Arun Yadav
-                    </h1>
-                    <span className="rounded-md border border-[var(--border-accent)] bg-[var(--bg-main)] px-2 py-0.5 font-mono text-[10px] sm:text-xs font-semibold text-[var(--accent-green)] flex items-center gap-1.5">
-                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                      <span>Arun's Assistant Online</span>
-                    </span>
+            {/* Big Clean Welcome Hero Banner */}
+            <div className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-6 backdrop-blur-md shadow-xl space-y-3.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                <div className="flex items-center gap-3.5 sm:gap-4">
+                  <div className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-2xl border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-md">
+                    <Image
+                      src="/profile_photo.png"
+                      alt="Arun Yadav"
+                      width={64}
+                      height={64}
+                      className="h-full w-full object-cover"
+                      priority
+                    />
                   </div>
 
-                  <p className="text-xs sm:text-base font-bold text-[var(--accent-amber)] leading-tight">
-                    AI Systems Architect • Healthcare & Education
-                  </p>
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h1 className="font-heading text-lg sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
+                        Welcome to ArunCore! 👋
+                      </h1>
+                      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 shadow-xs">
+                        <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span>AI Assistant Online</span>
+                      </span>
+                    </div>
 
-                  <p className="hidden sm:block text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-medium">
-                    I build AI-powered software systems that automate complex workflows, structure medical knowledge, and help organizations scale expertise.
-                  </p>
+                    <p className="text-xs sm:text-sm font-bold text-[var(--accent-amber)] leading-tight">
+                      Arun Yadav • AI Systems Architect (Healthcare & Education)
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <p className="sm:hidden text-xs text-[var(--text-muted)] leading-relaxed font-medium">
-                I build AI software systems that automate complex workflows, structure knowledge, and scale expertise.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 pt-2.5 sm:pt-3 border-t border-[var(--border-subtle)]">
                 <button
                   onClick={openHandoffModal}
-                  className="flex items-center justify-center gap-2 rounded-xl bg-[var(--accent-green)] px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm hover:opacity-90 transition-all w-full sm:w-auto"
+                  className="flex items-center justify-center gap-2 rounded-xl bg-[var(--accent-green)] px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-md hover:opacity-90 transition-all shrink-0 w-full sm:w-auto"
                 >
                   <PhoneCall className="h-4 w-4" />
                   <span>Contact & Consult Arun</span>
                 </button>
+              </div>
 
-                <a
-                  href="mailto:neural.arun.dev@gmail.com"
-                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-main)] px-3.5 py-2 text-xs sm:text-sm font-bold text-[var(--text-main)] hover:border-[var(--border-accent)] transition-all w-full sm:w-auto"
-                >
-                  <span>neural.arun.dev@gmail.com</span>
-                </a>
+              {/* Big Clean Welcome Message */}
+              <div className="rounded-2xl border border-emerald-500/25 bg-emerald-500/5 p-3.5 sm:p-4 text-xs sm:text-sm text-[var(--text-main)] font-medium leading-relaxed">
+                <p className="font-extrabold text-sm sm:text-base text-[var(--text-main)] mb-1">
+                  Explore Arun's AI Systems & Real-Time Data 🚀
+                </p>
+                <p className="text-[var(--text-muted)]">
+                  Hi! I am Arun's AI Digital Twin. Ask me anything about all of Arun's AI projects, live GitHub activity, medical & legal RAG engines, or how to hire Arun for custom AI software development!
+                </p>
               </div>
             </div>
 
-            {/* 2x2 Question Grid */}
-            <div className="space-y-1.5 sm:space-y-2">
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] px-1">
-                Click to Ask Arun's AI Assistant
-              </span>
+            {/* Suggested Questions Section Below Big Welcome Message */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
+                  Suggested Questions You Can Ask
+                </span>
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {starterPrompts.map((item, idx) => (
                   <button
                     key={idx}
                     onClick={() => onSendMessage(item.query)}
-                    className="group text-left rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-3 sm:p-4 transition-all hover:border-[var(--accent-green)] hover:bg-[var(--bg-surface-hover)] hover:shadow-sm active:scale-[0.99]"
+                    className="group text-left flex items-center justify-between gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3.5 py-2.5 transition-all hover:border-[var(--accent-green)] hover:bg-[var(--bg-surface-hover)] active:scale-[0.99] shadow-xs"
                   >
-                    <div className="flex items-center justify-between gap-2 text-xs sm:text-sm font-bold text-[var(--accent-green)] mb-0.5 sm:mb-1">
-                      <div className="flex items-center gap-1.5 sm:gap-2">
-                        <Sparkles className="h-3.5 w-3.5 shrink-0" />
-                        <span className="line-clamp-1">{item.title}</span>
-                      </div>
-                      <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 hidden sm:block" />
-                    </div>
-                    <p className="text-xs sm:text-sm text-[var(--text-main)] font-medium leading-relaxed line-clamp-2">
+                    <span className="text-xs sm:text-sm text-[var(--text-main)] font-semibold truncate">
                       "{item.query}"
-                    </p>
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-green)] opacity-60 group-hover:opacity-100 transition-opacity shrink-0" />
                   </button>
                 ))}
               </div>

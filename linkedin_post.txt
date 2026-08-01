@@ -1,10 +1,10 @@
 Most AI chatbots fail because they lose high-ticket leads when a founder is away.
 I built 𝗔𝗿𝘂𝗻𝗖𝗼𝗿𝗲 𝘃𝟮.𝟬 — a production-grade 𝟯-𝗪𝗮𝘆 𝗟𝗶𝘃𝗲 𝗖𝗵𝗮𝘁 𝗘𝗻𝗴𝗶𝗻𝗲, 𝗜𝗻𝘁𝗲𝗿𝗮𝗰𝘁𝗶𝘃𝗲 𝗔𝗜 𝗣𝗼𝗿𝘁𝗳𝗼𝗹𝗶𝗼, and 𝟭-𝗖𝗹𝗶𝗰𝗸 𝗧𝗲𝗹𝗲𝗴𝗿𝗮𝗺 𝗛𝘂𝗺𝗮𝗻 𝗧𝗮𝗸𝗲𝗼𝘃𝗲𝗿 🚀
-🌐 Test the live system & portfolio here: https://aruncore.vercel.app (GitHub: https://github.com/neural-arun/ArunCore)
+🌐 Test the live system & portfolio here: https://aruncore.vercel.app
 
 Here is how it works:
 
-📂 𝗜𝗻𝘁𝗲𝗿𝗮𝗰𝘁𝗶𝘃𝗲 𝗔𝗜 𝗣𝗼𝗿𝘁𝗳𝗼𝗹𝗶𝗼: It functions as my complete personal engineering portfolio, showcasing 22+ AI & software projects, architecture specs, and live GitHub commit activity in real-time.
+📂 𝗜𝗻𝘁𝗲𝗿𝗮𝗰𝘁𝗶𝘃𝗲 𝗔𝗜 𝗣𝗼𝗿𝘁𝗳𝗼𝗹𝗶𝗼: It functions as my complete personal engineering portfolio, showcasing 10+ AI & software projects, architecture specs, and live GitHub commit activity in real-time.
 
 ⚡ 𝟮𝟰/𝟳 𝗜𝗻𝘀𝘁𝗮𝗻𝘁 𝗔𝗜 𝗧𝘄𝗶𝗻: Responds to visitor queries in <1 second, leading with real-world business value & problem-solving impact.
 
