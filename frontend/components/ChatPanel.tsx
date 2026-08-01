@@ -518,7 +518,19 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                         </div>
                       ) : (
                         <>
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              a: ({ node, ...props }) => (
+                                <a
+                                  {...props}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-emerald-600 dark:text-emerald-400 font-bold underline hover:opacity-80 transition-opacity"
+                                />
+                              ),
+                            }}
+                          >
                             {msg.text}
                           </ReactMarkdown>
                           {msg.isStreaming && (
