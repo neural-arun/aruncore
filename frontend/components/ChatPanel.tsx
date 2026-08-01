@@ -363,8 +363,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   className="flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-3.5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition-all shrink-0 active:scale-95"
                 >
                   <Briefcase className="h-4 w-4" />
-                  <span className="hidden sm:inline">Hire Arun</span>
-                  <span className="sm:hidden">Hire</span>
+                  <span className="hidden sm:inline">Consult Arun</span>
+                  <span className="sm:hidden">Consult</span>
                 </button>
               </div>
 
@@ -404,7 +404,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   },
                   {
                     icon: <Briefcase className="h-4 w-4 text-emerald-500 shrink-0" />,
-                    label: "Work with Arun",
+                    label: "Consult with Arun",
                     query: starterPrompts[3].query,
                   },
                 ].map((item, idx) => (

@@ -29,8 +29,14 @@ export const HandoffModal: React.FC<HandoffModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4">
-      <div className="relative w-full max-w-md rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 sm:p-8 text-[var(--text-main)] shadow-2xl">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4 cursor-pointer"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-md rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 sm:p-8 text-[var(--text-main)] shadow-2xl cursor-default"
+      >
         <button
           onClick={onClose}
           className="absolute right-5 top-5 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors p-1"
@@ -53,6 +59,7 @@ export const HandoffModal: React.FC<HandoffModalProps> = ({
             {/* Phone / Call */}
             <a
               href="tel:+918881109193"
+              onClick={onClose}
               className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-green)] hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-3.5">
@@ -72,6 +79,7 @@ export const HandoffModal: React.FC<HandoffModalProps> = ({
               href="https://wa.me/918881109193"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={onClose}
               className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-green)] hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-3.5">
@@ -89,6 +97,7 @@ export const HandoffModal: React.FC<HandoffModalProps> = ({
             {/* Email */}
             <a
               href="mailto:neural.arun.dev@gmail.com"
+              onClick={onClose}
               className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-amber)] hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-3.5">
@@ -108,6 +117,7 @@ export const HandoffModal: React.FC<HandoffModalProps> = ({
               href="https://linkedin.com/in/neuralarun"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={onClose}
               className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-teal)] hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-3.5">
