@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { MessageCircle, Sparkles, RefreshCw, Layers, ShieldCheck, HeartPulse, GraduationCap, Scale, Briefcase, Bot, FolderGit2, User, PhoneCall, ChevronRight } from "lucide-react";
+import { Sparkles, RefreshCw, Layers, ShieldCheck, HeartPulse, Scale, Briefcase, Bot, FolderGit2, User, PhoneCall, ChevronRight, MessageSquare, Compass } from "lucide-react";
 import { ActiveTab } from "../lib/types";
 
 // Inline Brand SVGs for bulletproof icon rendering
@@ -62,54 +62,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
   ];
 
-  const promptCategories = [
+  const quickPrompts = [
     {
-      category: "Healthcare & MedTech",
-      icon: <HeartPulse className="h-3.5 w-3.5 text-rose-500" />,
-      prompts: [
-        "How do you build trusted AI software for healthcare?",
-        "Tell me about your Clinical Patient Task Manager.",
-      ],
+      text: "How do you build trusted AI software for healthcare?",
+      icon: <HeartPulse className="h-3.5 w-3.5 text-rose-500 shrink-0" />,
+      category: "Healthcare",
     },
     {
-      category: "RAG & AI Architecture",
-      icon: <Layers className="h-3.5 w-3.5 text-amber-500" />,
-      prompts: [
-        "Explain your zero-hallucination hybrid RAG architecture.",
-        "How does ArunCore re-rank chunks using Cohere?",
-      ],
+      text: "Explain your zero-hallucination hybrid RAG architecture.",
+      icon: <Layers className="h-3.5 w-3.5 text-amber-500 shrink-0" />,
+      category: "RAG Architecture",
     },
     {
-      category: "Legal & Professional AI",
-      icon: <Scale className="h-3.5 w-3.5 text-indigo-500" />,
-      prompts: [
-        "How did you build the Indian Legal RAG System?",
-        "What is your approach to document-aware chunking?",
-      ],
+      text: "Tell me about the Indian Legal RAG System.",
+      icon: <Scale className="h-3.5 w-3.5 text-indigo-500 shrink-0" />,
+      category: "Legal AI",
     },
     {
-      category: "Education & Learning",
-      icon: <GraduationCap className="h-3.5 w-3.5 text-cyan-500" />,
-      prompts: [
-        "Tell me about NEET Bot & clinical learning systems.",
-        "How does your YouTube Notes Extractor work?",
-      ],
-    },
-    {
-      category: "Working With Arun",
-      icon: <Briefcase className="h-3.5 w-3.5 text-emerald-500" />,
-      prompts: [
-        "What are your core engineering principles?",
-        "How can I work with or consult Arun for a project?",
-      ],
+      text: "How can I hire or consult with Arun for a project?",
+      icon: <Briefcase className="h-3.5 w-3.5 text-emerald-500 shrink-0" />,
+      category: "Collaboration",
     },
   ];
 
   return (
-    <aside className="hidden lg:flex w-80 shrink-0 h-full flex-col gap-4 overflow-y-auto p-4 pb-24 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-main)] transition-colors duration-200 shadow-sm custom-scrollbar">
-      {/* Profile Header Card */}
+    <aside className="hidden lg:flex w-80 shrink-0 h-full flex-col gap-4 overflow-y-auto p-4 pb-20 border-r border-[var(--border-subtle)] bg-[var(--bg-surface)] text-[var(--text-main)] transition-colors duration-200 shadow-sm custom-scrollbar">
+      
+      {/* Profile Header & Welcome Card */}
       <div className="relative flex flex-col gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-sm">
-        <div className="flex items-center gap-3.5">
+        <div className="flex items-center gap-3">
           <div className="relative shrink-0">
             <div className="h-12 w-12 overflow-hidden rounded-full border-2 border-emerald-500/40 bg-slate-100 dark:bg-slate-800 shadow-sm">
               <Image
@@ -140,8 +121,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
+        {/* Awesome Welcome Message Banner */}
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs leading-relaxed text-[var(--text-main)]">
+          <p className="font-bold text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5 mb-1">
+            <Sparkles className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+            <span>Welcome to ArunCore!</span>
+          </p>
+          <p className="text-[11px] text-[var(--text-dim)] font-medium">
+            I am Arun's AI Digital Twin. Ask me about Arun's 22+ AI systems, RAG architecture, or how to hire him for your team!
+          </p>
+        </div>
+
         {/* Social Links */}
-        <div className="flex items-center justify-between border-t border-[var(--border-subtle)] pt-3">
+        <div className="flex items-center justify-between border-t border-[var(--border-subtle)] pt-2.5">
           <a
             href="https://github.com/neural-arun"
             target="_blank"
@@ -174,7 +166,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Main Laptop Sidebar Navigation Section */}
+      {/* Laptop Sidebar Navigation Section */}
       <div className="flex flex-col gap-1.5">
         <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-dim)] px-2">
           Navigation
@@ -224,12 +216,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
       </div>
 
-      {/* Suggested Prompts Section */}
-      <div className="flex flex-col gap-2.5 mt-2 pt-3 border-t border-[var(--border-subtle)]">
+      {/* Compact Quick Questions Section */}
+      <div className="flex flex-col gap-2 pt-3 border-t border-[var(--border-subtle)]">
         <div className="flex items-center justify-between px-1">
           <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
-            Suggested Questions
+            <Compass className="h-3.5 w-3.5 text-emerald-500" />
+            Quick Questions
           </span>
           {messageCount > 0 && (
             <button
@@ -243,28 +235,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
         </div>
 
-        <div className="flex flex-col gap-2.5">
-          {promptCategories.map((cat, idx) => (
-            <div key={idx} className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--text-main)] mb-1.5">
-                {cat.icon}
-                <span>{cat.category}</span>
+        <div className="flex flex-col gap-1.5">
+          {quickPrompts.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                setActiveTab("chat");
+                onSelectPrompt(item.text);
+              }}
+              className="group flex items-start gap-2 text-left p-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:border-emerald-500/40 hover:bg-emerald-500/10 transition-all text-xs text-[var(--text-main)] font-medium leading-snug"
+            >
+              {item.icon}
+              <div className="flex-1 min-w-0">
+                <span className="block text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-0.5">
+                  {item.category}
+                </span>
+                <span className="group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
+                  "{item.text}"
+                </span>
               </div>
-              <div className="flex flex-col gap-1">
-                {cat.prompts.map((p, pIdx) => (
-                  <button
-                    key={pIdx}
-                    onClick={() => {
-                      setActiveTab("chat");
-                      onSelectPrompt(p);
-                    }}
-                    className="text-left text-[11px] text-[var(--text-dim)] hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-500/10 border border-transparent hover:border-emerald-500/20 rounded-lg p-1.5 transition-all leading-snug font-medium"
-                  >
-                    "{p}"
-                  </button>
-                ))}
-              </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
