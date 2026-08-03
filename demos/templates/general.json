@@ -1,0 +1,297 @@
+{
+  "client_id": "{{TUTOR_ID}}",
+  "name": "{{TUTOR_FULL_NAME}}",
+  "role": "{{TUTOR_PRIMARY_ROLE_TAGLINE}}",
+  "title": "{{TUTOR_AI_ASSISTANT_TITLE}}",
+  "subtitle": "{{TUTOR_SUBTITLE_HIGHLIGHTS}}",
+  "avatar": "/{{TUTOR_ID}}_photo.png",
+  "cta_text": "Consult {{TUTOR_FIRST_NAME}}",
+  "welcome_message": "Hi! I'm {{TUTOR_FIRST_NAME}}'s AI Advisor. I can explain {{TUTOR_FIRST_NAME}}'s courses, recommend the right program for your skill level, or connect you directly for 1-on-1 consultation!",
+  "about_text": "I'm {{TUTOR_FULL_NAME}}. {{TUTOR_SHORT_BIO_PARAGRAPH}}",
+  "tab_label": "Courses",
+  "projects_tab_label": "Courses",
+  "about_tab_label": "About {{TUTOR_FIRST_NAME}}",
+
+  "client_metadata": {
+    "full_name": "{{TUTOR_FULL_NAME}}",
+    "professional_title": "{{TUTOR_PRIMARY_ROLE_TAGLINE}}",
+    "niche": "{{TUTOR_NICHE_EXPERTISE}}",
+    "avatar_url": "/{{TUTOR_ID}}_photo.png",
+    "favicon_url": "https://{{TUTOR_DOMAIN}}/favicon.ico",
+    "domain_url": "https://{{TUTOR_DOMAIN}}/"
+  },
+
+  "theme_design_system": {
+    "mode": "light",
+    "brand_colors": {
+      "primary_green": "{{BRAND_PRIMARY_HEX}}",
+      "primary_hover": "{{BRAND_HOVER_HEX}}",
+      "accent_emerald": "{{BRAND_ACCENT_HEX}}",
+      "accent_amber": "#f59e0b",
+      "bg_main": "#ffffff",
+      "bg_sidebar": "#f8fafc",
+      "bg_card": "#ffffff",
+      "border_subtle": "#cbd5e1",
+      "text_main": "#0f172a",
+      "text_muted": "#334155",
+      "text_dim": "#64748b"
+    },
+    "custom_css_variables": {
+      "--accent-green": "{{BRAND_PRIMARY_HEX}}",
+      "--accent-green-hover": "{{BRAND_HOVER_HEX}}",
+      "--accent-teal": "{{BRAND_PRIMARY_HEX}}",
+      "--border-accent": "{{BRAND_BORDER_ACCENT_RGBA}}",
+      "--bg-accent-soft": "{{BRAND_BG_ACCENT_SOFT_RGBA}}",
+      "--bg-main": "#ffffff",
+      "--bg-sidebar": "#f8fafc"
+    }
+  },
+
+  "icon_registry_dictionary": {
+    "available_system_icons": {
+      "heart": { "type": "lucide", "name": "HeartPulse", "color_class": "text-rose-500", "emoji": "❤️" },
+      "layers": { "type": "lucide", "name": "Layers", "color_class": "text-amber-500", "emoji": "🥞" },
+      "scale": { "type": "lucide", "name": "Scale", "color_class": "text-indigo-500", "emoji": "🎓" },
+      "briefcase": { "type": "lucide", "name": "Briefcase", "color_class": "text-teal-500", "emoji": "💼" },
+      "bot": { "type": "lucide", "name": "Bot", "color_class": "text-teal-500", "emoji": "🤖" },
+      "folder": { "type": "lucide", "name": "FolderGit2", "color_class": "text-teal-500", "emoji": "📚" },
+      "user": { "type": "lucide", "name": "UserCheck", "color_class": "text-teal-500", "emoji": "👨‍🏫" },
+      "phone": { "type": "lucide", "name": "PhoneCall", "color_class": "text-teal-500", "emoji": "📞" },
+      "shield": { "type": "lucide", "name": "ShieldCheck", "color_class": "text-teal-500", "emoji": "🛡️" },
+      "sparkles": { "type": "lucide", "name": "Sparkles", "color_class": "text-teal-500", "emoji": "✨" },
+      "compass": { "type": "lucide", "name": "Compass", "color_class": "text-teal-500", "emoji": "🧭" }
+    },
+    "brand_social_icons": {
+      "github": { "type": "svg", "name": "GithubIcon", "emoji": "🐙" },
+      "linkedin": { "type": "svg", "name": "LinkedinIcon", "emoji": "💼" },
+      "x": { "type": "svg", "name": "XIcon", "emoji": "𝕏" },
+      "whatsapp": { "type": "svg", "name": "WhatsAppIcon", "emoji": "💬" },
+      "youtube": { "type": "svg", "name": "YouTubeIcon", "emoji": "▶️" },
+      "udemy": { "type": "svg", "name": "UdemyIcon", "emoji": "🎓" },
+      "instagram": { "type": "svg", "name": "InstagramIcon", "emoji": "📸" },
+      "website": { "type": "svg", "name": "GlobeIcon", "emoji": "🌐" }
+    }
+  },
+
+  "socials": [
+    { "name": "Udemy Profile", "url": "https://www.udemy.com/user/{{TUTOR_UDEMY_USERNAME}}/", "icon_key": "udemy", "symbol_emoji": "🎓" },
+    { "name": "LinkedIn", "url": "https://www.linkedin.com/in/{{TUTOR_LINKEDIN_USERNAME}}/", "icon_key": "linkedin", "symbol_emoji": "💼" },
+    { "name": "Twitter / X", "url": "https://x.com/{{TUTOR_X_USERNAME}}", "icon_key": "x", "symbol_emoji": "𝕏" },
+    { "name": "Personal Site", "url": "https://{{TUTOR_DOMAIN}}/", "icon_key": "website", "symbol_emoji": "🌐" }
+  ],
+
+  "suggested_questions": [
+    "{{SUGGESTED_QUESTION_1}}",
+    "{{SUGGESTED_QUESTION_2}}",
+    "{{SUGGESTED_QUESTION_3}}",
+    "{{SUGGESTED_QUESTION_4}}"
+  ],
+
+  "sidebar_questions": [
+    "{{SIDEBAR_QUESTION_1}}",
+    "{{SIDEBAR_QUESTION_2}}",
+    "{{SIDEBAR_QUESTION_3}}",
+    "{{SIDEBAR_QUESTION_4}}"
+  ],
+
+  "courses": [
+    {
+      "id": "{{COURSE_1_ID}}",
+      "title": "{{COURSE_1_TITLE}}",
+      "subtitle": "{{COURSE_1_SUBTITLE}}",
+      "description": "{{COURSE_1_DESCRIPTION}}",
+      "price": "{{COURSE_1_PRICE}}",
+      "target_audience": "{{COURSE_1_TARGET_AUDIENCE}}",
+      "outcomes": "{{COURSE_1_OUTCOMES}}",
+      "link": "{{COURSE_1_LINK}}"
+    }
+  ],
+
+  "contact": {
+    "phone": "{{TUTOR_PHONE}}",
+    "whatsapp": "https://wa.me/{{TUTOR_WHATSAPP_NUMBER}}",
+    "email": "{{TUTOR_EMAIL}}",
+    "website": "https://{{TUTOR_DOMAIN}}/"
+  },
+
+  "frontend_ui_dictionary": {
+    "header": {
+      "profile_name": "{{TUTOR_FULL_NAME}}",
+      "profile_badge": "AI Advisor",
+      "nav_tabs": {
+        "chat": { "label": "AI Advisor", "icon_key": "bot" },
+        "projects": { "label": "Courses", "icon_key": "folder" },
+        "about": { "label": "About {{TUTOR_FIRST_NAME}}", "icon_key": "user" }
+      },
+      "cta_button": { "text": "Consult {{TUTOR_FIRST_NAME}}", "icon_key": "phone" },
+      "social_links": [
+        { "id": "udemy", "label": "Udemy Profile", "url": "https://www.udemy.com/user/{{TUTOR_UDEMY_USERNAME}}/", "icon_key": "udemy" },
+        { "id": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/{{TUTOR_LINKEDIN_USERNAME}}/", "icon_key": "linkedin" },
+        { "id": "x", "label": "X / Twitter", "url": "https://x.com/{{TUTOR_X_USERNAME}}", "icon_key": "x" },
+        { "id": "website", "label": "Personal Site", "url": "https://{{TUTOR_DOMAIN}}/", "icon_key": "website" }
+      ]
+    },
+
+    "sidebar": {
+      "profile_card": {
+        "name": "{{TUTOR_FULL_NAME}}",
+        "title": "{{TUTOR_PRIMARY_ROLE_TAGLINE}}",
+        "sub_badge": "{{TUTOR_HIGHEST_STAT_BADGE}}",
+        "sub_badge_icon_key": "shield",
+        "status_dot": "Online"
+      },
+      "social_links": [
+        { "id": "udemy", "label": "Udemy Profile", "url": "https://www.udemy.com/user/{{TUTOR_UDEMY_USERNAME}}/", "icon_key": "udemy" },
+        { "id": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/{{TUTOR_LINKEDIN_USERNAME}}/", "icon_key": "linkedin" },
+        { "id": "x", "label": "X / Twitter", "url": "https://x.com/{{TUTOR_X_USERNAME}}", "icon_key": "x" }
+      ],
+      "navigation": {
+        "section_heading": "Navigation",
+        "items": [
+          { "id": "chat", "label": "AI Advisor", "description": "Interactive AI Assistant for {{TUTOR_FIRST_NAME}}'s Courses", "icon_key": "bot" },
+          { "id": "projects", "label": "Courses", "description": "Flagship Masterclasses & Programs", "icon_key": "folder" },
+          { "id": "manifesto", "label": "About {{TUTOR_FULL_NAME}}", "description": "Background, Experience & Principles", "icon_key": "user" }
+        ]
+      },
+      "contact_button": {
+        "title": "Consult with {{TUTOR_FIRST_NAME}}",
+        "subtitle": "1-on-1 Mentoring & Corporate Training",
+        "icon_key": "phone"
+      },
+      "quick_questions": {
+        "heading": "Quick Questions",
+        "icon_key": "compass",
+        "prompts": [
+          { "category": "Beginners", "text": "{{SIDEBAR_QUESTION_1}}", "icon_key": "scale", "symbol_emoji": "🎓" },
+          { "category": "Enterprise", "text": "{{SIDEBAR_QUESTION_2}}", "icon_key": "briefcase", "symbol_emoji": "💼" },
+          { "category": "3-Way Chat", "text": "{{SIDEBAR_QUESTION_3}}", "icon_key": "bot", "symbol_emoji": "💬" },
+          { "category": "Corporate", "text": "{{SIDEBAR_QUESTION_4}}", "icon_key": "layers", "symbol_emoji": "🏢" }
+        ]
+      }
+    },
+
+    "chat_panel": {
+      "hero_card": {
+        "assistant_title": "{{TUTOR_FIRST_NAME}}'s AI Advisor",
+        "status_badge": "Online",
+        "role_subtitle": "{{TUTOR_PRIMARY_ROLE_TAGLINE}}",
+        "cta_button_text": "Consult {{TUTOR_FIRST_NAME}}",
+        "cta_icon_key": "briefcase",
+        "welcome_paragraph": "Hi! I'm {{TUTOR_FIRST_NAME}}'s AI Advisor. I can explain {{TUTOR_FIRST_NAME}}'s courses, recommend the right program for your skill level, or connect you directly for 1-on-1 consultation!"
+      },
+      "suggested_questions_section": {
+        "heading": "Suggested Questions",
+        "heading_icon_key": "sparkles",
+        "chips": [
+          { "id": "q1", "label": "Course Overview", "query": "{{SUGGESTED_QUESTION_1}}", "icon_key": "scale", "symbol_emoji": "🎓" },
+          { "id": "q2", "label": "Hands-on Projects", "query": "{{SUGGESTED_QUESTION_2}}", "icon_key": "layers", "symbol_emoji": "🚀" },
+          { "id": "q3", "label": "Certificates & Access", "query": "{{SUGGESTED_QUESTION_3}}", "icon_key": "shield", "symbol_emoji": "📜" },
+          { "id": "q4", "label": "Consulting & Mentoring", "query": "{{SUGGESTED_QUESTION_4}}", "icon_key": "briefcase", "symbol_emoji": "📞" }
+        ]
+      },
+      "input_bar": {
+        "placeholder": "Ask {{TUTOR_FIRST_NAME}}'s AI Advisor...",
+        "mic_listening_notice": "Listening to your voice... Speak now!",
+        "keyboard_hint": "Press Enter to send or use 🎙️ Mic",
+        "clear_button_text": "Clear conversation",
+        "admin_notice": "🟢 LOGGED IN AS REAL {{TUTOR_FULL_NAME_UPPER}} — LIVE 3-WAY CHAT ROOM",
+        "admin_input_placeholder": "Type live response or command (/answer, /release)..."
+      }
+    },
+
+    "projects_view": {
+      "header_title": "{{TUTOR_FULL_NAME}}'s Courses",
+      "header_subtitle": "Browse top-rated courses and programs taught by {{TUTOR_FULL_NAME}}.",
+      "search_placeholder": "Search course topic...",
+      "categories": ["All", "Featured", "Masterclasses", "Corporate Training"],
+      "sort_options": {
+        "recent": "Featured",
+        "stars": "Most Enrolled"
+      },
+      "card_labels": {
+        "ask_twin_button": "Ask Advisor",
+        "view_github_button": "View Syllabus",
+        "live_demo_button": "Enroll Now"
+      }
+    },
+
+    "about_view": {
+      "full_name": "{{TUTOR_FULL_NAME}}",
+      "tagline": "{{TUTOR_PRIMARY_ROLE_TAGLINE}}",
+      "bio_paragraphs": [
+        "{{TUTOR_BIO_PARAGRAPH_1}}",
+        "{{TUTOR_BIO_PARAGRAPH_2}}",
+        "{{TUTOR_BIO_PARAGRAPH_3}}"
+      ],
+      "closing_callout": "Looking for 1-on-1 strategy consultation or custom corporate training for your team? Click Consult {{TUTOR_FIRST_NAME}} to connect directly!"
+    },
+
+    "contact_modal": {
+      "title": "Connect with {{TUTOR_FULL_NAME}}",
+      "description": "Reach out directly for corporate training, strategy consultation, or course questions.",
+      "channels": [
+        { "id": "phone", "label": "Direct Call / Office", "value": "{{TUTOR_PHONE}}", "url": "tel:{{TUTOR_PHONE_RAW}}", "icon_key": "phone" },
+        { "id": "whatsapp", "label": "WhatsApp Direct", "value": "{{TUTOR_PHONE}}", "url": "https://wa.me/{{TUTOR_WHATSAPP_NUMBER}}", "icon_key": "whatsapp" },
+        { "id": "email", "label": "Email Address", "value": "{{TUTOR_EMAIL}}", "url": "mailto:{{TUTOR_EMAIL}}", "icon_key": "email" },
+        { "id": "website", "label": "Personal Website", "value": "{{TUTOR_DOMAIN}}", "url": "https://{{TUTOR_DOMAIN}}/", "icon_key": "website" }
+      ]
+    },
+
+    "mobile_nav": {
+      "tabs": {
+        "chat": { "label": "AI Advisor", "icon_key": "bot" },
+        "projects": { "label": "Courses", "icon_key": "folder" },
+        "about": { "label": "About", "icon_key": "user" },
+        "contact": { "label": "Contact", "icon_key": "phone" }
+      }
+    }
+  },
+
+  "backend_llm_configuration": {
+    "model_settings": {
+      "primary_model": "gpt-4o-mini",
+      "summary_model": "gpt-4.1-nano",
+      "temperature": 0.3,
+      "max_scratchpad_iterations": 5
+    },
+
+    "system_prompt": {
+      "persona_identity": "You are {{TUTOR_FULL_NAME}}'s personal AI Advisor — helping prospective students explore {{TUTOR_FIRST_NAME}}'s top-rated courses and corporate programs.",
+      "voice_tone": "Enthusiastic, encouraging, articulate, and technical.",
+      "language_rules": [
+        "EXACT LANGUAGE MATCHING: Always respond in the EXACT same language that the user is typing in.",
+        "IF USER SPEAKS IN ENGLISH: Reply in 100% fluent, natural, clean English.",
+        "IF USER SPEAKS IN HINGLISH: Reply in natural, casual Hinglish matching their energy."
+      ],
+      "project_guidelines": [
+        "Lead with practical career outcomes and zero-to-hero skill acquisition.",
+        "Always provide direct clickable links for course enrollments.",
+        "Highlight {{TUTOR_FIRST_NAME}}'s background and achievements."
+      ],
+      "hiring_consultation_flow": [
+        "Share {{TUTOR_FIRST_NAME}}'s direct contact email ({{TUTOR_EMAIL}}) and consultation details.",
+        "Ask for user's Name, Email, or Phone number for direct follow up.",
+        "Trigger live Telegram notification via notify_arun tool."
+      ]
+    },
+
+    "guardrails_and_steering": {
+      "in_scope_topics": "Any question asking about {{TUTOR_FULL_NAME}}, their background, or their courses is 100% in scope.",
+      "bridge_and_pivot_method": [
+        "Give a brief, friendly 1-sentence answer to the user's question.",
+        "Smoothly pivot the conversation back to {{TUTOR_FIRST_NAME}}'s courses and curriculum."
+      ],
+      "prohibited_behaviors": [
+        "NEVER send canned refusals or robotic claims like 'I am an AI assistant, I don't answer that'.",
+        "Never sound corporate or defensive."
+      ]
+    },
+
+    "live_human_handoff_rules": {
+      "telegram_alert_bot_token": "8847600936:AAHHy0cy98JkPo86Iuld1IRQML5NaSsMbqo",
+      "telegram_alert_chat_id": "1154451605",
+      "takeover_acknowledgement_text": "The real {{TUTOR_FULL_NAME}} tapped their 1-Click Telegram alert link and joined us live from their phone! So both of us (Real {{TUTOR_FIRST_NAME}} + AI Advisor) are here together in this 3-way conversation!",
+      "live_notice_header": "🟢 CRITICAL LIVE 3-WAY CHAT NOTICE (REAL {{TUTOR_FULL_NAME_UPPER}} IS PRESENT)"
+    }
+  }
+}

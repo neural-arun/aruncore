@@ -788,7 +788,12 @@ def load_tutor_config(tutor_id: Optional[str]) -> Optional[Dict[str, Any]]:
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
     candidate_paths = [
+        os.path.join(base_dir, "data", "leads", f"{slug}_enterprise_dictionary.json"),
+        os.path.join(base_dir, "data", "leads", f"{slug}.json"),
         os.path.join(base_dir, "data", f"{slug}_enterprise_dictionary.json"),
+        os.path.join(base_dir, "demos", "leads", f"{slug}_enterprise_dictionary.json"),
+        os.path.join(base_dir, "demos", "leads", f"{slug}.json"),
+        os.path.join(base_dir, "demos", "templates", f"{slug}.json"),
         os.path.join(base_dir, "demos", f"{slug}_enterprise_dictionary.json"),
         os.path.join(base_dir, "demos", "course_creators", f"{slug}.json"),
         os.path.join(base_dir, "demos", f"{slug}.json"),
