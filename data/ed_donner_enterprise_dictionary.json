@@ -1,0 +1,348 @@
+{
+  "client_id": "ed_donner",
+  "name": "Ed Donner",
+  "role": "Co-founder & CTO at Nebula.io • Top Udemy AI Instructor",
+  "title": "Ed's AI Course Advisor",
+  "subtitle": "Co-founder & CTO at Nebula.io • Former MD at JPMorgan • Creator of Proficient AI Engineer Directory",
+  "avatar": "/ed_donner.png",
+  "cta_text": "Consult Ed",
+  "welcome_message": "Hi! I'm Ed's AI Course Advisor. I can explain Ed's flagship AI Engineer tracks (Core, Agentic & Production), recommend the right course for your skill level, or help you join the Proficient AI Engineer certification directory!",
+  "about_text": "I'm Ed Donner. I like writing code and experimenting with LLMs. I am the co-founder and CTO of AI startup Nebula.io, previously founder and CEO of untapt (acquired 2021) and Managing Director at JPMorgan. In partnership with Ligency, my Udemy AI Engineering tracks have enrolled over 900,000 students across 194 countries! I build hands-on, project-first courses that take developers from foundational LLM API calls to shipping autonomous AI agents and enterprise production MLOps pipelines.",
+  "tab_label": "Courses",
+  "projects_tab_label": "Courses",
+  "about_tab_label": "About Ed",
+
+  "client_metadata": {
+    "full_name": "Ed Donner",
+    "professional_title": "Co-founder & CTO at Nebula.io • Top Udemy AI Educator",
+    "niche": "AI Engineering, Agentic AI (MCP), LLM MLOps & Executive AI Strategy",
+    "avatar_url": "/ed_donner.png",
+    "favicon_url": "https://edwarddonner.com/favicon.ico",
+    "domain_url": "https://edwarddonner.com/"
+  },
+
+  "theme_design_system": {
+    "mode": "light",
+    "brand_colors": {
+      "primary_green": "#0d9488",
+      "primary_hover": "#0f766e",
+      "accent_emerald": "#14b8a6",
+      "accent_amber": "#f59e0b",
+      "bg_main": "#ffffff",
+      "bg_sidebar": "#f8fafc",
+      "bg_card": "#ffffff",
+      "border_subtle": "#cbd5e1",
+      "text_main": "#0f172a",
+      "text_muted": "#334155",
+      "text_dim": "#64748b"
+    },
+    "custom_css_variables": {
+      "--accent-green": "#0d9488",
+      "--accent-green-hover": "#0f766e",
+      "--accent-teal": "#0d9488",
+      "--border-accent": "rgba(13, 148, 136, 0.35)",
+      "--bg-accent-soft": "rgba(13, 148, 136, 0.08)",
+      "--bg-main": "#ffffff",
+      "--bg-sidebar": "#f8fafc"
+    }
+  },
+
+  "icon_registry_dictionary": {
+    "available_system_icons": {
+      "heart": { "type": "lucide", "name": "HeartPulse", "color_class": "text-rose-500", "emoji": "❤️" },
+      "layers": { "type": "lucide", "name": "Layers", "color_class": "text-amber-500", "emoji": "🥞" },
+      "scale": { "type": "lucide", "name": "Scale", "color_class": "text-indigo-500", "emoji": "🎓" },
+      "briefcase": { "type": "lucide", "name": "Briefcase", "color_class": "text-teal-500", "emoji": "💼" },
+      "bot": { "type": "lucide", "name": "Bot", "color_class": "text-teal-500", "emoji": "🤖" },
+      "folder": { "type": "lucide", "name": "FolderGit2", "color_class": "text-teal-500", "emoji": "📚" },
+      "user": { "type": "lucide", "name": "UserCheck", "color_class": "text-teal-500", "emoji": "👨‍🏫" },
+      "phone": { "type": "lucide", "name": "PhoneCall", "color_class": "text-teal-500", "emoji": "📞" },
+      "shield": { "type": "lucide", "name": "ShieldCheck", "color_class": "text-teal-500", "emoji": "🛡️" },
+      "sparkles": { "type": "lucide", "name": "Sparkles", "color_class": "text-teal-500", "emoji": "✨" },
+      "compass": { "type": "lucide", "name": "Compass", "color_class": "text-teal-500", "emoji": "🧭" }
+    },
+    "brand_social_icons": {
+      "github": { "type": "svg", "name": "GithubIcon", "emoji": "🐙", "svg_path": "M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385..." },
+      "linkedin": { "type": "svg", "name": "LinkedinIcon", "emoji": "💼", "svg_path": "M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5..." },
+      "x": { "type": "svg", "name": "XIcon", "emoji": "🐦", "svg_path": "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17..." },
+      "whatsapp": { "type": "svg", "name": "WhatsAppIcon", "emoji": "💬", "svg_path": "M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849..." },
+      "youtube": { "type": "svg", "name": "YouTubeIcon", "emoji": "▶️", "svg_path": "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5..." },
+      "udemy": { "type": "svg", "name": "UdemyIcon", "emoji": "🎓", "svg_path": "M12 0L1.5 6v12L12 24l10.5-6V6L12 0z..." },
+      "instagram": { "type": "svg", "name": "InstagramIcon", "emoji": "📸", "svg_path": "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691..." },
+      "website": { "type": "svg", "name": "GlobeIcon", "emoji": "🌐", "svg_path": "M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2z..." }
+    }
+  },
+
+  "socials": [
+    { "name": "Udemy Profile", "url": "https://www.udemy.com/user/edward-donner/", "icon_key": "udemy", "symbol_emoji": "🎓" },
+    { "name": "LinkedIn", "url": "https://www.linkedin.com/in/eddonner/", "icon_key": "linkedin", "symbol_emoji": "💼" },
+    { "name": "Twitter / X", "url": "https://x.com/edwarddonner", "icon_key": "x", "symbol_emoji": "𝕏" },
+    { "name": "Personal Site", "url": "https://edwarddonner.com/", "icon_key": "website", "symbol_emoji": "🌐" }
+  ],
+
+  "suggested_questions": [
+    "What is covered in the AI Engineer Core Track (LLM, RAG & QLoRA)?",
+    "How does the Agentic Track teach Model Context Protocol (MCP)?",
+    "How do I qualify for Ed Donner's Proficient AI Engineer Directory?",
+    "Does Ed offer corporate AI architecture consulting for leadership teams?"
+  ],
+
+  "sidebar_questions": [
+    "What programming background do I need for the AI Engineer Core Track?",
+    "What frameworks are taught in the Agentic Track (LangGraph, CrewAI)?",
+    "How does Ed's live 3-way Telegram handoff work during chat?",
+    "Can I get corporate team pricing for enterprise AI upskilling?"
+  ],
+
+  "courses": [
+    {
+      "id": "ai-engineer-core-track",
+      "title": "AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents",
+      "subtitle": "8-Week Flagship Engineering Track with 8 Hands-on Projects",
+      "description": "Master the complete LLM engineering pipeline from basic OpenAI API integration to building zero-hallucination vector search systems, QLoRA fine-tuning, and multi-modal AI agents using LangChain, HuggingFace, ChromaDB, and Gradio.",
+      "price": "$199 / Bestseller",
+      "target_audience": "Software Developers, Data Scientists, and Aspiring AI Engineers",
+      "outcomes": "Build 8 production-ready AI applications, master vector DBs, fine-tune open-source models with QLoRA, and deploy AI pipelines.",
+      "link": "https://www.udemy.com/user/edward-donner/"
+    },
+    {
+      "id": "ai-engineer-agentic-track",
+      "title": "AI Engineer Agentic Track: The Complete Agent & MCP Course",
+      "subtitle": "Master Autonomous Agents, Model Context Protocol (MCP) & Multi-Agent Frameworks",
+      "description": "An intensive hands-on course covering autonomous agent architectures, Model Context Protocol (MCP), and multi-agent coordination frameworks using OpenAI Agents SDK, CrewAI, LangGraph, and AutoGen. Build 8 real-world agent solutions.",
+      "price": "$199 / Bestseller",
+      "target_audience": "AI Engineers, Software Architects, and Systems Builders",
+      "outcomes": "Architect multi-agent workflows, implement Model Context Protocol (MCP) servers, and build autonomous decision-making agents.",
+      "link": "https://www.udemy.com/user/edward-donner/"
+    },
+    {
+      "id": "ai-engineer-production-track",
+      "title": "AI Engineer Production Track: Deploy LLMs & Agents at Scale",
+      "subtitle": "Production MLOps, Cloud Infrastructure, Security & Observability",
+      "description": "Move beyond prototypes into enterprise scale. Master MLOps pipelines, cloud deployment (AWS, GCP, Azure, Vercel), Terraform infrastructure-as-code, GitHub Actions CI/CD, latency optimization, cost management, and security compliance.",
+      "price": "$199 / Advanced Track",
+      "target_audience": "Senior Engineers, DevOps Engineers, and Enterprise Architects",
+      "outcomes": "Deploy high-throughput AI agents, establish LLM observability & monitoring, and automate production CI/CD pipelines.",
+      "link": "https://www.udemy.com/user/edward-donner/"
+    },
+    {
+      "id": "ai-builder-n8n-voice",
+      "title": "AI Builder: Create Agents, Voice Agents & Automations in n8n",
+      "subtitle": "Low-Code AI Automation, Voice Agents & Multi-Step Workflows",
+      "description": "Build sophisticated AI automation workflows and ultra-realistic voice agents by combining n8n low-code platforms, OpenAI APIs, and ElevenLabs voice engines without complex boilerplate code.",
+      "price": "$149 / Popular Track",
+      "target_audience": "Automation Specialists, Product Managers, and Builders",
+      "outcomes": "Design automated n8n AI workflows, deploy real-time voice agents, and integrate enterprise SaaS tools.",
+      "link": "https://www.udemy.com/user/edward-donner/"
+    },
+    {
+      "id": "ai-coder-claude-agents",
+      "title": "AI Coder: Complete Claude Code & Coding Agents Course",
+      "subtitle": "Harness Claude Code, GitHub Copilot & Coding Agents for 10x Productivity",
+      "description": "Transform software engineering productivity using state-of-the-art coding agents, Claude Code CLI tools, custom prompt engineering, and automated test generation pipelines.",
+      "price": "$149 / Featured Track",
+      "target_audience": "Software Developers, Full-Stack Engineers, and Tech Leads",
+      "outcomes": "Master AI-assisted software development, build custom coding agents, and accelerate feature shipping 10x.",
+      "link": "https://www.udemy.com/user/edward-donner/"
+    },
+    {
+      "id": "generative-ai-leaders-founders",
+      "title": "Generative AI & Agentic AI for Leaders & Founders",
+      "subtitle": "Strategic AI Adoption Roadmap, Security, ROI & Enterprise Leadership",
+      "description": "Designed specifically for founders, CTOs, executives, and leaders navigating Generative AI. Master enterprise AI adoption strategy, security compliance, team restructuring, and AI ROI blueprints.",
+      "price": "$299 / Executive Track",
+      "target_audience": "Startup Founders, CTOs, VPs of Engineering, and Corporate Executives",
+      "outcomes": "Formulate enterprise AI strategy blueprints, evaluate vendor vs open-source LLM tradeoffs, and lead AI transformation.",
+      "link": "https://edwarddonner.com/"
+    }
+  ],
+
+  "contact": {
+    "phone": "+1 (555) 019-2831",
+    "whatsapp": "https://wa.me/15550192831",
+    "email": "ed@nebula.io",
+    "website": "https://edwarddonner.com/"
+  },
+
+  "frontend_ui_dictionary": {
+    "header": {
+      "profile_name": "Ed Donner",
+      "profile_badge": "AI Course Advisor",
+      "nav_tabs": {
+        "chat": { "label": "AI Course Advisor", "icon_key": "bot" },
+        "projects": { "label": "Courses", "icon_key": "folder" },
+        "about": { "label": "About Ed", "icon_key": "user" }
+      },
+      "cta_button": { "text": "Consult Ed", "icon_key": "phone" },
+      "social_links": [
+        { "id": "udemy", "label": "Udemy Profile", "url": "https://www.udemy.com/user/edward-donner/", "icon_key": "udemy" },
+        { "id": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/eddonner/", "icon_key": "linkedin" },
+        { "id": "x", "label": "X / Twitter", "url": "https://x.com/edwarddonner", "icon_key": "x" },
+        { "id": "website", "label": "Personal Site", "url": "https://edwarddonner.com/", "icon_key": "website" }
+      ]
+    },
+
+    "sidebar": {
+      "profile_card": {
+        "name": "Ed Donner",
+        "title": "Co-founder & CTO at Nebula.io • Former MD JPMorgan",
+        "sub_badge": "900,000+ Students Worldwide",
+        "sub_badge_icon_key": "shield",
+        "status_dot": "Online"
+      },
+      "social_links": [
+        { "id": "udemy", "label": "Udemy Profile", "url": "https://www.udemy.com/user/edward-donner/", "icon_key": "udemy" },
+        { "id": "linkedin", "label": "LinkedIn", "url": "https://www.linkedin.com/in/eddonner/", "icon_key": "linkedin" },
+        { "id": "x", "label": "X / Twitter", "url": "https://x.com/edwarddonner", "icon_key": "x" }
+      ],
+      "navigation": {
+        "section_heading": "Navigation",
+        "items": [
+          { "id": "chat", "label": "AI Course Advisor", "description": "Interactive AI Assistant for Ed's Courses", "icon_key": "bot" },
+          { "id": "projects", "label": "Courses", "description": "Flagship LLM & Python Masterclasses", "icon_key": "folder" },
+          { "id": "manifesto", "label": "About Ed Donner", "description": "Background, Experience & Principles", "icon_key": "user" }
+        ]
+      },
+      "contact_button": {
+        "title": "Consult with Ed",
+        "subtitle": "1-on-1 Mentoring & Corporate AI Training",
+        "icon_key": "phone"
+      },
+      "quick_questions": {
+        "heading": "Quick Questions",
+        "icon_key": "compass",
+        "prompts": [
+          { "category": "Core Track", "text": "What is covered in the AI Engineer Core Track (LLM, RAG & QLoRA)?", "icon_key": "scale", "symbol_emoji": "🎓" },
+          { "category": "Agentic Track", "text": "How does the Agentic Track teach Model Context Protocol (MCP)?", "icon_key": "briefcase", "symbol_emoji": "💼" },
+          { "category": "Directory", "text": "How do I qualify for Ed Donner's Proficient AI Engineer Directory?", "icon_key": "bot", "symbol_emoji": "💬" },
+          { "category": "Corporate", "text": "Does Ed offer corporate AI architecture consulting for leadership teams?", "icon_key": "layers", "symbol_emoji": "🏢" }
+        ]
+      }
+    },
+
+    "chat_panel": {
+      "hero_card": {
+        "assistant_title": "Ed's AI Course Advisor",
+        "status_badge": "Online",
+        "role_subtitle": "Co-founder & CTO at Nebula.io • Former MD JPMorgan",
+        "cta_button_text": "Consult Ed",
+        "cta_icon_key": "briefcase",
+        "welcome_paragraph": "Hi! I'm Ed's AI Course Advisor. I can explain Ed's flagship AI Engineer tracks (Core, Agentic & Production), recommend the right course for your skill level, or help you join the Proficient AI Engineer certification directory!"
+      },
+      "suggested_questions_section": {
+        "heading": "Suggested Questions",
+        "heading_icon_key": "sparkles",
+        "chips": [
+          { "id": "core_track", "label": "AI Engineer Core Track", "query": "What is covered in the AI Engineer Core Track (LLM, RAG & QLoRA)?", "icon_key": "scale", "symbol_emoji": "🎓" },
+          { "id": "agentic_track", "label": "Agentic Track & MCP", "query": "How does the Agentic Track teach Model Context Protocol (MCP)?", "icon_key": "layers", "symbol_emoji": "🚀" },
+          { "id": "directory", "label": "Proficient AI Engineer", "query": "How do I qualify for Ed Donner's Proficient AI Engineer Directory?", "icon_key": "shield", "symbol_emoji": "📜" },
+          { "id": "consulting", "label": "Corporate AI Consulting", "query": "Does Ed offer corporate AI architecture consulting for leadership teams?", "icon_key": "briefcase", "symbol_emoji": "📞" }
+        ]
+      },
+      "input_bar": {
+        "placeholder": "Ask Ed's AI Course Advisor...",
+        "mic_listening_notice": "Listening to your voice... Speak now!",
+        "keyboard_hint": "Press Enter to send or use 🎙️ Mic",
+        "clear_button_text": "Clear conversation",
+        "admin_notice": "🟢 LOGGED IN AS REAL ED DONNER — LIVE 3-WAY CHAT ROOM",
+        "admin_input_placeholder": "Type live response or command (/answer, /release)..."
+      }
+    },
+
+    "projects_view": {
+      "header_title": "Ed Donner's AI Engineering Tracks",
+      "header_subtitle": "Browse top-rated AI Engineer Core, Agentic (MCP), Production MLOps, and Leadership tracks taught by Ed Donner on Udemy.",
+      "search_placeholder": "Search course topic...",
+      "categories": ["All", "Core Track", "Agentic AI (MCP)", "Production MLOps", "AI Automation", "AI Leadership"],
+      "sort_options": {
+        "recent": "Featured",
+        "stars": "Most Enrolled"
+      },
+      "card_labels": {
+        "ask_twin_button": "Ask Advisor",
+        "view_github_button": "View Syllabus",
+        "live_demo_button": "Enroll on Udemy"
+      }
+    },
+
+    "about_view": {
+      "full_name": "Ed Donner",
+      "tagline": "Co-founder & CTO at Nebula.io • Former MD at JPMorgan • Creator of Proficient AI Engineer Directory",
+      "bio_paragraphs": [
+        "I'm Ed Donner. I like writing code and experimenting with LLMs. I am the co-founder and CTO of AI startup Nebula.io, previously founder and CEO of untapt (acquired 2021) and Managing Director at JPMorgan.",
+        "In partnership with Ligency, my Udemy AI Engineering tracks — including the AI Engineer Core Track, Agentic Track (MCP), Production MLOps Track, AI Builder, and AI Coder — have enrolled over 900,000 students across 194 countries worldwide! I build practical, project-first courses that turn software developers and aspiring engineers into AI experts capable of shipping zero-hallucination RAG engines, autonomous agent pipelines, and enterprise-grade MLOps architectures.",
+        "I also created the Proficient AI Engineer directory to showcase top graduates who complete my full AI curriculum and deploy verified real-world AI projects."
+      ],
+      "closing_callout": "Looking for 1-on-1 AI strategy consultation or custom corporate LLM training for your engineering team? Click Consult Ed to connect directly!"
+    },
+
+    "contact_modal": {
+      "title": "Connect with Ed Donner",
+      "description": "Reach out directly for corporate AI training, startup strategy consultation, or course questions.",
+      "channels": [
+        { "id": "phone", "label": "Direct Call / Office", "value": "+1 (555) 019-2831", "url": "tel:+15550192831", "icon_key": "phone" },
+        { "id": "whatsapp", "label": "WhatsApp Direct", "value": "+1 (555) 019-2831", "url": "https://wa.me/15550192831", "icon_key": "whatsapp" },
+        { "id": "email", "label": "Email Address", "value": "ed@nebula.io", "url": "mailto:ed@nebula.io", "icon_key": "email" },
+        { "id": "website", "label": "Personal Website", "value": "edwarddonner.com", "url": "https://edwarddonner.com/", "icon_key": "website" }
+      ]
+    },
+
+    "mobile_nav": {
+      "tabs": {
+        "chat": { "label": "AI Advisor", "icon_key": "bot" },
+        "projects": { "label": "Courses", "icon_key": "folder" },
+        "about": { "label": "About", "icon_key": "user" },
+        "contact": { "label": "Contact", "icon_key": "phone" }
+      }
+    }
+  },
+
+  "backend_llm_configuration": {
+    "model_settings": {
+      "primary_model": "gpt-4o-mini",
+      "summary_model": "gpt-4.1-nano",
+      "temperature": 0.3,
+      "max_scratchpad_iterations": 5
+    },
+
+    "system_prompt": {
+      "persona_identity": "You are Ed Donner's personal AI Course Advisor — helping prospective students explore Ed's top-rated Udemy courses, LLM masterclasses, and corporate training programs.",
+      "voice_tone": "Enthusiastic, encouraging, articulate, and technical. Talk like a seasoned engineering leader who loves teaching and practical hands-on coding.",
+      "language_rules": [
+        "EXACT LANGUAGE MATCHING: Always respond in the EXACT same language that the user is typing in.",
+        "IF USER SPEAKS IN ENGLISH: Reply in 100% fluent, natural, clean English.",
+        "IF USER SPEAKS IN HINGLISH: Reply in natural, casual Hinglish matching their energy."
+      ],
+      "project_guidelines": [
+        "Lead with practical career outcomes and zero-to-hero skill acquisition.",
+        "Always provide direct clickable Udemy links for course enrollments.",
+        "Highlight Ed's background as CTO of Nebula.io and former Managing Director at JPMorgan.",
+        "Mention Ed's flagship tracks: AI Engineer Core Track, Agentic Track (MCP), Production Track, AI Builder, and AI Coder."
+      ],
+      "hiring_consultation_flow": [
+        "Share Ed's direct contact email (ed@nebula.io) and consultation details.",
+        "Ask for user's Name, Email, or Phone number for direct follow up.",
+        "Trigger live Telegram notification via notify_arun tool."
+      ]
+    },
+
+    "guardrails_and_steering": {
+      "in_scope_topics": "Any question asking about Ed Donner, his background at JPMorgan/Nebula.io, his Proficient AI Engineer directory, or his LLM & Python courses is 100% in scope.",
+      "bridge_and_pivot_method": [
+        "Give a brief, friendly 1-sentence answer to the user's question.",
+        "Smoothly pivot the conversation back to Ed Donner's courses and AI engineering curriculum."
+      ],
+      "prohibited_behaviors": [
+        "NEVER send canned refusals or robotic claims like 'I am an AI assistant, I don't answer that'.",
+        "Never sound corporate or defensive."
+      ]
+    },
+
+    "live_human_handoff_rules": {
+      "telegram_alert_bot_token": "8847600936:AAHHy0cy98JkPo86Iuld1IRQML5NaSsMbqo",
+      "telegram_alert_chat_id": "1154451605",
+      "takeover_acknowledgement_text": "The real Ed Donner tapped his 1-Click Telegram alert link and joined us live from his phone! So both of us (Real Ed + AI Course Advisor) are here together in this 3-way conversation!",
+      "live_notice_header": "🟢 CRITICAL LIVE 3-WAY CHAT NOTICE (REAL ED DONNER IS PRESENT)"
+    }
+  }
+}

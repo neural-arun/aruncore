@@ -19,6 +19,7 @@ interface ChatPanelProps {
   openHandoffModal: () => void;
   isAdminMode?: boolean;
   onSendAdminMessage?: (text: string) => void;
+  tutorConfig?: any;
 }
 
 export const ChatPanel: React.FC<ChatPanelProps> = ({
@@ -31,6 +32,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   openHandoffModal,
   isAdminMode,
   onSendAdminMessage,
+  tutorConfig,
 }) => {
   const [inputText, setInputText] = useState("");
   const [adminInputText, setAdminInputText] = useState("");
@@ -39,6 +41,14 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   const [playingMessageId, setPlayingMessageId] = useState<string | null>(null);
   const [isLoadingAudio, setIsLoadingAudio] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
+
+  const tutorName = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.assistant_title || tutorConfig?.title || "Arun's AI Twin";
+  const tutorRole = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.role_subtitle || tutorConfig?.subtitle || tutorConfig?.role || "Healthcare AI Systems Architect";
+  const tutorAvatar = tutorConfig?.client_metadata?.avatar_url || tutorConfig?.avatar || "/profile_photo.png";
+  const tutorWelcome = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.welcome_paragraph || tutorConfig?.welcome_message || "Hi! I'm Arun's AI Twin. I can explain his projects, architecture decisions, and healthcare AI work — plus, the real Arun monitors this channel and can jump in live to chat with you directly if needed!";
+  const tutorCta = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.cta_button_text || tutorConfig?.cta_text || "Consult Arun";
+  const inputPlaceholder = tutorConfig?.frontend_ui_dictionary?.chat_panel?.input_bar?.placeholder || (tutorConfig?.name ? `Ask ${tutorConfig.name}'s AI Assistant...` : "Ask Arun's AI Assistant...");
+  const customQuestions = tutorConfig?.frontend_ui_dictionary?.chat_panel?.suggested_questions_section?.chips?.map((c: any) => c.query) || tutorConfig?.suggested_questions;
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const recognitionRef = useRef<any>(null);
@@ -327,13 +337,14 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           <div className="mx-auto max-w-4xl w-full flex flex-col gap-4 sm:gap-5 animate-fade-slide">
             
             {/* AI Twin Card (Placed immediately below header) */}
+            {/* Header Identity Card */}
             <div className="rounded-2xl sm:rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 backdrop-blur-md shadow-xs space-y-3 shrink-0">
               <div className="flex flex-row items-center justify-between gap-3">
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="relative h-13 w-13 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-emerald-500/40 bg-slate-800 shrink-0 shadow-xs">
+                  <div className="relative h-13 w-13 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-[var(--accent-green)]/40 bg-slate-800 shrink-0 shadow-xs">
                     <Image
-                      src="/profile_photo.png"
-                      alt="Arun Yadav"
+                      src={tutorAvatar}
+                      alt={tutorName}
                       width={64}
                       height={64}
                       className="h-full w-full object-cover"
@@ -344,33 +355,33 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   <div className="space-y-0.5 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h1 className="font-heading text-base sm:text-xl font-extrabold text-[var(--text-main)] tracking-tight">
-                        Arun's AI Twin
+                        {tutorName}
                       </h1>
-                      <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shadow-xs shrink-0">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="rounded-full border border-[var(--accent-green)]/30 bg-[var(--accent-green)]/10 px-2 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-[var(--accent-green)] flex items-center gap-1 shadow-xs shrink-0">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-green)] animate-pulse" />
                         <span>Online</span>
                       </span>
                     </div>
 
-                    <p className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 leading-tight truncate">
-                      Healthcare AI Systems Architect
+                    <p className="text-xs sm:text-sm font-bold text-[var(--accent-green)] leading-tight truncate">
+                      {tutorRole}
                     </p>
                   </div>
                 </div>
 
                 <button
                   onClick={openHandoffModal}
-                  className="flex items-center justify-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 px-3.5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition-all shrink-0 active:scale-95"
+                  className="flex items-center justify-center gap-1.5 rounded-xl bg-[var(--accent-green)] hover:bg-[var(--accent-green-hover)] px-3.5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition-all shrink-0 active:scale-95"
                 >
                   <Briefcase className="h-4 w-4" />
-                  <span className="hidden sm:inline">Consult Arun</span>
+                  <span className="hidden sm:inline">{tutorCta}</span>
                   <span className="sm:hidden">Consult</span>
                 </button>
               </div>
 
               <div className="border-t border-[var(--border-subtle)] pt-2.5">
                 <p className="text-xs sm:text-sm text-[var(--text-muted)] font-medium leading-normal">
-                  Hi! I'm Arun's AI Twin. I can explain his projects, architecture decisions, and healthcare AI work — plus, the real Arun monitors this channel and can jump in live to chat with you directly if needed!
+                  {tutorWelcome}
                 </p>
               </div>
             </div>
@@ -379,45 +390,52 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             <div className="space-y-2 shrink-0">
               <div className="flex items-center justify-between px-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-emerald-500" />
+                  <Sparkles className="h-3.5 w-3.5 text-[var(--accent-green)]" />
                   <span>Suggested Questions</span>
                 </span>
               </div>
 
               {/* ChatGPT Style Chips Grid */}
               <div className="grid grid-cols-2 gap-2">
-                {[
-                  {
-                    icon: <HeartPulse className="h-4 w-4 text-emerald-500 shrink-0" />,
-                    label: "Healthcare AI",
-                    query: starterPrompts[0].query,
-                  },
-                  {
-                    icon: <Layers className="h-4 w-4 text-emerald-500 shrink-0" />,
-                    label: "Zero-Hallucination RAG",
-                    query: starterPrompts[1].query,
-                  },
-                  {
-                    icon: <Scale className="h-4 w-4 text-emerald-500 shrink-0" />,
-                    label: "Legal AI",
-                    query: starterPrompts[2].query,
-                  },
-                  {
-                    icon: <Briefcase className="h-4 w-4 text-emerald-500 shrink-0" />,
-                    label: "Consult with Arun",
-                    query: starterPrompts[3].query,
-                  },
-                ].map((item, idx) => (
+                {(customQuestions
+                  ? customQuestions.map((q: string, idx: number) => ({
+                      icon: idx === 0 ? <HeartPulse className="h-4 w-4 text-[var(--accent-green)] shrink-0" /> : idx === 1 ? <Layers className="h-4 w-4 text-[var(--accent-green)] shrink-0" /> : idx === 2 ? <Scale className="h-4 w-4 text-[var(--accent-green)] shrink-0" /> : <Briefcase className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                      label: q.length > 32 ? q.substring(0, 30) + "..." : q,
+                      query: q,
+                    }))
+                  : [
+                      {
+                        icon: <HeartPulse className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                        label: "Healthcare AI",
+                        query: starterPrompts[0].query,
+                      },
+                      {
+                        icon: <Layers className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                        label: "Zero-Hallucination RAG",
+                        query: starterPrompts[1].query,
+                      },
+                      {
+                        icon: <Scale className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                        label: "Legal AI",
+                        query: starterPrompts[2].query,
+                      },
+                      {
+                        icon: <Briefcase className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                        label: "Consult with Arun",
+                        query: starterPrompts[3].query,
+                      },
+                    ]
+                ).map((item: any, idx: number) => (
                   <button
                     key={idx}
                     onClick={() => onSendMessage(item.query)}
-                    className="group text-left flex items-center gap-2.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-2.5 transition-all hover:border-emerald-500/50 hover:bg-emerald-500/5 active:scale-[0.98] shadow-xs"
+                    className="group text-left flex items-center gap-2.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-2.5 transition-all hover:border-[var(--accent-green)]/50 hover:bg-[var(--accent-green)]/5 active:scale-[0.98] shadow-xs"
                   >
                     {item.icon}
                     <span className="text-xs sm:text-sm text-[var(--text-main)] font-semibold truncate flex-1">
                       {item.label}
                     </span>
-                    <ArrowRight className="h-3.5 w-3.5 text-emerald-500 opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
+                    <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-green)] opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
                   </button>
                 ))}
               </div>

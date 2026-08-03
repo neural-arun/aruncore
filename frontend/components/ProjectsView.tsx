@@ -14,6 +14,7 @@ const GithubIcon = () => (
 interface ProjectsViewProps {
   onSelectPrompt: (prompt: string) => void;
   setActiveTab: (tab: ActiveTab) => void;
+  tutorConfig?: any;
 }
 
 function formatRelativeTime(dateString: string): { label: string; isRecent: boolean } {
@@ -42,6 +43,7 @@ function formatRelativeTime(dateString: string): { label: string; isRecent: bool
 export const ProjectsView: React.FC<ProjectsViewProps> = ({
   onSelectPrompt,
   setActiveTab,
+  tutorConfig,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -171,6 +173,87 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
     onSelectPrompt(prompt);
     setActiveTab("chat");
   };
+  const coursesList = tutorConfig?.courses || [];
+
+  if (tutorConfig && coursesList.length > 0) {
+    const pageTitle = tutorConfig?.frontend_ui_dictionary?.projects_view?.header_title || tutorConfig?.title || "Courses & Masterclasses";
+    const pageSubtitle = tutorConfig?.frontend_ui_dictionary?.projects_view?.header_subtitle || "Browse flagship curriculum, course outcomes, and enrollment options.";
+
+    return (
+      <div className="h-full overflow-y-auto px-4 py-8 sm:px-12 pb-24 sm:pb-12 bg-[var(--bg-main)] text-[var(--text-main)]">
+        <div className="mx-auto max-w-5xl space-y-6 animate-fade-slide">
+          {/* Header */}
+          <div className="space-y-2 pb-4 border-b border-[var(--border-subtle)]">
+            <h1 className="font-heading text-2xl sm:text-4xl font-extrabold text-[var(--text-main)] tracking-tight">
+              {pageTitle}
+            </h1>
+            <p className="text-sm sm:text-base font-semibold text-[var(--accent-green)]">
+              {pageSubtitle}
+            </p>
+          </div>
+
+          {/* Courses Cards Grid */}
+          <div className="grid grid-cols-1 gap-6">
+            {coursesList.map((course: any, idx: number) => (
+              <div
+                key={course.id || idx}
+                className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
+                  <div>
+                    <h2 className="font-heading text-xl sm:text-2xl font-extrabold text-[var(--text-main)]">
+                      {course.title}
+                    </h2>
+                    <p className="text-xs sm:text-sm font-semibold text-[var(--accent-green)] mt-0.5">
+                      {course.subtitle}
+                    </p>
+                  </div>
+                  {course.price && (
+                    <span className="self-start sm:self-center px-3 py-1 rounded-full bg-[var(--accent-green)]/10 border border-[var(--accent-green)]/30 text-[var(--accent-green)] font-mono text-sm font-bold shadow-xs">
+                      {course.price}
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                  {course.description}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  {course.target_audience && (
+                    <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-3 text-xs">
+                      <span className="font-bold text-[var(--text-main)] block mb-1">🎯 Target Audience:</span>
+                      <span className="text-[var(--text-muted)]">{course.target_audience}</span>
+                    </div>
+                  )}
+                  {course.outcomes && (
+                    <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-3 text-xs">
+                      <span className="font-bold text-[var(--text-main)] block mb-1">🚀 Key Outcomes:</span>
+                      <span className="text-[var(--text-muted)]">{course.outcomes}</span>
+                    </div>
+                  )}
+                </div>
+
+                {course.link && (
+                  <div className="pt-3 flex justify-end">
+                    <a
+                      href={course.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent-green)] hover:bg-[var(--accent-green-hover)] px-4 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition-all active:scale-95"
+                    >
+                      <span>Enroll / View Course</span>
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full overflow-y-auto px-4 py-6 sm:py-8 sm:px-8 pb-20 sm:pb-8">

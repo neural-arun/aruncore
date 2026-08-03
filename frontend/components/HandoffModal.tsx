@@ -20,13 +20,19 @@ interface HandoffModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSendHandoff?: (data: any) => Promise<void>;
+  tutorConfig?: any;
 }
 
 export const HandoffModal: React.FC<HandoffModalProps> = ({
   isOpen,
   onClose,
+  tutorConfig,
 }) => {
   if (!isOpen) return null;
+
+  const contactTitle = tutorConfig?.frontend_ui_dictionary?.contact_modal?.title || "Get in Touch";
+  const contactDesc = tutorConfig?.frontend_ui_dictionary?.contact_modal?.description || (tutorConfig?.name ? `Connect directly with ${tutorConfig.name} to discuss training, consulting, or inquiries.` : "Connect directly with Arun Yadav to discuss AI software systems, consulting, or project collaborations.");
+  const contactChannels = tutorConfig?.contact || tutorConfig?.frontend_ui_dictionary?.contact_modal?.channels;
 
   return (
     <div
@@ -47,90 +53,140 @@ export const HandoffModal: React.FC<HandoffModalProps> = ({
         <div className="space-y-6">
           <div>
             <h3 className="text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
-              Get in Touch
+              {contactTitle}
             </h3>
             <p className="text-sm text-[var(--text-muted)] mt-1.5 leading-relaxed font-medium">
-              Connect directly with Arun Yadav to discuss AI software systems, consulting, or project collaborations.
+              {contactDesc}
             </p>
           </div>
 
-          {/* Direct High-Impact Contact Channels Only */}
+          {/* Direct High-Impact Contact Channels */}
           <div className="space-y-3">
-            {/* Phone / Call */}
-            <a
-              href="tel:+918881109193"
-              onClick={onClose}
-              className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-green)] hover:shadow-md transition-all"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-600 shrink-0">
-                  <Phone className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Phone / Call</div>
-                  <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">+91 8881109193</div>
-                </div>
-              </div>
-              <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-[var(--accent-green)] transition-colors" />
-            </a>
+            {contactChannels ? (
+              Array.isArray(contactChannels) ? (
+                contactChannels.map((item: any, idx: number) => (
+                  <a
+                    key={idx}
+                    href={item.url || item.value}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={onClose}
+                    className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-green)] hover:shadow-md transition-all"
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className="rounded-xl bg-[var(--accent-green)]/10 p-2.5 text-[var(--accent-green)] shrink-0">
+                        <Mail className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">{item.label || item.id}</div>
+                        <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">{item.value || item.url}</div>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-[var(--accent-green)] transition-colors" />
+                  </a>
+                ))
+              ) : (
+                Object.entries(contactChannels).map(([key, val]: [string, any], idx: number) => (
+                  <a
+                    key={idx}
+                    href={val.startsWith("http") || val.startsWith("mailto:") || val.startsWith("tel:") ? val : `mailto:${val}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={onClose}
+                    className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-green)] hover:shadow-md transition-all"
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className="rounded-xl bg-[var(--accent-green)]/10 p-2.5 text-[var(--accent-green)] shrink-0">
+                        <Mail className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">{key}</div>
+                        <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">{val}</div>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-[var(--accent-green)] transition-colors" />
+                  </a>
+                ))
+              )
+            ) : (
+              <>
+                {/* Phone / Call */}
+                <a
+                  href="tel:+918881109193"
+                  onClick={onClose}
+                  className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-green)] hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="rounded-xl bg-[var(--accent-green)]/10 p-2.5 text-[var(--accent-green)] shrink-0">
+                      <Phone className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Phone / Call</div>
+                      <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">+91 8881109193</div>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-[var(--accent-green)] transition-colors" />
+                </a>
 
-            {/* WhatsApp */}
-            <a
-              href="https://wa.me/918881109193"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={onClose}
-              className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-green)] hover:shadow-md transition-all"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-600 shrink-0">
-                  <WhatsAppIcon />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">WhatsApp Direct</div>
-                  <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">+91 8881109193</div>
-                </div>
-              </div>
-              <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-[var(--accent-green)] transition-colors" />
-            </a>
+                {/* WhatsApp */}
+                <a
+                  href="https://wa.me/918881109193"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={onClose}
+                  className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-green)] hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="rounded-xl bg-[var(--accent-green)]/10 p-2.5 text-[var(--accent-green)] shrink-0">
+                      <WhatsAppIcon />
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">WhatsApp Direct</div>
+                      <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">+91 8881109193</div>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-[var(--accent-green)] transition-colors" />
+                </a>
 
-            {/* Email */}
-            <a
-              href="mailto:neural.arun.dev@gmail.com"
-              onClick={onClose}
-              className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-amber)] hover:shadow-md transition-all"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="rounded-xl bg-amber-500/10 p-2.5 text-amber-600 shrink-0">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Email Address</div>
-                  <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">neural.arun.dev@gmail.com</div>
-                </div>
-              </div>
-              <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-[var(--accent-amber)] transition-colors" />
-            </a>
+                {/* Email */}
+                <a
+                  href="mailto:neural.arun.dev@gmail.com"
+                  onClick={onClose}
+                  className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-amber)] hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="rounded-xl bg-amber-500/10 p-2.5 text-amber-600 shrink-0">
+                      <Mail className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Email Address</div>
+                      <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">neural.arun.dev@gmail.com</div>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-[var(--accent-amber)] transition-colors" />
+                </a>
 
-            {/* LinkedIn */}
-            <a
-              href="https://linkedin.com/in/neuralarun"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={onClose}
-              className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-teal)] hover:shadow-md transition-all"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="rounded-xl bg-sky-500/10 p-2.5 text-sky-600 shrink-0">
-                  <LinkedinIcon />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">LinkedIn Profile</div>
-                  <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">linkedin.com/in/neuralarun</div>
-                </div>
-              </div>
-              <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-sky-600 transition-colors" />
-            </a>
+                {/* LinkedIn */}
+                <a
+                  href="https://linkedin.com/in/neuralarun"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={onClose}
+                  className="group flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-4 hover:border-[var(--accent-teal)] hover:shadow-md transition-all"
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="rounded-xl bg-sky-500/10 p-2.5 text-sky-600 shrink-0">
+                      <LinkedinIcon />
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">LinkedIn Profile</div>
+                      <div className="font-mono text-sm font-bold text-[var(--text-main)] mt-0.5">linkedin.com/in/neuralarun</div>
+                    </div>
+                  </div>
+                  <ArrowUpRight className="h-4 w-4 text-[var(--text-dim)] group-hover:text-sky-600 transition-colors" />
+                </a>
+              </>
+            )}
           </div>
         </div>
       </div>

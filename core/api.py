@@ -326,11 +326,22 @@ active_sessions: Dict[str, RollingMemory] = {}
 class ChatRequest(BaseModel):
     session_id: str
     message: str
+    tutor_id: Optional[str] = None
 
 
 class TTSRequest(BaseModel):
     text: str
     voice: Optional[str] = "alloy"
+
+
+@app.get("/api/config")
+@app.get("/config")
+async def get_tutor_config_endpoint(tutor: Optional[str] = None):
+    from core.agent import load_tutor_config
+    cfg = load_tutor_config(tutor)
+    if not cfg:
+        return {"tutor_id": tutor or "arun", "config": None}
+    return cfg
 
 
 @app.post("/chat")
@@ -369,8 +380,10 @@ async def chat_endpoint(req: ChatRequest):
             queue_debug_event(
                 "user_message",
                 req.message,
-                {"channel": "api", "session_id": req.session_id},
+                {"channel": "api", "session_id": req.session_id, "tutor_id": req.tutor_id},
             )
+
+            session_llm, session_prompt, _, _ = init_agent(tutor_id=req.tutor_id)
 
             yield json.dumps({"type": "status", "content": "Analyzing request & retrieving context..."}) + "\n"
             thoughts.append("Analyzing request & retrieving context...")
@@ -397,32 +410,32 @@ async def chat_endpoint(req: ChatRequest):
             github_data = []
 
             while iterations < max_iterations:
-                messages = prompt.format_messages(
+                messages = session_prompt.format_messages(
                     running_summary=memory.running_summary,
                     chat_history=memory.get_messages(),
                     input=req.message,
                     agent_scratchpad=scratchpad,
                 )
 
-                # Inject dynamic Real Arun Human Presence notice if Real Arun is active in this session
+                # Inject dynamic Real Human Presence notice if Real Human is active in this session
                 arun_human_msgs = [m for m in SESSION_CHAT_STORE.get(req.session_id, []) if m.get("sender") == "human_arun"]
                 if arun_human_msgs:
-                    formatted_arun_msgs = "\n".join([f"• Real Arun (👨‍💻): \"{m.get('text')}\"" for m in arun_human_msgs])
+                    formatted_arun_msgs = "\n".join([f"• Real Human Instructor (👨‍💻): \"{m.get('text')}\"" for m in arun_human_msgs])
                     live_notice = SystemMessage(content=(
-                        f"🟢 CRITICAL LIVE 3-WAY CHAT NOTICE (REAL ARUN YADAV IS PRESENT):\n"
-                        f"The REAL HUMAN Arun Yadav (👨‍💻 Arun Yadav) HAS JOINED THIS CHAT ROOM LIVE AND IS CURRENTLY CHATTING!\n\n"
-                        f"REAL ARUN'S MESSAGES IN THIS SESSION:\n{formatted_arun_msgs}\n\n"
-                        f"MANDATORY INSTRUCTIONS FOR AI TWIN IN THIS 3-WAY CHAT:\n"
-                        f"1. Acknowledge that the REAL human Arun Yadav is present right next to you in this chat session!\n"
-                        f"2. If the user asks how Arun came here or questions about his arrival, explain enthusiastically: \"The real Arun Yadav tapped his 1-Click Telegram link and joined our chat live from his phone! So both of us (Real Arun + AI Assistant) are here together with you!\"\n"
-                        f"3. Never confuse yourself as the human — you are Arun's AI Assistant co-piloting alongside Real Arun!"
+                        f"🟢 CRITICAL LIVE 3-WAY CHAT NOTICE (REAL HUMAN INSTRUCTOR IS PRESENT):\n"
+                        f"The REAL HUMAN INSTRUCTOR (👨‍💻) HAS JOINED THIS CHAT ROOM LIVE AND IS CURRENTLY CHATTING!\n\n"
+                        f"REAL INSTRUCTOR'S MESSAGES IN THIS SESSION:\n{formatted_arun_msgs}\n\n"
+                        f"MANDATORY INSTRUCTIONS FOR AI ASSISTANT IN THIS 3-WAY CHAT:\n"
+                        f"1. Acknowledge that the REAL human instructor is present right next to you in this chat session!\n"
+                        f"2. If the user asks how the instructor came here or questions about their arrival, explain enthusiastically: \"The real instructor tapped their 1-Click Telegram link and joined our chat live from their phone! So both of us (Real Instructor + AI Assistant) are here together with you!\"\n"
+                        f"3. Never confuse yourself as the human — you are the AI Assistant co-piloting alongside the Real Instructor!"
                     ))
                     if len(messages) > 1:
                         messages.insert(1, live_notice)
                     else:
                         messages.append(live_notice)
 
-                ai_msg = await asyncio.to_thread(main_llm.invoke, messages)
+                ai_msg = await asyncio.to_thread(session_llm.invoke, messages)
 
                 if ai_msg.tool_calls:
                     scratchpad.append(ai_msg)
@@ -464,7 +477,7 @@ async def chat_endpoint(req: ChatRequest):
                     thoughts.append("Synthesizing final response...")
 
                     full_reply = ""
-                    for chunk in main_llm.stream(messages):
+                    for chunk in session_llm.stream(messages):
                         if chunk.content:
                             full_reply += chunk.content
                             yield json.dumps({"type": "token", "content": chunk.content}) + "\n"

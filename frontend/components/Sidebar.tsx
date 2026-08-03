@@ -31,6 +31,7 @@ interface SidebarProps {
   onSelectPrompt: (prompt: string) => void;
   onResetSession: () => void;
   messageCount: number;
+  tutorConfig?: any;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -40,7 +41,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectPrompt,
   onResetSession,
   messageCount,
+  tutorConfig,
 }) => {
+  const tutorName = tutorConfig?.frontend_ui_dictionary?.sidebar?.profile_card?.name || tutorConfig?.name || "Arun Yadav";
+  const tutorTitle = tutorConfig?.frontend_ui_dictionary?.sidebar?.profile_card?.title || tutorConfig?.role || "AI Systems Architect • Healthcare & Education";
+  const tutorSubBadge = tutorConfig?.frontend_ui_dictionary?.sidebar?.profile_card?.sub_badge || "Stateful RAG • Zero-Hallucination";
+  const tutorAvatar = tutorConfig?.client_metadata?.avatar_url || tutorConfig?.avatar || "/profile_photo.png";
+  const projectsTabTitle = tutorConfig?.frontend_ui_dictionary?.sidebar?.navigation?.items?.[1]?.label || tutorConfig?.projects_tab_label || "Projects";
+  const projectsTabDesc = projectsTabTitle.includes("Courses") ? "Featured Courses & Syllabi" : "22+ Production Systems";
+  
+  const ctaTitle = tutorConfig?.frontend_ui_dictionary?.sidebar?.contact_button?.title || tutorConfig?.cta_text || "Contact & Consult";
+  const ctaSubtitle = tutorConfig?.frontend_ui_dictionary?.sidebar?.contact_button?.subtitle || (tutorConfig?.name ? `Connect directly with ${tutorConfig.name}` : "Hire Arun for Custom AI Systems");
+
+  const customQuickPrompts = tutorConfig?.sidebar_questions || tutorConfig?.suggested_questions;
+
   const navItems = [
     {
       id: "chat" as ActiveTab,
@@ -50,9 +64,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: "projects" as ActiveTab,
-      label: "Projects",
+      label: projectsTabTitle,
       icon: <FolderGit2 className="h-4 w-4" />,
-      description: "22+ Production Systems",
+      description: projectsTabDesc,
     },
     {
       id: "manifesto" as ActiveTab,
@@ -62,7 +76,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
   ];
 
-  const quickPrompts = [
+  const defaultQuickPrompts = [
     {
       text: "How do you build trusted AI software for healthcare?",
       icon: <HeartPulse className="h-3.5 w-3.5 text-rose-500 shrink-0" />,
@@ -92,66 +106,96 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="relative flex flex-col gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="relative shrink-0">
-            <div className="h-12 w-12 overflow-hidden rounded-full border-2 border-emerald-500/40 bg-slate-100 dark:bg-slate-800 shadow-sm">
+            <div className="h-12 w-12 overflow-hidden rounded-full border-2 border-[var(--accent-green)]/40 bg-slate-100 dark:bg-slate-800 shadow-sm">
               <Image
-                src="/profile_photo.png"
-                alt="Arun Yadav"
+                src={tutorAvatar}
+                alt={tutorName}
                 width={48}
                 height={48}
                 className="h-full w-full object-cover"
                 priority
               />
             </div>
-            <span className="absolute bottom-0 right-0 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-[var(--bg-card)]">
+            <span className="absolute bottom-0 right-0 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[var(--accent-green)] ring-2 ring-[var(--bg-card)]">
               <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
             </span>
           </div>
 
           <div className="flex-1 min-w-0">
             <h2 className="text-sm font-extrabold text-[var(--text-main)] tracking-tight truncate leading-tight">
-              Arun Yadav
+              {tutorName}
             </h2>
-            <p className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 leading-tight mt-0.5">
-              AI Systems Architect • Healthcare & Education
+            <p className="text-xs font-semibold text-[var(--accent-green)] leading-tight mt-0.5">
+              {tutorTitle}
             </p>
             <p className="text-[11px] text-[var(--text-dim)] mt-1 flex items-center gap-1 leading-none">
-              <ShieldCheck className="h-3 w-3 text-emerald-500 shrink-0" />
-              Stateful RAG • Zero-Hallucination
+              <ShieldCheck className="h-3 w-3 text-[var(--accent-green)] shrink-0" />
+              {tutorSubBadge}
             </p>
           </div>
         </div>
 
         {/* Social Links */}
-        <div className="flex items-center justify-between border-t border-[var(--border-subtle)] pt-2.5">
-          <a
-            href="https://github.com/neural-arun"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-          >
-            <GithubIcon />
-            <span>GitHub</span>
-          </a>
+        <div className="flex flex-wrap items-center justify-between gap-1.5 border-t border-[var(--border-subtle)] pt-2.5">
+          {tutorConfig && tutorConfig.socials ? (
+            tutorConfig.socials.map((s: any, idx: number) => {
+              const key = (s.icon_key || s.icon || s.id || "").toLowerCase();
+              const emoji = s.symbol_emoji || s.symbol || (key === "udemy" ? "🎓" : key === "website" ? "🌐" : key === "linkedin" ? "💼" : key === "x" ? "𝕏" : key === "github" ? "🐙" : "🔗");
 
-          <a
-            href="https://linkedin.com/in/neuralarun"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-          >
-            <LinkedinIcon />
-            <span>LinkedIn</span>
-          </a>
+              return (
+                <a
+                  key={idx}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-[var(--accent-green)] transition-colors"
+                >
+                  {key === "github" ? (
+                    <GithubIcon />
+                  ) : key === "linkedin" ? (
+                    <LinkedinIcon />
+                  ) : key === "x" || key === "twitter" ? (
+                    <TwitterIcon />
+                  ) : (
+                    <span className="text-xs">{emoji}</span>
+                  )}
+                  <span>{s.name || s.label}</span>
+                </a>
+              );
+            })
+          ) : (
+            <>
+              <a
+                href="https://github.com/neural-arun"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-[var(--accent-green)] transition-colors"
+              >
+                <GithubIcon />
+                <span>GitHub</span>
+              </a>
 
-          <a
-            href="https://x.com/Neural_Arun"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-          >
-            <TwitterIcon />
-            <span>X / Twitter</span>
-          </a>
+              <a
+                href="https://linkedin.com/in/neuralarun"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-[var(--accent-green)] transition-colors"
+              >
+                <LinkedinIcon />
+                <span>LinkedIn</span>
+              </a>
+
+              <a
+                href="https://x.com/Neural_Arun"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-[11px] font-semibold text-[var(--text-dim)] hover:text-[var(--accent-green)] transition-colors"
+              >
+                <TwitterIcon />
+                <span>X / Twitter</span>
+              </a>
+            </>
+          )}
         </div>
       </div>
 
@@ -169,12 +213,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => setActiveTab(item.id)}
               className={`flex items-center justify-between p-3 rounded-xl font-medium text-xs transition-all text-left group ${
                 isActive
-                  ? "bg-emerald-500/15 border-2 border-emerald-500/60 text-emerald-700 dark:text-emerald-300 font-bold shadow-sm"
+                  ? "bg-[var(--accent-green)]/15 border-2 border-[var(--accent-green)]/60 text-[var(--accent-green)] font-bold shadow-sm"
                   : "border border-transparent hover:border-[var(--border-subtle)] hover:bg-[var(--bg-card)] text-[var(--text-main)]"
               }`}
             >
               <div className="flex items-center gap-3">
-                <span className={`p-2 rounded-lg ${isActive ? "bg-emerald-500 text-white" : "bg-[var(--bg-card)] text-[var(--text-dim)] group-hover:text-emerald-600"}`}>
+                <span className={`p-2 rounded-lg ${isActive ? "bg-[var(--accent-green)] text-white" : "bg-[var(--bg-card)] text-[var(--text-dim)] group-hover:text-[var(--accent-green)]"}`}>
                   {item.icon}
                 </span>
                 <div>
@@ -182,7 +226,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   <p className="text-[10px] text-[var(--text-dim)] font-normal">{item.description}</p>
                 </div>
               </div>
-              <ChevronRight className={`h-3.5 w-3.5 transition-transform ${isActive ? "text-emerald-600 translate-x-0.5" : "text-[var(--text-dim)] opacity-40 group-hover:opacity-100"}`} />
+              <ChevronRight className={`h-3.5 w-3.5 transition-transform ${isActive ? "text-[var(--accent-green)] translate-x-0.5" : "text-[var(--text-dim)] opacity-40 group-hover:opacity-100"}`} />
             </button>
           );
         })}
@@ -190,15 +234,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Contact Handoff Trigger Button */}
         <button
           onClick={openHandoffModal}
-          className="mt-1 flex items-center justify-between p-3 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-all active:scale-98"
+          className="mt-1 flex items-center justify-between p-3 rounded-xl font-bold text-xs bg-[var(--accent-green)] hover:bg-[var(--accent-green-hover)] text-white shadow-md transition-all active:scale-98"
         >
           <div className="flex items-center gap-3">
-            <span className="p-2 rounded-lg bg-emerald-700/60 text-white">
+            <span className="p-2 rounded-lg bg-black/20 text-white">
               <PhoneCall className="h-4 w-4" />
             </span>
             <div className="text-left">
-              <p className="font-extrabold text-xs">Contact & Consult</p>
-              <p className="text-[10px] text-emerald-100 opacity-90 font-normal">Hire Arun for Custom AI Systems</p>
+              <p className="font-extrabold text-xs">{ctaTitle}</p>
+              <p className="text-[10px] text-white opacity-90 font-normal">{ctaSubtitle}</p>
             </div>
           </div>
           <ChevronRight className="h-3.5 w-3.5 opacity-80" />
@@ -209,13 +253,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex flex-col gap-2 pt-3 border-t border-[var(--border-subtle)]">
         <div className="flex items-center justify-between px-1">
           <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-dim)] flex items-center gap-1.5">
-            <Compass className="h-3.5 w-3.5 text-emerald-500" />
+            <Compass className="h-3.5 w-3.5 text-[var(--accent-green)]" />
             Quick Questions
           </span>
           {messageCount > 0 && (
             <button
               onClick={onResetSession}
-              className="flex items-center gap-1 text-[11px] text-[var(--text-dim)] hover:text-emerald-600 transition-colors font-medium"
+              className="flex items-center gap-1 text-[11px] text-[var(--text-dim)] hover:text-[var(--accent-green)] transition-colors font-medium"
               title="Reset conversation session"
             >
               <RefreshCw className="h-3 w-3" />
@@ -225,21 +269,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          {quickPrompts.map((item, idx) => (
+          {(customQuickPrompts
+            ? customQuickPrompts.map((q: string, idx: number) => ({
+                text: q,
+                icon: idx === 0 ? <HeartPulse className="h-3.5 w-3.5 text-rose-500 shrink-0" /> : idx === 1 ? <Layers className="h-3.5 w-3.5 text-amber-500 shrink-0" /> : idx === 2 ? <Scale className="h-3.5 w-3.5 text-indigo-500 shrink-0" /> : <Briefcase className="h-3.5 w-3.5 text-[var(--accent-green)] shrink-0" />,
+                category: "Question " + (idx + 1),
+              }))
+            : defaultQuickPrompts
+          ).map((item: any, idx: number) => (
             <button
               key={idx}
               onClick={() => {
                 setActiveTab("chat");
                 onSelectPrompt(item.text);
               }}
-              className="group flex items-start gap-2 text-left p-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:border-emerald-500/40 hover:bg-emerald-500/10 transition-all text-xs text-[var(--text-main)] font-medium leading-snug"
+              className="group flex items-start gap-2 text-left p-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:border-[var(--accent-green)]/40 hover:bg-[var(--accent-green)]/10 transition-all text-xs text-[var(--text-main)] font-medium leading-snug"
             >
               {item.icon}
               <div className="flex-1 min-w-0">
-                <span className="block text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-0.5">
+                <span className="block text-[10px] font-bold text-[var(--accent-green)] uppercase tracking-wider mb-0.5">
                   {item.category}
                 </span>
-                <span className="group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
+                <span className="group-hover:text-[var(--accent-green)] transition-colors">
                   "{item.text}"
                 </span>
               </div>

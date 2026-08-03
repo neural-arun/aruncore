@@ -780,6 +780,31 @@ class RollingMemory:
         return self.history
 
 
+def load_tutor_config(tutor_id: Optional[str]) -> Optional[Dict[str, Any]]:
+    if not tutor_id or tutor_id.strip().lower() in ("arun", "default", "none"):
+        return None
+
+    slug = tutor_id.strip().lower()
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    candidate_paths = [
+        os.path.join(base_dir, "data", f"{slug}_enterprise_dictionary.json"),
+        os.path.join(base_dir, "demos", f"{slug}_enterprise_dictionary.json"),
+        os.path.join(base_dir, "demos", "course_creators", f"{slug}.json"),
+        os.path.join(base_dir, "demos", f"{slug}.json"),
+    ]
+
+    for path in candidate_paths:
+        if os.path.exists(path):
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"[LOAD TUTOR CONFIG ERROR] Failed reading {path}: {e}")
+
+    return None
+
+
 def load_static_context() -> Tuple[str, str, str, str, str]:
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
@@ -819,7 +844,7 @@ def load_static_context() -> Tuple[str, str, str, str, str]:
     return sys_content, guard_content, handoff_content, profile_content, rules_content
 
 
-def init_agent(temperature: float = 0.4, model_name: str = "gpt-4o-mini"):
+def init_agent(temperature: float = 0.4, model_name: str = "gpt-4o-mini", tutor_id: Optional[str] = None):
     openai_key = os.getenv("OPENAI_API_KEY")
     if not openai_key:
         raise ValueError("OPENAI_API_KEY is not set in environment.")
@@ -832,9 +857,44 @@ def init_agent(temperature: float = 0.4, model_name: str = "gpt-4o-mini"):
         api_key=openai_key,
     ).bind_tools(tools)
 
-    sys_content, guard_content, handoff_content, profile, rules = load_static_context()
+    tutor_cfg = load_tutor_config(tutor_id)
 
-    system_prompt = f"""
+    if tutor_cfg:
+        backend_cfg = tutor_cfg.get("backend_llm_configuration", {})
+        sys_prompt_cfg = backend_cfg.get("system_prompt", {})
+        
+        custom_prompt = sys_prompt_cfg.get("persona_identity") or tutor_cfg.get("custom_system_prompt") or "You are an AI Course Advisor."
+        rules_list = sys_prompt_cfg.get("project_guidelines") or tutor_cfg.get("custom_rules") or []
+        courses_data = tutor_cfg.get("courses") or []
+        about_bio = tutor_cfg.get("frontend_ui_dictionary", {}).get("about_view", {}).get("bio_paragraphs") or tutor_cfg.get("about_text") or ""
+        
+        rules_txt = "\n".join([f"- {r}" for r in rules_list])
+        courses_txt = json.dumps(courses_data, indent=2).replace("{", "{{").replace("}", "}}")
+        about_txt = "\n".join(about_bio) if isinstance(about_bio, list) else str(about_bio)
+        
+        system_prompt = f"""
+{custom_prompt}
+
+--- INSTRUCTOR & COURSE KNOWLEDGE ---
+About Instructor:
+{about_txt}
+
+Available Courses & Cohorts:
+{courses_txt}
+
+--- SPECIAL INSTRUCTIONS & RULES ---
+{rules_txt}
+
+--- LANGUAGE RULES ---
+Always respond in the exact language used by the student (English or natural Hinglish).
+
+--- PAST CONVERSATION SUMMARY ---
+{{running_summary}}
+"""
+    else:
+        sys_content, guard_content, handoff_content, profile, rules = load_static_context()
+
+        system_prompt = f"""
 {sys_content}
 
 --- GUARDRAILS & STEERING RULES ---

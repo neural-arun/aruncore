@@ -47,12 +47,25 @@ export default function Home() {
   const [theme, setTheme] = useState<"dark" | "light">("light");
   const [isAdminMode, setIsAdminMode] = useState<boolean>(false);
   const [adminToken, setAdminToken] = useState<string>("");
+  const [tutorConfig, setTutorConfig] = useState<any>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       const urlSession = urlParams.get("session_id");
       const urlToken = urlParams.get("admin_token");
+      const tutorParam = urlParams.get("tutor");
+
+      if (tutorParam && tutorParam.toLowerCase() !== "arun") {
+        fetch(`${API_BASE_URL}/api/config?tutor=${encodeURIComponent(tutorParam)}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data && (data.name || data.client_metadata || data.tutor_id)) {
+              setTutorConfig(data);
+            }
+          })
+          .catch((err) => console.warn("Fetch tutor config error:", err));
+      }
 
       if (urlSession) {
         setSessionId(urlSession);
@@ -158,6 +171,33 @@ export default function Home() {
     localStorage.setItem("aruncore_theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (tutorConfig && tutorConfig.theme_design_system) {
+      const { brand_colors, custom_css_variables } = tutorConfig.theme_design_system;
+      
+      if (brand_colors) {
+        if (brand_colors.primary_green) root.style.setProperty("--accent-green", brand_colors.primary_green);
+        if (brand_colors.primary_hover) root.style.setProperty("--accent-green-hover", brand_colors.primary_hover);
+        if (brand_colors.bg_sidebar) root.style.setProperty("--bg-sidebar", brand_colors.bg_sidebar);
+        if (brand_colors.border_subtle) root.style.setProperty("--border-subtle", brand_colors.border_subtle);
+      }
+      
+      if (custom_css_variables) {
+        Object.entries(custom_css_variables).forEach(([key, val]) => {
+          root.style.setProperty(key, val as string);
+        });
+      }
+    } else {
+      // Revert to Arun's default sacred CSS variables
+      root.style.removeProperty("--accent-green");
+      root.style.removeProperty("--accent-green-hover");
+      root.style.removeProperty("--accent-teal");
+      root.style.removeProperty("--border-accent");
+      root.style.removeProperty("--bg-accent-soft");
+    }
+  }, [tutorConfig]);
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
@@ -195,12 +235,16 @@ export default function Home() {
     setIsStreaming(true);
 
     try {
+      const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+      const tutorParam = urlParams?.get("tutor") || tutorConfig?.client_id || tutorConfig?.tutor_id || "arun";
+
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           session_id: sessionId,
           message: text,
+          tutor_id: tutorParam,
         }),
       });
 
@@ -359,6 +403,7 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
         openHandoffModal={() => setIsHandoffOpen(true)}
         theme={theme}
         toggleTheme={toggleTheme}
+        tutorConfig={tutorConfig}
       />
 
       {/* Main Content View with Laptop Sidebar */}
@@ -374,6 +419,7 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
           }}
           onResetSession={handleResetSession}
           messageCount={messages.length}
+          tutorConfig={tutorConfig}
         />
 
         {/* Dynamic Content Panel */}
@@ -389,6 +435,7 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
               openHandoffModal={() => setIsHandoffOpen(true)}
               isAdminMode={isAdminMode}
               onSendAdminMessage={handleSendAdminMessage}
+              tutorConfig={tutorConfig}
             />
           )}
 
@@ -399,10 +446,11 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
                 setActiveTab("chat");
               }}
               setActiveTab={setActiveTab}
+              tutorConfig={tutorConfig}
             />
           )}
 
-          {activeTab === "manifesto" && <ManifestoView />}
+          {activeTab === "manifesto" && <ManifestoView tutorConfig={tutorConfig} />}
         </div>
       </main>
 
@@ -411,6 +459,7 @@ My goal is to help you quickly understand Arun's expertise, explore collaboratio
         isOpen={isHandoffOpen}
         onClose={() => setIsHandoffOpen(false)}
         onSendHandoff={handleSendHandoff}
+        tutorConfig={tutorConfig}
       />
 
       {/* Mobile Bottom Navigation Bar (App-like 1-tap switching on mobile) */}

@@ -23,12 +23,25 @@ const XIcon = () => (
   </svg>
 );
 
+const UdemyIcon = () => (
+  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+    <path d="M12 0L1.5 6v12L12 24l10.5-6V6L12 0zm0 3.33L19.5 7.5 12 11.67 4.5 7.5 12 3.33zM3.75 9.33l7.5 4.17v7.17l-7.5-4.29V9.33zm16.5 7.05l-7.5 4.29v-7.17l7.5-4.17v7.05z" />
+  </svg>
+);
+
+const GlobeIcon = () => (
+  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+    <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8zM12 4.07c.83 1.2 1.5 2.59 1.91 3.93h-3.82c.41-1.34 1.08-2.73 1.91-3.93zM4.26 14a7.82 7.82 0 0 1 0-4h3.38a17.6 17.6 0 0 0 0 4zm.81 2h2.95a15.65 15.65 0 0 0 1.38 3.56A8.03 8.03 0 0 1 5.07 16zm2.95-8H5.07a8.03 8.03 0 0 1 4.51-3.56A15.65 15.65 0 0 0 8.02 8zM12 19.93c-.83-1.2-1.5-2.59-1.91-3.93h3.82c-.41 1.34-1.08 2.73-1.91 3.93zM14.36 14H9.64a15.6 15.6 0 0 1 0-4h4.72a15.6 15.6 0 0 1 0 4zm1.62 5.56A15.65 15.65 0 0 0 17.36 16h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14a17.6 17.6 0 0 0 0-4h3.38a7.82 7.82 0 0 1 0 4z" />
+  </svg>
+);
+
 interface HeaderProps {
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
   openHandoffModal: () => void;
   theme: "dark" | "light";
   toggleTheme: () => void;
+  tutorConfig?: any;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -37,8 +50,18 @@ export const Header: React.FC<HeaderProps> = ({
   openHandoffModal,
   theme,
   toggleTheme,
+  tutorConfig,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const tutorName = tutorConfig?.frontend_ui_dictionary?.header?.profile_name || tutorConfig?.name || "Arun Yadav";
+  const tutorRole = tutorConfig?.frontend_ui_dictionary?.header?.profile_badge || tutorConfig?.role || "AI Assistant";
+  const tutorAvatar = tutorConfig?.client_metadata?.avatar_url || tutorConfig?.avatar || "/profile_photo.png";
+  const projectsTabLabel = tutorConfig?.frontend_ui_dictionary?.header?.nav_tabs?.projects?.label || tutorConfig?.projects_tab_label || "Projects";
+  const aboutTabLabel = tutorConfig?.frontend_ui_dictionary?.header?.nav_tabs?.about?.label || tutorConfig?.about_tab_label || "About";
+
+  const ctaButtonText = tutorConfig?.frontend_ui_dictionary?.header?.cta_button?.text || tutorConfig?.cta_text || "Contact";
+  const headerSocials = tutorConfig?.frontend_ui_dictionary?.header?.social_links || tutorConfig?.socials;
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-main)]/90 backdrop-blur-md transition-colors duration-200">
@@ -48,8 +71,8 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-3">
           <div className="relative h-10 w-10 overflow-hidden rounded-full border border-[var(--border-accent)] bg-slate-800 shadow-sm shrink-0">
             <Image
-              src="/profile_photo.png"
-              alt="Arun Yadav"
+              src={tutorAvatar}
+              alt={tutorName}
               width={40}
               height={40}
               className="h-full w-full object-cover"
@@ -59,10 +82,10 @@ export const Header: React.FC<HeaderProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="font-heading text-base font-extrabold text-[var(--text-main)] tracking-tight">
-                Arun Yadav
+                {tutorName}
               </span>
               <span className="rounded-full border border-[var(--border-accent)] bg-[var(--bg-surface)] px-2 py-0.5 font-mono text-[10px] font-semibold text-[var(--accent-green)]">
-                AI Assistant
+                {tutorRole}
               </span>
             </div>
           </div>
@@ -91,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <FolderGit2 className="h-3.5 w-3.5" />
-            <span>Projects</span>
+            <span>{projectsTabLabel}</span>
           </button>
 
           <button
@@ -103,40 +126,72 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             <UserCheck className="h-3.5 w-3.5" />
-            <span>About</span>
+            <span>{aboutTabLabel}</span>
           </button>
         </nav>
 
         {/* Right Social Links, Theme Toggle & Contact Button */}
         <div className="hidden md:flex items-center gap-2.5">
           <div className="flex items-center gap-1 border-r border-[var(--border-subtle)] pr-2.5 text-[var(--text-muted)]">
-            <a
-              href="https://github.com/neural-arun"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 hover:text-[var(--accent-green)] transition-colors"
-              title="GitHub"
-            >
-              <GithubIcon />
-            </a>
-            <a
-              href="https://linkedin.com/in/neuralarun"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 hover:text-[var(--accent-green)] transition-colors"
-              title="LinkedIn"
-            >
-              <LinkedinIcon />
-            </a>
-            <a
-              href="https://x.com/neural_arun"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 hover:text-[var(--accent-green)] transition-colors"
-              title="X / Twitter"
-            >
-              <XIcon />
-            </a>
+            {headerSocials ? (
+              headerSocials.map((s: any, idx: number) => {
+                const key = (s.icon_key || s.icon || s.id || "").toLowerCase();
+                return (
+                  <a
+                    key={idx}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 hover:text-[var(--accent-green)] transition-colors"
+                    title={s.label || s.name || key}
+                  >
+                    {key === "github" ? (
+                      <GithubIcon />
+                    ) : key === "linkedin" ? (
+                      <LinkedinIcon />
+                    ) : key === "x" || key === "twitter" ? (
+                      <XIcon />
+                    ) : key === "udemy" ? (
+                      <UdemyIcon />
+                    ) : key === "website" || key === "globe" ? (
+                      <GlobeIcon />
+                    ) : (
+                      <span className="text-sm font-bold">{s.symbol_emoji || "🔗"}</span>
+                    )}
+                  </a>
+                );
+              })
+            ) : (
+              <>
+                <a
+                  href="https://github.com/neural-arun"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 hover:text-[var(--accent-green)] transition-colors"
+                  title="GitHub"
+                >
+                  <GithubIcon />
+                </a>
+                <a
+                  href="https://linkedin.com/in/neuralarun"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 hover:text-[var(--accent-green)] transition-colors"
+                  title="LinkedIn"
+                >
+                  <LinkedinIcon />
+                </a>
+                <a
+                  href="https://x.com/neural_arun"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 hover:text-[var(--accent-green)] transition-colors"
+                  title="X / Twitter"
+                >
+                  <XIcon />
+                </a>
+              </>
+            )}
           </div>
 
           <button
@@ -152,7 +207,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-1.5 rounded-xl border border-[var(--border-accent)] bg-[var(--bg-surface)] px-3.5 py-1.5 text-xs font-bold text-[var(--text-main)] hover:bg-[var(--accent-green)] hover:text-white transition-all shadow-xs"
           >
             <PhoneCall className="h-3.5 w-3.5 text-[var(--accent-green)] group-hover:text-white" />
-            <span>Contact</span>
+            <span>{ctaButtonText}</span>
           </button>
         </div>
 
