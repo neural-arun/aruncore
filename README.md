@@ -1,5 +1,5 @@
 ---
-title: ArunCore AI Assistant
+title: ArunCore AI Assistant & Multi-Tenant Enterprise Engine
 emoji: 🧠
 colorFrom: green
 colorTo: blue
@@ -8,127 +8,79 @@ app_port: 7860
 pinned: false
 ---
 
-# 🧠 Arun Yadav — AI Systems Architect & Personal AI Assistant
+# 🧠 ArunCore — AI Systems Architect & Multi-Tenant Enterprise Engine
 
-**ArunCore** is a production-grade, stateful, agentic portfolio and personal AI assistant built for **Arun Yadav** (AI Systems Architect specializing in Healthcare & Education).
+**ArunCore** is a production-grade, stateful, agentic portfolio and multi-tenant AI Assistant platform built for **Arun Yadav** (AI Systems Architect specializing in Healthcare & Education).
 
-It features an intelligent conversational assistant equipped with `gpt-4.1-nano`, real-time NDJSON token streaming, OpenAI Studio Neural Speech (TTS), Web Speech Voice-to-Text (STT), zero-hallucination hybrid RAG, live GitHub API data sync, value-first project inquiry logic, **100% automated Telegram notifications**, a **1-Click Magic Link 3-Way Real Human Takeover Engine**, a **Telegram Active Learning Loop**, and **fully automated CI/CD deployment** via GitHub Actions.
-
----
-
-## 🌟 Key Features
-
-1. **🤖 Arun's AI Assistant Persona**:
-   - Witty, casual, straightforward, and cool-friend vibe with zero corporate fluff.
-   - **Strict Exact Language Matching**: Responds in 100% clean, articulate English for English queries with zero Hindi/Hinglish slang leaks. Responds naturally in Hinglish/Hindi when the user speaks Hindi.
-
-2. **⚡ 100% Automated Telegram Alerts (Zero LLM Dependency)**:
-   - **Every Single Visitor Message**: Automatically triggers an instant notification to Arun's Telegram Alert Bot without depending on LLM decision gates or category filters.
-   - Includes: User Question, AI Twin Response, Session ID, and a **1-Click Magic Join Link**.
-
-3. **👨‍💻 1-Click Magic Link 3-Way Real Human Takeover**:
-   - **Seamless Intervention**: Clicking `https://aruncore.vercel.app/?session_id=...&admin_token=...` in Telegram opens the website directly in **Admin Mode** on any device.
-   - **Admin Reply Bar**: Unlocks a dedicated input box allowing Arun to post messages live as `👨‍💻 Arun Yadav [VERIFIED HUMAN] 🟢`.
-   - **3-Way Conversation**: The AI Twin continues answering visitor questions instantly, while Arun can chime in alongside the AI in real time.
-
-4. **🌐 Vercel Serverless Telegram Egress Relay**:
-   - Next.js `/api/telegram` serverless endpoint routes all outbound Telegram API traffic through Vercel serverless functions, bypassing Hugging Face Space egress firewall restrictions on Telegram IP ranges.
-
-5. **🧠 Telegram Active Learning Loop**:
-   - When Arun **replies to an alert message** on Telegram, the bot automatically:
-     - Extracts the question and saves the verified answer to `data/raw/unknown_questions.json`.
-     - Re-ingests into ChromaDB vector memory in the background.
-     - Confirms with: *"✅ Answer Saved & Ingested into AI Memory!"*
-
-6. **💡 Value & Problem-Solving First Project Inquiries**:
-   - Leads with **real-world business value, problem-solving impact, and high-friction operational workflows** (time, accuracy, human energy) before detailing technical architecture.
-   - **Smart Alias Search**: Intelligently maps variations like "MedCoach" to the correct repository README.
-
-7. **🐙 Live GitHub API Auto-Sync**:
-   - Real-time client-side sync fetching repositories live from `api.github.com/users/neural-arun/repos`.
-   - Automatically sorted by `pushed_at` descending with live commit pulse indicators.
-
-8. **🎙️ Voice Studio (HD Neural TTS & STT)**:
-   - **Text-to-Speech (TTS)**: OpenAI `tts-1` studio neural voice (`/tts` endpoint) with Web Speech fallback.
-   - **Speech-to-Text (STT)**: Microphone button with duplicate-free transcription.
-
-9. **📱 Mobile-Optimized UI**:
-   - Full-width touch-friendly controls, responsive hero card layout, compact status indicators, and dark/light mode toggle.
-
-10. **🔄 Fully Automated CI/CD Pipeline**:
-    - One command: `git push origin main` → **GitHub + Vercel + Hugging Face** all update automatically.
+It features a **100% Data-Driven Multi-Tenant Enterprise JSON Engine** that can instantly spin up custom 24/7 AI Course Advisors and Sales Representatives for any tutor, instructor, or consultant (e.g. Ed Donner) simply by passing a query parameter (`?tutor=ed_donner`) backed by a single 238-key JSON schema.
 
 ---
 
-## 🏗️ System Architecture
+## 🌟 Key System Features
+
+1. **🤖 Multi-Tenant Enterprise JSON Engine (`?tutor=<tutor_id>`)**:
+   - Dynamically loads tutor profiles, real course catalogs, bios, social links, FAQs, and custom system prompts from `data/<tutor_id>_enterprise_dictionary.json`.
+   - **Zero Code Changes Needed**: To onboard a new tutor or client, duplicate `demos/general.json`, fill their bio/courses/colors, and open `?tutor=<new_client_id>`.
+
+2. **🎨 Dynamic CSS Brand Theme System**:
+   - Reads `theme_design_system` from the active JSON file and injects custom CSS variables (`--accent-green`, `--accent-green-hover`, `--border-accent`, `--bg-accent-soft`).
+   - Automatically adapts the entire UI (buttons, active tabs, badges, quick questions, sidebar status dots) to the tutor's brand personality.
+   - Defaults seamlessly to Arun Yadav's original sacred **Emerald Green (`#10b981`)** portfolio when no parameter is provided.
+
+3. **🎓 Flagship Ed Donner Integration Demo (`?tutor=ed_donner`)**:
+   - Complete real-world course catalog covering Ed's flagship tracks on Udemy (*AI Engineer Core Track*, *Agentic Track with MCP*, *Production MLOps Track*, *AI Builder*, *AI Coder*, *AI Leadership*).
+   - Custom Deep Teal (`#0d9488`) brand theme, local high-res avatar, and clean SVG social symbols (`🎓`, `💼`, `𝕏`, `🌐`).
+
+4. **⚡ 100% Automated Telegram Alerts (Zero LLM Dependency)**:
+   - Automatically triggers instant notifications to the instructor's Telegram Alert Bot for visitor messages.
+   - Includes: User Question, AI Response, Session ID, and a **1-Click Magic Join Link**.
+
+5. **👨‍💻 1-Click Magic Link 3-Way Real Human Takeover**:
+   - Tapping the 1-click link in Telegram opens the website in **Admin Mode** on any device.
+   - Unlocks a dedicated input box for the real human instructor to chat live alongside the AI in a **3-Way Conversation Room**.
+
+6. **🧠 AI Agent Onboarding Guide & SOP (`demos/TUTOR_ONBOARDING_GUIDE.md`)**:
+   - A phase-by-phase protocol for AI Coding Agents and developers to research and populate new tutor JSON files with strict **Zero-Hallucination Guardrails**.
+
+---
+
+## 📁 Directory Structure & Key Files
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                      User Interface                     │
-│  Next.js 16 • 3-Way Live Chat • 1-Click Magic Link Admin│
-└────────────────────────────┬────────────────────────────┘
-                             │ HTTP POST /chat & /tts
-┌────────────────────────────▼────────────────────────────┐
-│                    FastAPI Backend                      │
-│             (port 8000 / HF Docker port 7860)           │
-└──────┬──────────────────────┬────────────────────┬──────┘
-       │                      │                    │
-┌──────▼──────┐        ┌──────▼──────┐      ┌──────▼──────┐
-│ ChromaDB +  │        │ Live GitHub │      │ Vercel Relay│
-│ Cohere V3   │        │     API     │      │ Telegram    │
-│ + unknown   │        └─────────────┘      │ Alerts +    │
-│ _questions  │                             │ 3-Way Chat  │
-└─────────────┘                             └─────────────┘
-
-┌─────────────────────────────────────────────────────────┐
-│                 GitHub Actions CI/CD                    │
-│  git push → GitHub → Vercel (auto) + HF Space (auto)   │
-└─────────────────────────────────────────────────────────┘
+aruncore/
+├── core/
+│   ├── agent.py               # Dynamic Tutor LLM agent loader & prompt builder
+│   └── api.py                 # FastAPI backend server with /chat & /api/config endpoints
+├── data/
+│   ├── arun_enterprise_dictionary.json     # Arun Yadav master JSON schema
+│   └── ed_donner_enterprise_dictionary.json # Ed Donner lead JSON schema
+├── demos/
+│   ├── general.json           # Blank master JSON schema template
+│   ├── TUTOR_ONBOARDING_GUIDE.md # AI Agent Onboarding Protocol SOP
+│   └── ed_donner_enterprise_dictionary.json # Gold standard reference example
+├── frontend/
+│   ├── app/page.tsx           # Main Next.js page with URL tutor search param fetch
+│   ├── components/            # Header, Sidebar, ChatPanel, ProjectsView, ManifestoView, HandoffModal
+│   └── public/                # Local avatars (ed_donner.png, profile_photo.png)
+└── PRODUCTION_CLIENT_ONBOARDING_PLAYBOOK.md # Production deployment playbook for $300+ clients
 ```
 
 ---
 
-## 📁 Repository Structure Overview
+## 🚀 Quick Start & Local Execution
 
-- [core/README.md](core/README.md): FastAPI backend, agent loop (`gpt-4.1-nano`), 3-way human takeover endpoints, vector store compiler.
-- [frontend/README.md](frontend/README.md): Next.js 16 UI components, Vercel Telegram relay route (`/api/telegram`), admin mode controls.
-- [data/README.md](data/README.md): Knowledge base files including `unknown_questions.json` active learning store.
-- [OPERATIONS_GUIDE.md](OPERATIONS_GUIDE.md): Master operational guide — how to manage data, use live takeover links, and run system tests.
-
----
-
-## 🔄 CI/CD Deployment (Automated)
-
+### 1. Backend Server (FastAPI on Port 8000)
 ```bash
-# This single command updates EVERYTHING:
-git add . && git commit -m "your update" && git push origin main
+source .venv/bin/activate
+python3 -m uvicorn core.api:app --reload --port 8000
 ```
 
-| Platform | Trigger | URL |
-|---|---|---|
-| **GitHub** | `git push` | [github.com/neural-arun/ArunCore](https://github.com/neural-arun/ArunCore) |
-| **Vercel** | Auto via GitHub webhook | [aruncore.vercel.app](https://aruncore.vercel.app) |
-| **Hugging Face** | Auto via GitHub Actions | [huggingface.co/spaces/neural-arun/ArunCore](https://huggingface.co/spaces/neural-arun/ArunCore) |
-
----
-
-## 🔐 Environment Variables (`.env`)
-
-```ini
-OPENAI_API_KEY=your_openai_api_key
-COHERE_API_KEY=your_cohere_api_key
-
-# Telegram Chat Log Bot (full execution trace logging)
-TELEGRAM_BOT_TOKEN=your_telegram_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
-
-# Telegram Alert Bot (@ai_twin_alert_bot)
-TELEGRAM_ALERT_BOT_TOKEN=your_alert_bot_token
-TELEGRAM_ALERT_CHAT_ID=your_chat_id
-
-# Admin Takeover Secret Key
-ADMIN_SECRET_KEY=your_admin_secret_key
+### 2. Frontend Dev Server (Next.js on Port 3000)
+```bash
+cd frontend
+npm run dev
 ```
 
-**GitHub Repository Secret** (for CI/CD auto-deploy to Hugging Face):
-- `HF_TOKEN` = Your Hugging Face Write Access Token
+### 3. Test URLs
+- **Arun Yadav Default Portfolio**: [http://localhost:3000](http://localhost:3000)
+- **Ed Donner AI Course Advisor**: [http://localhost:3000/?tutor=ed_donner](http://localhost:3000/?tutor=ed_donner)
