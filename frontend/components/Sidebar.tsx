@@ -103,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside className="hidden lg:flex w-80 shrink-0 h-full flex-col gap-4 overflow-y-auto p-4 pb-20 border-r border-[var(--border-subtle)] bg-[var(--bg-sidebar)] text-[var(--text-main)] transition-colors duration-200 shadow-sm custom-scrollbar">
       
       {/* Profile Header & Welcome Card */}
-      <div className="relative flex flex-col gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-sm">
+      <div className="relative flex flex-col gap-3 rounded-2xl shiny-border-card bg-[var(--bg-card)] p-4 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="relative shrink-0">
             <div className="h-12 w-12 overflow-hidden rounded-full border-2 border-[var(--accent-green)]/40 bg-slate-100 dark:bg-slate-800 shadow-sm">
@@ -268,14 +268,40 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
         </div>
 
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-2">
           {(customQuickPrompts
             ? customQuickPrompts.map((q: string, idx: number) => ({
                 text: q,
-                icon: idx === 0 ? <HeartPulse className="h-3.5 w-3.5 text-rose-500 shrink-0" /> : idx === 1 ? <Layers className="h-3.5 w-3.5 text-amber-500 shrink-0" /> : idx === 2 ? <Scale className="h-3.5 w-3.5 text-indigo-500 shrink-0" /> : <Briefcase className="h-3.5 w-3.5 text-[var(--accent-green)] shrink-0" />,
+                icon: idx === 0 ? <HeartPulse className="h-3.5 w-3.5 text-rose-500 shrink-0" /> : idx === 1 ? <Layers className="h-3.5 w-3.5 text-amber-500 shrink-0" /> : idx === 2 ? <Scale className="h-3.5 w-3.5 text-indigo-500 shrink-0" /> : <Briefcase className="h-3.5 w-3.5 text-emerald-500 shrink-0" />,
+                badgeColor: idx === 0 ? "text-rose-500" : idx === 1 ? "text-amber-500" : idx === 2 ? "text-indigo-500" : "text-emerald-500",
                 category: "Question " + (idx + 1),
               }))
-            : defaultQuickPrompts
+            : [
+                {
+                  text: defaultQuickPrompts[0].text,
+                  icon: <HeartPulse className="h-3.5 w-3.5 text-rose-500 shrink-0" />,
+                  badgeColor: "text-rose-500",
+                  category: defaultQuickPrompts[0].category,
+                },
+                {
+                  text: defaultQuickPrompts[1].text,
+                  icon: <Layers className="h-3.5 w-3.5 text-amber-500 shrink-0" />,
+                  badgeColor: "text-amber-500",
+                  category: defaultQuickPrompts[1].category,
+                },
+                {
+                  text: defaultQuickPrompts[2].text,
+                  icon: <Scale className="h-3.5 w-3.5 text-indigo-500 shrink-0" />,
+                  badgeColor: "text-indigo-500",
+                  category: defaultQuickPrompts[2].category,
+                },
+                {
+                  text: defaultQuickPrompts[3].text,
+                  icon: <Briefcase className="h-3.5 w-3.5 text-emerald-500 shrink-0" />,
+                  badgeColor: "text-emerald-500",
+                  category: defaultQuickPrompts[3].category,
+                },
+              ]
           ).map((item: any, idx: number) => (
             <button
               key={idx}
@@ -283,14 +309,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 setActiveTab("chat");
                 onSelectPrompt(item.text);
               }}
-              className="group flex items-start gap-2 text-left p-2.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:border-[var(--accent-green)]/40 hover:bg-[var(--accent-green)]/10 transition-all text-xs text-[var(--text-main)] font-medium leading-snug"
+              className="group flex items-start gap-2.5 text-left p-2.5 rounded-xl shiny-border-card bg-[var(--bg-card)] hover:bg-[var(--bg-surface-hover)] transition-all text-xs text-[var(--text-main)] font-medium leading-snug shadow-xs cursor-pointer"
             >
               {item.icon}
               <div className="flex-1 min-w-0">
-                <span className="block text-[10px] font-bold text-[var(--accent-green)] uppercase tracking-wider mb-0.5">
+                <span className={`block text-[10px] font-extrabold uppercase tracking-wider mb-0.5 ${item.badgeColor || 'text-[var(--accent-green)]'}`}>
                   {item.category}
                 </span>
-                <span className="group-hover:text-[var(--accent-green)] transition-colors">
+                <span className="group-hover:text-[var(--text-main)] transition-colors">
                   "{item.text}"
                 </span>
               </div>

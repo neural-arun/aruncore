@@ -183,7 +183,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
       <div className="h-full overflow-y-auto px-4 py-8 sm:px-12 pb-24 sm:pb-12 bg-[var(--bg-main)] text-[var(--text-main)]">
         <div className="mx-auto max-w-5xl space-y-6 animate-fade-slide">
           {/* Header */}
-          <div className="space-y-2 pb-4 border-b border-[var(--border-subtle)]">
+          <div className="shiny-header-box rounded-2xl p-5 sm:p-6 bg-[var(--bg-card)] space-y-2">
             <h1 className="font-heading text-2xl sm:text-4xl font-extrabold text-[var(--text-main)] tracking-tight">
               {pageTitle}
             </h1>
@@ -197,7 +197,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
             {coursesList.map((course: any, idx: number) => (
               <div
                 key={course.id || idx}
-                className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4"
+                className="shiny-border-card rounded-2xl bg-[var(--bg-card)] p-5 sm:p-6 shadow-sm hover:shadow-md transition-all space-y-4"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-subtle)] pb-4">
                   <div>
@@ -209,7 +209,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
                     </p>
                   </div>
                   {course.price && (
-                    <span className="self-start sm:self-center px-3 py-1 rounded-full bg-[var(--accent-green)]/10 border border-[var(--accent-green)]/30 text-[var(--accent-green)] font-mono text-sm font-bold shadow-xs">
+                    <span className="self-start sm:self-center badge-cobalt px-3.5 py-1 rounded-full font-mono text-xs sm:text-sm font-bold shadow-xs">
                       {course.price}
                     </span>
                   )}
@@ -221,15 +221,15 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                   {course.target_audience && (
-                    <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-3 text-xs">
-                      <span className="font-bold text-[var(--text-main)] block mb-1">🎯 Target Audience:</span>
-                      <span className="text-[var(--text-muted)]">{course.target_audience}</span>
+                    <div className="badge-amber rounded-xl p-3.5 text-xs shadow-xs">
+                      <span className="font-extrabold block mb-1">🎯 Target Audience:</span>
+                      <span className="font-medium">{course.target_audience}</span>
                     </div>
                   )}
                   {course.outcomes && (
-                    <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-main)] p-3 text-xs">
-                      <span className="font-bold text-[var(--text-main)] block mb-1">🚀 Key Outcomes:</span>
-                      <span className="text-[var(--text-muted)]">{course.outcomes}</span>
+                    <div className="badge-emerald rounded-xl p-3.5 text-xs shadow-xs">
+                      <span className="font-extrabold block mb-1">🚀 Key Outcomes:</span>
+                      <span className="font-medium">{course.outcomes}</span>
                     </div>
                   )}
                 </div>
@@ -333,7 +333,7 @@ export const ProjectsView: React.FC<ProjectsViewProps> = ({
             <div
               key={proj.id}
               onClick={() => handleCardClick(proj.githubUrl)}
-              className="group cursor-pointer rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 transition-all hover:border-[var(--border-accent)] hover:bg-[var(--bg-surface-hover)] hover:shadow-xl"
+              className="group cursor-pointer rounded-2xl shiny-border-card bg-[var(--bg-surface)] p-6 transition-all hover:bg-[var(--bg-surface-hover)] hover:shadow-xl"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="space-y-1.5">

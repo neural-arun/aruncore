@@ -19,13 +19,13 @@ export const ManifestoView: React.FC<ManifestoViewProps> = ({ tutorConfig }) => 
       <div className="mx-auto max-w-3xl space-y-6 animate-fade-slide">
         
         {/* Header Photo & Title */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 pb-6 border-b border-[var(--border-subtle)]">
-          <div className="relative h-32 w-32 sm:h-36 sm:w-36 overflow-hidden rounded-full border-4 border-[var(--accent-green)]/40 shadow-xl shrink-0">
+        <div className="shiny-header-box rounded-2xl p-6 bg-[var(--bg-card)] flex flex-col sm:flex-row items-center sm:items-start gap-6">
+          <div className="relative h-28 w-28 sm:h-32 sm:w-32 overflow-hidden rounded-full border-4 border-[var(--accent-green)] shadow-xl shrink-0">
             <Image
               src={tutorAvatar}
               alt={tutorName}
-              width={144}
-              height={144}
+              width={128}
+              height={128}
               className="h-full w-full object-cover"
               priority
             />
@@ -42,7 +42,7 @@ export const ManifestoView: React.FC<ManifestoViewProps> = ({ tutorConfig }) => 
         </div>
 
         {/* Bio Paragraphs */}
-        <div className="space-y-5 text-sm sm:text-base text-[var(--text-muted)] font-medium leading-relaxed">
+        <div className="shiny-border-card rounded-2xl p-6 bg-[var(--bg-card)] space-y-5 text-sm sm:text-base text-[var(--text-muted)] font-medium leading-relaxed">
           {bioParagraphs ? (
             bioParagraphs.map((para: string, idx: number) => (
               <p key={idx}>{para}</p>
@@ -64,7 +64,7 @@ export const ManifestoView: React.FC<ManifestoViewProps> = ({ tutorConfig }) => 
           )}
 
           <div className="pt-4 border-t border-[var(--border-subtle)]">
-            <p className="text-sm sm:text-base font-semibold text-[var(--text-main)]">
+            <p className="text-sm sm:text-base font-semibold text-[var(--accent-green)]">
               {closingCallout ? closingCallout : "Looking for an AI Systems Architect to build custom software for your team or agency? Let’s talk! Feel free to chat with my AI Digital Twin here on this site, or click Consult Arun to connect directly."}
             </p>
           </div>

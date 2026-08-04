@@ -64,7 +64,7 @@ export const Header: React.FC<HeaderProps> = ({
   const headerSocials = tutorConfig?.frontend_ui_dictionary?.header?.social_links || tutorConfig?.socials;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-main)]/90 backdrop-blur-md transition-colors duration-200">
+    <header className="sticky top-0 z-40 border-b-2 border-[var(--border-accent)] bg-[var(--bg-main)]/95 backdrop-blur-md transition-colors duration-200 shadow-xs">
       <div className="mx-auto flex h-13 sm:h-16 max-w-7xl items-center justify-between px-3 sm:px-8">
         
         {/* Left Profile Identity */}

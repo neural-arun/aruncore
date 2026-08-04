@@ -12,22 +12,25 @@
   "theme_design_system": {
     "mode": "light",
     "brand_colors": {
-      "primary_green": "#10b981",
-      "primary_hover": "#059669",
-      "accent_emerald": "#34d399",
-      "accent_amber": "#f59e0b",
+      "primary_green": "#2563eb",
+      "primary_hover": "#1d4ed8",
+      "accent_emerald": "#ef4444",
+      "accent_amber": "#ef4444",
       "bg_main": "#ffffff",
       "bg_sidebar": "#f8fafc",
       "bg_card": "#ffffff",
       "border_subtle": "#e2e8f0",
       "text_main": "#0f172a",
       "text_muted": "#475569",
-      "text_dim": "#94a3b8"
+      "text_dim": "#64748b"
     },
     "custom_css_variables": {
-      "--accent-green": "#10b981",
-      "--accent-teal": "#0d9488",
-      "--accent-amber": "#f59e0b",
+      "--accent-green": "#2563eb",
+      "--accent-green-hover": "#1d4ed8",
+      "--accent-teal": "#2563eb",
+      "--accent-amber": "#ef4444",
+      "--border-accent": "#2563eb",
+      "--bg-accent-soft": "rgba(37, 99, 235, 0.08)",
       "--bg-main": "#ffffff",
       "--bg-sidebar": "#f8fafc"
     }

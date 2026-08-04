@@ -338,10 +338,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             
             {/* AI Twin Card (Placed immediately below header) */}
             {/* Header Identity Card */}
-            <div className="rounded-2xl sm:rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:p-5 backdrop-blur-md shadow-xs space-y-3 shrink-0">
+            <div className="shiny-border-card rounded-2xl sm:rounded-3xl bg-[var(--bg-surface)] p-4 sm:p-5 backdrop-blur-md shadow-xs space-y-3 shrink-0">
               <div className="flex flex-row items-center justify-between gap-3">
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="relative h-13 w-13 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-[var(--accent-green)]/40 bg-slate-800 shrink-0 shadow-xs">
+                  <div className="relative h-13 w-13 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-[var(--accent-green)] bg-slate-800 shrink-0 shadow-md">
                     <Image
                       src={tutorAvatar}
                       alt={tutorName}
@@ -357,7 +357,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                       <h1 className="font-heading text-base sm:text-xl font-extrabold text-[var(--text-main)] tracking-tight">
                         {tutorName}
                       </h1>
-                      <span className="rounded-full border border-[var(--accent-green)]/30 bg-[var(--accent-green)]/10 px-2 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-[var(--accent-green)] flex items-center gap-1 shadow-xs shrink-0">
+                      <span className="rounded-full border border-[var(--accent-green)] bg-[var(--accent-green)]/10 px-2 py-0.5 font-mono text-[10px] sm:text-[11px] font-bold text-[var(--accent-green)] flex items-center gap-1 shadow-xs shrink-0">
                         <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent-green)] animate-pulse" />
                         <span>Online</span>
                       </span>
@@ -396,31 +396,36 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
               </div>
 
               {/* ChatGPT Style Chips Grid */}
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2.5">
                 {(customQuestions
                   ? customQuestions.map((q: string, idx: number) => ({
-                      icon: idx === 0 ? <HeartPulse className="h-4 w-4 text-[var(--accent-green)] shrink-0" /> : idx === 1 ? <Layers className="h-4 w-4 text-[var(--accent-green)] shrink-0" /> : idx === 2 ? <Scale className="h-4 w-4 text-[var(--accent-green)] shrink-0" /> : <Briefcase className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                      icon: idx === 0 ? <HeartPulse className="h-4 w-4 text-rose-500 shrink-0" /> : idx === 1 ? <Layers className="h-4 w-4 text-amber-500 shrink-0" /> : idx === 2 ? <Scale className="h-4 w-4 text-indigo-500 shrink-0" /> : <Briefcase className="h-4 w-4 text-emerald-500 shrink-0" />,
+                      badgeClass: idx === 0 ? "badge-coral" : idx === 1 ? "badge-amber" : idx === 2 ? "badge-indigo" : "badge-emerald",
                       label: q.length > 32 ? q.substring(0, 30) + "..." : q,
                       query: q,
                     }))
                   : [
                       {
-                        icon: <HeartPulse className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                        icon: <HeartPulse className="h-4 w-4 text-rose-500 shrink-0" />,
+                        badgeClass: "badge-coral",
                         label: "Healthcare AI",
                         query: starterPrompts[0].query,
                       },
                       {
-                        icon: <Layers className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                        icon: <Layers className="h-4 w-4 text-amber-500 shrink-0" />,
+                        badgeClass: "badge-amber",
                         label: "Zero-Hallucination RAG",
                         query: starterPrompts[1].query,
                       },
                       {
-                        icon: <Scale className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                        icon: <Scale className="h-4 w-4 text-indigo-500 shrink-0" />,
+                        badgeClass: "badge-indigo",
                         label: "Legal AI",
                         query: starterPrompts[2].query,
                       },
                       {
-                        icon: <Briefcase className="h-4 w-4 text-[var(--accent-green)] shrink-0" />,
+                        icon: <Briefcase className="h-4 w-4 text-emerald-500 shrink-0" />,
+                        badgeClass: "badge-emerald",
                         label: "Consult with Arun",
                         query: starterPrompts[3].query,
                       },
@@ -429,13 +434,13 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
                   <button
                     key={idx}
                     onClick={() => onSendMessage(item.query)}
-                    className="group text-left flex items-center gap-2.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-2.5 transition-all hover:border-[var(--accent-green)]/50 hover:bg-[var(--accent-green)]/5 active:scale-[0.98] shadow-xs"
+                    className={`text-left flex items-center gap-2.5 rounded-2xl ${item.badgeClass || 'shiny-border-card bg-[var(--bg-surface)]'} px-3.5 py-3 transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xs cursor-pointer`}
                   >
                     {item.icon}
-                    <span className="text-xs sm:text-sm text-[var(--text-main)] font-semibold truncate flex-1">
+                    <span className="text-xs sm:text-sm font-bold truncate flex-1">
                       {item.label}
                     </span>
-                    <ArrowRight className="h-3.5 w-3.5 text-[var(--accent-green)] opacity-40 group-hover:opacity-100 transition-opacity shrink-0" />
+                    <ArrowRight className="h-3.5 w-3.5 opacity-60 group-hover:opacity-100 transition-opacity shrink-0" />
                   </button>
                 ))}
               </div>

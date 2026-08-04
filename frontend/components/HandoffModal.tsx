@@ -41,7 +41,7 @@ export const HandoffModal: React.FC<HandoffModalProps> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-md rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-6 sm:p-8 text-[var(--text-main)] shadow-2xl cursor-default"
+        className="relative w-full max-w-md rounded-3xl shiny-border-card bg-[var(--bg-surface)] p-6 sm:p-8 text-[var(--text-main)] shadow-2xl cursor-default"
       >
         <button
           onClick={onClose}
