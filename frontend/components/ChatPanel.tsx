@@ -42,10 +42,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   const [isLoadingAudio, setIsLoadingAudio] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
 
-  const tutorName = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.assistant_title || tutorConfig?.title || "Arun's AI Twin";
-  const tutorRole = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.role_subtitle || tutorConfig?.subtitle || tutorConfig?.role || "Healthcare AI Systems Architect";
+  const tutorName = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.assistant_title || tutorConfig?.title || "Arun's AI Assistant";
+  const tutorRole = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.role_subtitle || tutorConfig?.subtitle || tutorConfig?.role || "AI Systems Architect • Healthcare & Education";
   const tutorAvatar = tutorConfig?.client_metadata?.avatar_url || tutorConfig?.avatar || "/profile_photo.png";
-  const tutorWelcome = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.welcome_paragraph || tutorConfig?.welcome_message || "Hi! I'm Arun's AI Twin. I can explain his projects, architecture decisions, and healthcare AI work — plus, the real Arun monitors this channel and can jump in live to chat with you directly if needed!";
+  const tutorWelcome = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.welcome_paragraph || tutorConfig?.welcome_message || "Hi! I'm Arun's AI Assistant. I can walk you through his production systems, architecture decisions, healthcare & education AI builds, or help you get in direct touch with him. Plus, the real Arun monitors this channel live and can jump in to converse with you directly!";
   const tutorCta = tutorConfig?.frontend_ui_dictionary?.chat_panel?.hero_card?.cta_button_text || tutorConfig?.cta_text || "Consult Arun";
   const inputPlaceholder = tutorConfig?.frontend_ui_dictionary?.chat_panel?.input_bar?.placeholder || (tutorConfig?.name ? `Ask ${tutorConfig.name}'s AI Assistant...` : "Ask Arun's AI Assistant...");
   const customQuestions = tutorConfig?.frontend_ui_dictionary?.chat_panel?.suggested_questions_section?.chips?.map((c: any) => c.query) || tutorConfig?.suggested_questions;

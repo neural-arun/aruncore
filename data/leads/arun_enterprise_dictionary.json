@@ -119,12 +119,12 @@
 
     "chat_panel": {
       "hero_card": {
-        "assistant_title": "Arun's AI Twin",
+        "assistant_title": "Arun's AI Assistant",
         "status_badge": "Online",
-        "role_subtitle": "Healthcare AI Systems Architect",
+        "role_subtitle": "AI Systems Architect • Healthcare & Education",
         "cta_button_text": "Consult Arun",
         "cta_icon_key": "briefcase",
-        "welcome_paragraph": "Hi! I'm Arun's AI Twin. I can explain his projects, architecture decisions, and healthcare AI work — plus, the real Arun monitors this channel and can jump in live to chat with you directly if needed!"
+        "welcome_paragraph": "Hi! I'm Arun's AI Assistant. I can walk you through his production systems, architecture decisions, healthcare & education AI builds, or help you get in direct touch with him. Plus, the real Arun monitors this channel live and can jump in to converse with you directly!"
       },
       "suggested_questions_section": {
         "heading": "Suggested Questions",
