@@ -10,7 +10,20 @@ import { MobileBottomNav } from "../components/MobileBottomNav";
 import { HandoffModal } from "../components/HandoffModal";
 import { Message, ActiveTab, HandoffFormData } from "../lib/types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" && window.location.hostname !== "localhost" ? "https://neural-arun-aruncore.hf.space" : "http://localhost:8000");
+const getApiBaseUrl = (): string => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
+  }
+  if (typeof window !== "undefined") {
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      return "http://localhost:8000";
+    }
+    return window.location.origin;
+  }
+  return "http://localhost:8000";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const TELEGRAM_ALERT_BOT_TOKEN = "8847600936:AAHHy0cy98JkPo86Iuld1IRQML5NaSsMbqo";
 const TELEGRAM_ALERT_CHAT_ID = "1154451605";

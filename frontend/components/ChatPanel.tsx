@@ -7,7 +7,20 @@ import Image from "next/image";
 import { Message } from "../lib/types";
 import { Send, Copy, Check, ChevronDown, ChevronRight, Sparkles, Terminal, PhoneCall, ArrowRight, Activity, Cpu, Volume2, Square, Loader2, Mic, MicOff, RotateCcw, Briefcase, HeartPulse, Layers, Scale } from "lucide-react";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" && window.location.hostname !== "localhost" ? "https://neural-arun-aruncore.hf.space" : "http://localhost:8000");
+const getApiBaseUrl = (): string => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
+  }
+  if (typeof window !== "undefined") {
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      return "http://localhost:8000";
+    }
+    return window.location.origin;
+  }
+  return "http://localhost:8000";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 interface ChatPanelProps {
   messages: Message[];
