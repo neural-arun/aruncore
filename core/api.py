@@ -310,10 +310,11 @@ except Exception as e:
 
 app = FastAPI(title="ArunCore API", description="Stateful Agentic Backend for Arun Yadav's Digital Twin.")
 
-# Enable CORS for external frontends
+# Enable CORS for external frontends (Vercel, custom domains, local dev)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -573,7 +574,7 @@ def health_check():
     bot_cid = os.getenv("TELEGRAM_CHAT_ID", "")
 
     return {
-        "status": "online",
+        "status": "ok",
         "active_sessions": len(active_sessions),
         "telegram_alert_bot_preview": f"{alert_tok[:6]}...{alert_tok[-4:]}" if alert_tok else "MISSING",
         "telegram_alert_chat_id": alert_cid or "MISSING",
@@ -713,3 +714,9 @@ frontend_out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 if os.path.exists(frontend_out):
     from fastapi.staticfiles import StaticFiles
     app.mount("/", StaticFiles(directory=frontend_out, html=True), name="static_frontend")
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run("core.api:app", host="0.0.0.0", port=port, reload=False)
+
