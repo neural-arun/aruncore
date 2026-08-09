@@ -3,7 +3,7 @@ project_name: personal_ai_agent
 github_url: https://github.com/neural-arun/personal_ai_agent
 language: Python
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-03-30T15:43:31Z
 ---
 

@@ -3,7 +3,7 @@ project_name: web_wizard
 github_url: https://github.com/neural-arun/web_wizard
 language: HTML
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-04-08T06:10:58Z
 ---
 

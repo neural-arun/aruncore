@@ -3,7 +3,7 @@ project_name: real_state_listing_scraper
 github_url: https://github.com/neural-arun/real_state_listing_scraper
 language: Python
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-03-14T10:48:12Z
 ---
 

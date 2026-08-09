@@ -1,0 +1,9 @@
+{
+  "tutor_id": "ed_donner",
+  "welcome_message": "Hi! I'm Ed Donner's AI Teaching Assistant. Ask me anything about Ed's LLM engineering courses, Python tutorials, or mentorship programs!",
+  "suggested_questions": [
+    "What courses does Ed Donner offer?",
+    "How can I learn LLM Application Development with Ed?",
+    "What is Ed Donner's background in AI & finance?"
+  ]
+}

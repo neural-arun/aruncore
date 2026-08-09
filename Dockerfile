@@ -25,4 +25,4 @@ RUN cd frontend && npm install && npm run build
 EXPOSE 8000
 
 # Run FastAPI server (which serves the mounted frontend and API endpoints)
-CMD ["sh", "-c", "if [ \"$RUN_TELEGRAM_PUBLIC_BOT\" = \"true\" ]; then python -m core.bot & fi; uvicorn core.api:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "if [ \"$RUN_TELEGRAM_PUBLIC_BOT\" = \"true\" ]; then python -m backend.app.core.bot & fi; uvicorn backend.app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

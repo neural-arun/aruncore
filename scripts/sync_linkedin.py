@@ -120,7 +120,7 @@ def main():
         # Trigger auto-ingest into ChromaDB
         print("\nTriggering vector ingestion into ChromaDB...")
         import subprocess
-        subprocess.run([sys.executable, str(BASE_DIR / "core" / "ingest.py")], check=True)
+        subprocess.run([sys.executable, str(BASE_DIR / "scripts" / "ingest.py")], check=True)
         print("\n[SUCCESS] LinkedIn posts synced and indexed in ChromaDB successfully!")
     else:
         print("[WARNING] No posts retrieved from Apify.")

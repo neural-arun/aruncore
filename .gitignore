@@ -27,6 +27,9 @@ Thumbs.db
 
 .vercel
 
+# Database Files
+db/
+
 # Image Artifacts
 *.png
 *.jpg

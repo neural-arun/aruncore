@@ -1,0 +1,13 @@
+{
+  "tutor_id": "tenant_starter",
+  "name": "New Instructor",
+  "title": "New Instructor",
+  "role": "AI Specialist & Consultant",
+  "subtitle": "AI Specialist & Consultant",
+  "avatar_url": "/profile_photo.png",
+  "logo_url": "/logo.jpg",
+  "primary_color": "#6366f1",
+  "accent_color": "#818cf8",
+  "theme": "dark",
+  "cta_text": "Consult AI"
+}

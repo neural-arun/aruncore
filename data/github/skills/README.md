@@ -3,8 +3,8 @@ project_name: skills
 github_url: https://github.com/neural-arun/skills
 language: Python
 stars: 0
-topics: 
-updated_at: 2026-07-24T10:19:09Z
+topics: [None]
+updated_at: 2026-07-25T15:01:13Z
 ---
 
 # skills

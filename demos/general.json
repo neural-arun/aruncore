@@ -252,7 +252,7 @@
       "primary_model": "gpt-4o-mini",
       "summary_model": "gpt-4.1-nano",
       "temperature": 0.3,
-      "max_scratchpad_iterations": 5
+      "max_scratchpad_iterations": 7
     },
 
     "system_prompt": {

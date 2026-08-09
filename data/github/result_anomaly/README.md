@@ -3,7 +3,7 @@ project_name: result_anomaly
 github_url: https://github.com/neural-arun/result_anomaly
 language: Python
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-04-03T10:05:59Z
 ---
 

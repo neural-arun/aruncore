@@ -1,0 +1,9 @@
+{
+  "tutor_id": "tenant_starter",
+  "welcome_message": "Hello! Welcome to our AI Assistant. How can I help you today?",
+  "suggested_questions": [
+    "What services do you offer?",
+    "How can I book a consultation?",
+    "What are your business hours?"
+  ]
+}

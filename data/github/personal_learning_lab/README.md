@@ -3,7 +3,7 @@ project_name: personal_learning_lab
 github_url: https://github.com/neural-arun/personal_learning_lab
 language: HTML
 stars: 1
-topics: 
+topics: [None]
 updated_at: 2026-04-14T14:44:25Z
 ---
 

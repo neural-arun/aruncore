@@ -69,7 +69,7 @@ export default function Home() {
       const urlToken = urlParams.get("admin_token");
       const tutorParam = urlParams.get("tutor");
 
-      if (tutorParam && tutorParam.toLowerCase() !== "arun") {
+      if (tutorParam) {
         fetch(`${API_BASE_URL}/api/config?tutor=${encodeURIComponent(tutorParam)}`)
           .then((res) => res.json())
           .then((data) => {

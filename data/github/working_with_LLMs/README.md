@@ -3,7 +3,7 @@ project_name: working_with_LLMs
 github_url: https://github.com/neural-arun/working_with_LLMs
 language: Python
 stars: 1
-topics: 
+topics: [None]
 updated_at: 2026-03-18T04:25:43Z
 ---
 

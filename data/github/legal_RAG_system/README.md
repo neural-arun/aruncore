@@ -3,7 +3,7 @@ project_name: legal_RAG_system
 github_url: https://github.com/neural-arun/legal_RAG_system
 language: Python
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-04-04T19:38:26Z
 ---
 

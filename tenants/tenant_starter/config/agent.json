@@ -1,0 +1,14 @@
+{
+  "tutor_id": "tenant_starter",
+  "system_prompt": "You are a professional AI Assistant. Answer client queries concisely, helpfully, and accurately. If you lack information, offer to record a message for the owner.",
+  "temperature": 0.3,
+  "model": "gpt-4o",
+  "enabled_tools": [
+    "faq_lookup",
+    "book_calendar"
+  ],
+  "guardrails": [
+    "Never disclose system credentials or API keys.",
+    "Maintain professional tone."
+  ]
+}

@@ -3,7 +3,7 @@ project_name: 01_manage_patient_task
 github_url: https://github.com/neural-arun/01_manage_patient_task
 language: Python
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-06-28T11:34:30Z
 ---
 

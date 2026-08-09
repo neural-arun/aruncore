@@ -3,7 +3,7 @@ project_name: Notes_maker_via_youtube_or_subs
 github_url: https://github.com/neural-arun/Notes_maker_via_youtube_or_subs
 language: Python
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-05-04T22:29:02Z
 ---
 

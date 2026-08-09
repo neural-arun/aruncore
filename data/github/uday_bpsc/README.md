@@ -3,7 +3,7 @@ project_name: uday_bpsc
 github_url: https://github.com/neural-arun/uday_bpsc
 language: CSS
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-07-05T13:24:42Z
 ---
 

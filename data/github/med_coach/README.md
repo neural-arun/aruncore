@@ -3,7 +3,7 @@ project_name: med_coach
 github_url: https://github.com/neural-arun/med_coach
 language: Python
 stars: 0
-topics: 
+topics: [None]
 updated_at: 2026-06-16T18:29:39Z
 ---
 
