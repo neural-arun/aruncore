@@ -64,6 +64,36 @@ class TenantService:
                 print(f"[TENANT_SERVICE WARNING] Failed to parse {filepath}: {e}")
         return fallback
 
+    # ------------------------------------------------------------------ #
+    # Legacy demos-dictionary loader (pre-dates split configs).           #
+    # Kept here so both config systems resolve in one service and the     #
+    # agent loop reuses it for `?tutor=<id>` responses.                   #
+    # ------------------------------------------------------------------ #
+    def load_legacy_tutor_config(self, tutor_id: Optional[str]) -> Optional[Dict[str, Any]]:
+        slug = (tutor_id or "arun").strip().lower()
+
+        candidate_paths = [
+            os.path.join(self.base_dir, "demos", f"{slug}_enterprise_dictionary.json"),
+            os.path.join(self.base_dir, "demos", f"{slug}.json"),
+            os.path.join(self.base_dir, "data", "leads", f"{slug}_enterprise_dictionary.json"),
+            os.path.join(self.base_dir, "data", "leads", f"{slug}.json"),
+            os.path.join(self.base_dir, "demos", "general.json"),
+        ]
+
+        for path in candidate_paths:
+            if os.path.exists(path):
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        if data.get("client_id") == "{{TUTOR_ID}}":
+                            data["client_id"] = slug
+                            data["tutor_id"] = slug
+                        return data
+                except Exception as e:
+                    print(f"[LOAD TUTOR CONFIG ERROR] Failed reading {path}: {e}")
+
+        return None
+
 
 # Singleton instance helper
 tenant_service = TenantService()

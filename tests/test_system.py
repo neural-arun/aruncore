@@ -23,7 +23,7 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 def test_knowledge_base():
     print("\n--- [TEST 1/5] Knowledge Base RAG Search ---")
-    from core.agent import search_arun_knowledge
+    from backend.app.core.agent import search_arun_knowledge
     query = "medical AI tutors neet bot"
     result = search_arun_knowledge.invoke({"query": query})
     print(f"Query: '{query}'")
@@ -33,7 +33,7 @@ def test_knowledge_base():
 
 def test_github_sync():
     print("\n--- [TEST 2/5] Live GitHub API Data Sync ---")
-    from core.agent import get_github_live_data
+    from backend.app.core.agent import get_github_live_data
     result = get_github_live_data.invoke({"username": "neural-arun"})
     print(f"Result Snippet:\n{result[:300]}...")
     assert "Live GitHub Repositories" in result or "github.com" in result, "GitHub sync returned invalid output"
@@ -41,7 +41,7 @@ def test_github_sync():
 
 def test_active_learning_loop():
     print("\n--- [TEST 3/5] Active Learning Loop (Telegram Reply -> unknown_questions.json) ---")
-    from core.agent import save_unknown_question_answer
+    from backend.app.core.agent import save_unknown_question_answer
     
     test_q = f"Automated Test Question {int(time.time())}"
     test_a = "This is a verified test answer ingested by the automated test suite."
@@ -62,7 +62,7 @@ def test_active_learning_loop():
 
 def test_telegram_delivery():
     print("\n--- [TEST 4/5] Telegram Alert Delivery Engine ---")
-    from core.agent import _deliver_notify_arun, send_automated_chat_alert
+    from backend.app.core.agent import _deliver_notify_arun, send_automated_chat_alert
     status = _deliver_notify_arun("SYSTEM_ALERT", "Automated system integration test run")
     print(f"Telegram Delivery Output: {status}")
     assert "SUCCESS" in status or "SKIPPED" in status, f"Telegram delivery failed: {status}"
@@ -74,7 +74,7 @@ def test_telegram_delivery():
 
 def test_agent_execution():
     print("\n--- [TEST 5/5] Agent Invocation & Tool Execution ---")
-    from core.agent import init_agent
+    from backend.app.core.agent import init_agent
     main_llm, prompt, default_memory, tools = init_agent()
     print(f"Loaded {len(tools)} agent tools: {[t.name for t in tools]}")
     

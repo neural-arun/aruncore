@@ -11,7 +11,7 @@ I focus on solving high-value problems where accuracy, reliability, and human ov
 - 💬 **WhatsApp:** [+91 8881109193](https://wa.me/918881109193)
 - ✉️ **Email:** neural.arun.dev@gmail.com
 - 🌐 **GitHub:** [neural-arun](https://github.com/neural-arun)
-- 💼 **LinkedIn:** [Arun Yadav](https://linkedin.com)
+- 💼 **LinkedIn:** [Arun Yadav](https://www.linkedin.com/in/arun-yadav-768052368)
 
 ---
 

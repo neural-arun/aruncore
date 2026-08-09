@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import ArunCore agent setup
-from backend.app.core.agent import init_agent, _route_user_input
+from backend.app.core.agent import init_agent
 
 TEST_QUESTIONS = [
     # Category 1: Core Identity & Principles

@@ -68,18 +68,24 @@ graph TD
     subgraph Business Logic Services (backend/app/services/)
         TenantService["Tenant & Config Service"]
         PromptBuilder["Prompt Builder Service"]
-        MemoryManager["Rolling Memory Manager"]
+        MemoryManager["Rolling Memory Manager (MemoryManager =<br/>RollingMemory alias)"]
         ToolExecutor["Dynamic Config-Driven Tool Executor"]
         AgentRunner["Agent Runner Engine (100% Agent Control)"]
-        RAGService["Hybrid Dense + Sparse RAG Service (ChromaDB + BM25)"]
-        NotificationService["Async Telegram / WhatsApp Dispatcher"]
-        ActiveLearningService["Real-Time Knowledge Ingestion Service"]
+        KnowledgeService["Knowledge Retrieval Service (GitHub +<br/>READMEs + LinkedIn + static + Q&A)"]
+        RAGService["Hybrid RAG Coordinator (ChromaDB + BM25)"]
+        NotificationService["Telegram / Alert Dispatcher + Background Queue"]
+        SessionService["Thread-Safe Session & Memory Store"]
+        AuthService["Admin Token Auth (3-Way Live Takeover)"]
+        BackgroundQueue["Shared Background Task Queue"]
+        ActiveLearningService["Active Learning (owner-answer ingestion)"]
     end
 
     subgraph Interface Adapters (backend/app/db/ & core/)
         VectorStore["VectorStore Interface<br/>(ChromaDB + BM25 + Cohere)"]
         StateStore["StateStore Interface<br/>(Redis / Thread-Safe Memory)"]
         NotificationProvider["NotificationProvider Interface<br/>(Telegram / WhatsApp API)"]
+        CompositionRoot["core/agent.py (thin composition<br/>root: init_agent + facade re-exports)"]
+        HTTPLayer["core/api.py (thin FastAPI wiring only)"]
     end
 
     subgraph Tenant Storage Layer (tenants/)
@@ -105,15 +111,29 @@ graph TD
     AgentRunner --> PromptBuilder
     AgentRunner --> MemoryManager
     AgentRunner --> ToolExecutor
+    AgentRunner --> KnowledgeService
     AgentRunner --> RAGService
     AgentRunner --> NotificationService
+    AgentRunner --> SessionService
+    AgentRunner --> CompositionRoot
+
+    ToolExecutor --> KnowledgeService
+    ToolExecutor --> NotificationService
+
+    NotificationService --> BackgroundQueue
+    NotificationService --> AuthService
+    HTTPLayer --> AgentRunner
+    HTTPLayer --> SessionService
+    HTTPLayer --> AuthService
+    HTTPLayer --> NotificationService
     
     TenantService --> TenantConfigs
     ToolExecutor --> TenantConfigs
-    RAGService --> VectorStore
+    RAGService --> KnowledgeService
+    KnowledgeService --> VectorStore
     VectorStore --> TenantKnowledge
     ActiveLearningService --> VectorStore
-    ActiveLearningService --> TenantKnowledge
+    ActiveLearningService --> RAGService
     NotificationService --> NotificationProvider
 ```
 
@@ -128,39 +148,42 @@ aruncore/
 │   │   ├── api/                  # 🌐 VERSIONED API ROUTERS (v1)
 │   │   │   ├── v1/
 │   │   │   │   ├── router.py     # Master v1 API Router Aggregator
-│   │   │   │   ├── chat.py       # /chat streaming, history & session endpoints
-│   │   │   │   ├── config.py     # /config multi-tenant metadata resolution
+│   │   │   │   ├── config.py     # /api/v1/config multi-tenant metadata resolution
 │   │   │   │   ├── webhook.py    # Telegram & WhatsApp reply webhook (Active Learning)
-│   │   │   │   └── voice.py      # /voice neural TTS & STT audio endpoints
-│   │   │   └── deps.py           # FastAPI dependency injection helpers
+│   │   │   │   └── voice.py      # /api/v1/voice/tts neural TTS audio
 │   │   │
 │   │   ├── schemas/              # 📋 PYDANTIC VALIDATION SCHEMAS
 │   │   │   ├── tenant.py         # Sub-config schemas (Brand, Agent, Chat, Voice, SEO, Social)
-│   │   │   ├── chat.py           # ChatRequest, ChatResponse, NDJSONStreamChunk schemas
+│   │   │   ├── chat.py           # ChatRequest, ChatHistoryResponse, NDJSONStreamChunk schemas
 │   │   │   ├── webhook.py        # Telegram/WhatsApp incoming reply webhook schema
-│   │   │   └── voice.py          # TTSRequest, SpeechToTextResponse schemas
+│   │   │   └── voice.py          # TTSRequest schema
 │   │   │
-│   │   ├── services/             # 🧠 SINGLE-RESPONSIBILITY SERVICES
-│   │   │   ├── tenant_service.py # Dynamic Tenant Config Loader (Resolves tenants/)
-│   │   │   ├── prompt_builder.py # System prompt, guardrails & bio synthesizer
-│   │   │   ├── memory_manager.py # Rolling chat window & session context manager
-│   │   │   ├── tool_executor.py  # Config-Driven Tool Registry & Execution Sandbox
-│   │   │   ├── agent_runner.py   # LLM execution loop & streaming token generator (100% Control)
-│   │   │   ├── rag_service.py    # Hybrid dense vector + sparse keyword retrieval coordinator
-│   │   │   ├── notification_service.py # Async Telegram/WhatsApp alert dispatcher
-│   │   │   ├── active_learning_service.py # Real-time Q&A vector re-ingestion service
-│   │   │   └── voice_service.py # Speech-to-Text & Neural Speech synthesis
+│   │   ├── services/             # 🧠 SINGLE-RESPONSIBILITY SERVICES (DECOUPLED)
+│   │   │   ├── background.py     # Shared background task queue + worker thread
+│   │   │   ├── tenant_service.py # Dynamic tenant + legacy demos config resolver
+│   │   │   ├── prompt_builder.py # System prompt, static context & avatar assembly
+│   │   │   ├── memory_manager.py # RollingMemory summary-compression + MemoryManager alias
+│   │   │   ├── tool_executor.py  # Real tool registry (search / github / notify) + placeholders
+│   │   │   ├── agent_runner.py   # Streaming + sync agent loop (7-iters, 3-way live notice)
+│   │   │   ├── knowledge_service.py # Reads/writes ALL knowledge data (GitHub, LinkedIn, static, Q&A)
+│   │   │   ├── rag_service.py    # Hybrid RAG coordinator + active-learning persistence
+│   │   │   ├── notification_service.py # Telegram send/alert/queue/logging + alert dedup
+│   │   │   ├── auth_service.py   # Admin token generation + verification
+│   │   │   ├── session_store.py  # Thread-safe session / human-control / memory store
+│   │   │   ├── active_learning_service.py # owner-reply -> RAG ingestion
+│   │   │   └── voice_service.py  # Speech synthesis (TTS)
 │   │   │
 │   │   ├── db/                   # 🔌 INTERFACE ADAPTERS
 │   │   │   ├── interfaces.py     # Abstract Base Classes (VectorStore, StateStore, NotificationProvider)
-│   │   │   ├── vectorstore.py    # ChromaDB + BM25 + Cohere Reranker Hybrid Implementation
-│   │   │   └── state_store.py    # Redis & Thread-Safe In-Memory StateStore Implementations
+│   │   │   └── state_store.py    # Thread-Safe In-Memory StateStore Implementation
 │   │   │
-│   │   ├── core/                 # 🔐 CONFIGURATION & SECURITY
-│   │   │   ├── config.py         # Pydantic Settings & Environment Variables
-│   │   │   └── security.py       # Webhook signature verification
+│   │   ├── core/                 # 🔧 COMPOSITION ROOT, HTTP LAYER & CHANNELS
+│   │   │   ├── agent.py          # init_agent factory + IPv4 patch + backward-compat facade
+│   │   │   ├── api.py            # Thin FastAPI wiring (/chat, /config, /tts, admin, health)
+│   │   │   ├── bot.py            # Telegram bot (uses shared AgentRunner.sync_reply)
+│   │   │   └── ingest.py         # ChromaDB knowledge ingestion (data/ -> db/)
 │   │   │
-│   │   └── main.py               # FastAPI entrypoint, lifespan, CORS, middleware
+│   │   └── main.py               # FastAPI entrypoint (mounts v1 routers)
 │   │
 │   ├── pyproject.toml
 │   └── Dockerfile

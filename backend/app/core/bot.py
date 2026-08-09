@@ -1,5 +1,4 @@
 import asyncio
-import json
 import os
 import re
 from dotenv import load_dotenv
@@ -7,8 +6,11 @@ from langchain_openai import ChatOpenAI
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
-# Import the core ArunCore engine
-from backend.app.core.agent import init_agent, RollingMemory, queue_debug_event, queue_maybe_notify_arun, run_pre_escalation
+# Import the ArunCore engine (composition root + decoupled services)
+from backend.app.core.agent import init_agent
+from backend.app.services.memory_manager import RollingMemory
+from backend.app.services.agent_runner import agent_runner
+from backend.app.services.knowledge_service import knowledge_service
 
 load_dotenv()
 
@@ -28,121 +30,25 @@ def get_or_create_memory(chat_id: int) -> RollingMemory:
         summary_llm = ChatOpenAI(
             temperature=0.0,
             model="gpt-4o-mini",
-            api_key=os.getenv("OPENAI_API_KEY")
+            api_key=os.getenv("OPENAI_API_KEY"),
         )
         sessions[chat_id] = RollingMemory(summary_llm=summary_llm)
     return sessions[chat_id]
 
 
 def run_agent(chat_id: int, user_message: str) -> str:
-    """Runs the full stateful agent loop for a given user message."""
+    """Runs the full stateful agent loop via the shared AgentRunner."""
     memory = get_or_create_memory(chat_id)
-    scratchpad = []
-
-    try:
-        queue_debug_event(
-            "user_message",
-            user_message,
-            {"channel": "telegram", "chat_id": chat_id},
-        )
-
-        pre_escalation = run_pre_escalation(
-            user_message,
-            tool_map,
-            {"channel": "telegram", "chat_id": chat_id},
-            False,
-        )
-        if pre_escalation:
-            queue_debug_event(
-                "pre_escalation",
-                pre_escalation.get("result", ""),
-                {
-                    "channel": "telegram",
-                    "chat_id": chat_id,
-                    "category": pre_escalation.get("category"),
-                    "reason": pre_escalation.get("reason"),
-                },
-            )
-
-        final_response = None
-        max_iterations = 3
-
-        for _ in range(max_iterations):
-            messages = prompt.format_messages(
-                running_summary=memory.running_summary,
-                chat_history=memory.get_messages(),
-                input=user_message,
-                agent_scratchpad=scratchpad,
-            )
-            ai_msg = main_llm.invoke(messages)
-
-            if ai_msg.tool_calls:
-                scratchpad.append(ai_msg)
-                for tc in ai_msg.tool_calls:
-                    tool_name = tc["name"]
-                    tool_args = tc.get("args", {})
-                    queue_debug_event(
-                        "tool_call",
-                        json.dumps(tool_args, ensure_ascii=False, indent=2, default=str),
-                        {
-                            "channel": "telegram",
-                            "chat_id": chat_id,
-                            "tool_name": tool_name,
-                        },
-                    )
-
-                    tool_func = tool_map.get(tool_name)
-                    try:
-                        result = tool_func.invoke(tool_args)
-                    except Exception as e:
-                        result = f"Tool error: {e}"
-
-                    scratchpad.append({
-                        "role": "tool",
-                        "name": tool_name,
-                        "tool_call_id": tc["id"],
-                        "content": str(result)[:2000],
-                    })
-                    queue_debug_event(
-                        "tool_result",
-                        str(result),
-                        {
-                            "channel": "telegram",
-                            "chat_id": chat_id,
-                            "tool_name": tool_name,
-                        },
-                    )
-            else:
-                final_response = ai_msg.content
-                break
-
-        if not final_response:
-            final_response = "I ran into an issue internally. Please try again."
-
-        queue_debug_event(
-            "assistant_reply",
-            final_response,
-            {"channel": "telegram", "chat_id": chat_id},
-        )
-
-        queue_maybe_notify_arun(
-            user_input=user_message,
-            final_response=final_response,
-            scratchpad=scratchpad,
-            tool_map=tool_map,
-            user_metadata={"channel": "telegram", "chat_id": chat_id},
-            pre_notified=bool(pre_escalation and pre_escalation.get("handled")),
-        )
-
-        memory.add_interaction(user_message, final_response)
-        return final_response
-    except Exception as e:
-        queue_debug_event(
-            "error",
-            str(e),
-            {"channel": "telegram", "chat_id": chat_id},
-        )
-        raise
+    return agent_runner.sync_reply(
+        session_id=str(chat_id),
+        user_input=user_message,
+        llm=main_llm,
+        prompt=prompt,
+        memory=memory,
+        tool_map=tool_map,
+        user_metadata={"channel": "telegram", "chat_id": chat_id},
+        max_iterations=3,
+    )
 
 
 # === Telegram Handlers ===
@@ -173,8 +79,6 @@ def format_for_telegram(text: str) -> str:
     return text.strip()
 
 
-from backend.app.core.agent import save_unknown_question_answer
-
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_text = update.message.text
     chat_id = update.effective_chat.id
@@ -182,7 +86,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Check if this is a Telegram reply to an Alert message
     if update.message.reply_to_message:
         reply_to_text = update.message.reply_to_message.text or update.message.reply_to_message.caption or ""
-        
+
         extracted_question = ""
         if "User Query / Details:" in reply_to_text:
             parts = reply_to_text.split("User Query / Details:")
@@ -192,12 +96,12 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parts = reply_to_text.split("User Message:")
             if len(parts) > 1:
                 extracted_question = parts[1].split("Category:")[0].split("Contact:")[0].split("Chat ID:")[0].strip()
-        
+
         if not extracted_question and len(reply_to_text) > 5:
             extracted_question = reply_to_text.split("\n\n")[0].strip()
 
         if extracted_question:
-            res = save_unknown_question_answer(extracted_question, user_text)
+            res = knowledge_service.save_verified_answer(extracted_question, user_text)
             confirmation = (
                 f"<b>✅ Answer Saved & Ingested into AI Memory!</b>\n\n"
                 f"<b>Question:</b> <code>{extracted_question}</code>\n"

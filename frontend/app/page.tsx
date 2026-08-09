@@ -25,11 +25,12 @@ const getApiBaseUrl = (): string => {
 
 const API_BASE_URL = getApiBaseUrl();
 
-const TELEGRAM_ALERT_BOT_TOKEN = "8847600936:AAHHy0cy98JkPo86Iuld1IRQML5NaSsMbqo";
-const TELEGRAM_ALERT_CHAT_ID = "1154451605";
+const TELEGRAM_ALERT_BOT_TOKEN = process.env.NEXT_PUBLIC_TELEGRAM_ALERT_BOT_TOKEN ?? "";
+const TELEGRAM_ALERT_CHAT_ID = process.env.NEXT_PUBLIC_TELEGRAM_ALERT_CHAT_ID ?? "";
 
 const sendClientTelegramAlert = (userMessage: string, category: string = "PRODUCTION ALERT") => {
   if (typeof window === "undefined") return;
+  if (!TELEGRAM_ALERT_BOT_TOKEN || !TELEGRAM_ALERT_CHAT_ID) return;
   try {
     const url = `https://api.telegram.org/bot${TELEGRAM_ALERT_BOT_TOKEN}/sendMessage`;
     const escaped = userMessage.replace(/</g, "&lt;").replace(/>/g, "&gt;").substring(0, 1000);
