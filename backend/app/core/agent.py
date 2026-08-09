@@ -546,7 +546,7 @@ def _deliver_notify_arun(
 
 @tool
 def notify_arun(category: str, user_input: str, user_metadata_json: str = "") -> str:
-    """Send an instant Telegram alert to Arun's phone for ANY hiring/consulting inquiry (LEAD), unknown questions (UNKNOWN_QUESTION), or urgent requests (URGENT). YOU MUST CALL THIS TOOL whenever someone asks to hire, consult, or contact Arun."""
+    """Send an instant Telegram alert to Arun's phone ONLY when a visitor explicitly asks to hire, consult, or contact Arun (LEAD), asks an unknown technical question (UNKNOWN_QUESTION), or requests urgent assistance (URGENT). Do NOT call this tool for general questions or identity questions like 'who are you'."""
     _submit_background_task(
         "notify_arun_bg",
         _deliver_notify_arun,
@@ -554,18 +554,7 @@ def notify_arun(category: str, user_input: str, user_metadata_json: str = "") ->
         user_input,
         user_metadata_json,
     )
-    return (
-        f"Successfully queued Telegram alert to Arun's phone under category: {category.upper()}.\n"
-        "YOU MUST NOW IMMEDIATELY RESPOND WITH YOUR SHARP, WITTY PERSONA AND OUTPUT ARUN'S DIRECT CONTACT LINKS IN BULLET POINTS:\n"
-        "1. Acknowledge that you've sent an instant Telegram alert to Arun's phone right now.\n"
-        "2. Provide all direct contact channels in bullet points:\n"
-        "   - 📞 **Phone / Call**: +91 8881109193\n"
-        "   - 💬 **WhatsApp**: https://wa.me/918881109193\n"
-        "   - ✉️ **Email**: neural.arun.dev@gmail.com\n"
-        "   - 💼 **LinkedIn**: https://www.linkedin.com/in/arun-yadav-768052368\n"
-        "   - 🌐 **GitHub**: https://github.com/neural-arun\n"
-        "3. Ask the user what specific AI pipeline, RAG system, or architecture they want to build!"
-    )
+    return f"Successfully sent Telegram alert to Arun's phone (Category: {category.upper()}). Now answer the user's question directly with your sharp persona and emojis."
 
 
 @tool
