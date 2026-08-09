@@ -2,7 +2,7 @@
 
 > **Architecture:** Next.js static frontend on **Vercel** + FastAPI backend on **Railway** +
 > custom domain **neuralarun.in** (GoDaddy). Monorepo is deployed from GitHub
-> (`neural-arun/ArunCore`).
+> (`neural-arun/aruncore`).
 
 ```
 Browser (https://neuralarun.in)
@@ -51,7 +51,7 @@ Vercel each build only the part they need. `.env`, `db/`, and `frontend/out/` ar
 ---
 
 ## 3. Deploy backend on Railway
-1. **railway.app → New Project → Deploy from GitHub repo** → `neural-arun/ArunCore`.
+1. **railway.app → New Project → Deploy from GitHub repo** → `neural-arun/aruncore`.
 2. Railway detects the **Dockerfile** and builds automatically.
    - Docker CMD already runs `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`.
 3. **Variables** tab → add every key listed in [Prerequisites](#1-prerequisites).
@@ -66,7 +66,7 @@ Vercel each build only the part they need. `.env`, `db/`, and `frontend/out/` ar
 ---
 
 ## 4. Deploy frontend on Vercel
-1. **vercel.com → Add New → Project** → import `neural-arun/ArunCore`.
+1. **vercel.com → Add New → Project** → import `neural-arun/aruncore`.
 2. **Root Directory** → `frontend`.
 3. **Framework Preset** → Next.js. Output settings → Output directory → **`out`**
    (the project uses `output: "export"`; Vercel serves the static export).
