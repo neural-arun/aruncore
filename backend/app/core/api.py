@@ -402,9 +402,9 @@ async def chat_endpoint(req: ChatRequest):
                 )
 
             scratchpad = []
-            max_iterations = 5
+            max_iterations = 7
             iterations = 0
-            max_search_limit = 3
+            max_search_limit = 7
             search_count = 0
             final_response = ""
             executed_tools = []
@@ -471,7 +471,7 @@ async def chat_endpoint(req: ChatRequest):
                             "role": "tool",
                             "name": tool_name,
                             "tool_call_id": tc["id"],
-                            "content": str(tool_result)[:2000],
+                            "content": str(tool_result)[:15000],
                         })
                     iterations += 1
                 else:
@@ -489,7 +489,21 @@ async def chat_endpoint(req: ChatRequest):
                     break
 
             if not final_response:
-                final_response = "I encountered a processing limit. How else can I help?"
+                yield json.dumps({"type": "status", "content": "Synthesizing final response..."}) + "\n"
+                thoughts.append("Synthesizing final response...")
+                messages_fallback = session_prompt.format_messages(
+                    running_summary=memory.running_summary,
+                    chat_history=memory.get_messages(),
+                    input=req.message,
+                    agent_scratchpad=scratchpad,
+                )
+                full_reply = ""
+                for chunk in session_llm.stream(messages_fallback):
+                    if chunk.content:
+                        full_reply += chunk.content
+                        yield json.dumps({"type": "token", "content": chunk.content}) + "\n"
+                        await asyncio.sleep(0.005)
+                final_response = full_reply
 
             memory.add_interaction(req.message, final_response)
             record_session_message(req.session_id, "twin", final_response, thoughts=thoughts)
