@@ -1,32 +1,41 @@
-# 🛠️ Scripts & Data Automation (`/scripts/`)
+# 🛠️ ArunCore Automated Scripts & Evaluation Harness (`scripts/`)
 
-This folder contains **Python utility, evaluation, and sync scripts** used to automate knowledge base updates from GitHub and LinkedIn, as well as stress-test AI performance.
-
----
-
-## 📁 File Descriptions
-
-### 1. 🐙 `scripts/sync_github_data.py`
-- **What it does**: Connects to GitHub API, inspects all of Arun's public repositories (`neural-arun`), downloads fresh `README.md` files and metadata, and updates `data/github/` automatically.
-- **How to run**:
-  ```bash
-  python scripts/sync_github_data.py
-  ```
+This directory contains automated maintenance scripts, data pipelines, and evaluation harnesses powering ArunCore.
 
 ---
 
-### 2. 💼 `scripts/sync_linkedin.py`
-- **What it does**: Uses Apify API to fetch recent LinkedIn posts, articles, and engagement metrics from Arun's LinkedIn profile, and updates `data/linkedin/profile_summary.md`. Automatically triggers re-ingestion into ChromaDB vector memory.
-- **How to run**:
-  ```bash
-  python scripts/sync_linkedin.py
-  ```
+## 📁 Script Inventory & Documentation
+
+| Script File | Purpose | Description |
+| :--- | :--- | :--- |
+| **`evaluate.py`** | Multi-Turn ReAct Evaluation Harness | Reads test questions from `evaluation_questions.md`, runs full 7-iteration ReAct loop using `gpt-4.1-nano`, and writes output traces to `evaluation_results.md`. |
+| **`evaluation_questions.md`** | 30 Evaluation Test Questions | Structured Markdown file containing all 30 test questions across 6 core categories. |
+| **`evaluation_results.md`** | Evaluation Results & Traces | Stores full execution traces, tools used, timestamps, and AI answers for all 30 questions. |
+| **`sync_github.py`** | GitHub API Auto-Sync | Queries GitHub API (`https://api.github.com/users/neural-arun/repos`), fetches raw `README.md` files for all public repos, and saves formatted markdown files to `data/github/<repo>/README.md`. |
+| **`sync_linkedin.py`** | LinkedIn Posts Sync | Triggers Apify LinkedIn scraper integration and saves public LinkedIn posts into `data/linkedin/posts.md`. |
+| **`sync_all.py`** | 1-Click Master Data Sync | Master runner executing `sync_github.py` and `sync_linkedin.py` in sequence. |
+| **`ingest.py`** | ChromaDB Vector Re-Ingestion | Re-chunks and re-embeds all markdown files across `data/` into `db/chroma.sqlite3` using OpenAI `text-embedding-3-small`. |
 
 ---
 
-### 3. 🧪 `scripts/evaluate_30_questions.py`
-- **What it does**: Runs the 30-question stress-test benchmark suite across 6 categories (Identity, Live GitHub, RAG Projects, LinkedIn Insights, Lead Handoffs, Safety Guardrails) and saves the results to `test_output_30.json`.
-- **How to run**:
-  ```bash
-  PYTHONPATH=. python scripts/evaluate_30_questions.py
-  ```
+## 🚀 How to Run Scripts
+
+### Run 30-Question Evaluation Suite:
+```bash
+python3 scripts/evaluate.py
+```
+
+### Sync All GitHub Repositories:
+```bash
+python3 scripts/sync_github.py
+```
+
+### Run 1-Click Master Sync:
+```bash
+python3 scripts/sync_all.py
+```
+
+### Re-Build ChromaDB Vector Database:
+```bash
+python3 scripts/ingest.py
+```
