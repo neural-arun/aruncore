@@ -840,7 +840,7 @@ def load_tutor_config(tutor_id: Optional[str]) -> Optional[Dict[str, Any]]:
     return None
 
 
-def load_static_context() -> Tuple[str, str, str, str, str, str]:
+def load_static_context() -> Tuple[str, str, str, str, str]:
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     root_dir = os.path.dirname(os.path.dirname(base_dir))
     
@@ -850,14 +850,12 @@ def load_static_context() -> Tuple[str, str, str, str, str, str]:
     
     profile_path = os.path.join(root_dir, "data", "static", "public_profile.md")
     rules_path = os.path.join(root_dir, "data", "static", "rules_of_engagement.md")
-    voice_path = os.path.join(root_dir, "data", "static", "voice_persona.md")
 
     sys_content = ""
     guard_content = ""
     handoff_content = ""
     profile_content = ""
     rules_content = ""
-    voice_content = ""
 
     if os.path.exists(sys_prompt_path):
         with open(sys_prompt_path, "r", encoding="utf-8") as f:
@@ -879,11 +877,7 @@ def load_static_context() -> Tuple[str, str, str, str, str, str]:
         with open(rules_path, "r", encoding="utf-8") as f:
             rules_content = f.read()
 
-    if os.path.exists(voice_path):
-        with open(voice_path, "r", encoding="utf-8") as f:
-            voice_content = f.read()
-
-    return sys_content, guard_content, handoff_content, profile_content, rules_content, voice_content
+    return sys_content, guard_content, handoff_content, profile_content, rules_content
 
 
 def init_agent(temperature: float = 0.4, model_name: str = os.getenv("OPENAI_MODEL", "gpt-4.1-nano"), tutor_id: Optional[str] = None):
@@ -934,13 +928,10 @@ Always respond in the exact language used by the student (English or natural Hin
 {{running_summary}}
 """
     else:
-        sys_content, guard_content, handoff_content, profile, rules, voice = load_static_context()
+        sys_content, guard_content, handoff_content, profile, rules = load_static_context()
 
         system_prompt = f"""
---- VOICE PERSONA & TALKING STYLE (PRIMARY CORE) ---
-{voice}
-
---- RULES OF ENGAGEMENT & DIRECT CONTACT MANDATES ---
+--- MASTER RULES OF ENGAGEMENT & PERSONA (PRIMARY CORE) ---
 {rules}
 
 --- IDENTITY PROFILE & TECHNICAL SPECIFICATIONS ---
