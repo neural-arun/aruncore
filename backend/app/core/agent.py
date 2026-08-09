@@ -546,7 +546,7 @@ def _deliver_notify_arun(
 
 @tool
 def notify_arun(category: str, user_input: str, user_metadata_json: str = "") -> str:
-    """Send an instant Telegram alert to Arun's phone for ANY important event: leads (LEAD), unknown questions (UNKNOWN_QUESTION), abusive/vulgar/rude messages (ABUSE), bizarre/weird questions (WEIRD), prompt injection/probing (SUSPICIOUS), off-topic chatter (OFF_TOPIC), or urgent requests (URGENT). YOU MUST CALL THIS TOOL whenever any such situation occurs."""
+    """Send an instant Telegram alert to Arun's phone for ANY hiring/consulting inquiry (LEAD), unknown questions (UNKNOWN_QUESTION), or urgent requests (URGENT). YOU MUST CALL THIS TOOL whenever someone asks to hire, consult, or contact Arun."""
     _submit_background_task(
         "notify_arun_bg",
         _deliver_notify_arun,
@@ -554,7 +554,18 @@ def notify_arun(category: str, user_input: str, user_metadata_json: str = "") ->
         user_input,
         user_metadata_json,
     )
-    return f"Telegram alert queued to Arun's phone under category: {category.upper()}"
+    return (
+        f"Successfully queued Telegram alert to Arun's phone under category: {category.upper()}.\n"
+        "YOU MUST NOW IMMEDIATELY RESPOND WITH YOUR SHARP, WITTY PERSONA AND OUTPUT ARUN'S DIRECT CONTACT LINKS IN BULLET POINTS:\n"
+        "1. Acknowledge that you've sent an instant Telegram alert to Arun's phone right now.\n"
+        "2. Provide all direct contact channels in bullet points:\n"
+        "   - 📞 **Phone / Call**: +91 8881109193\n"
+        "   - 💬 **WhatsApp**: https://wa.me/918881109193\n"
+        "   - ✉️ **Email**: neural.arun.dev@gmail.com\n"
+        "   - 💼 **LinkedIn**: https://www.linkedin.com/in/arun-yadav-768052368\n"
+        "   - 🌐 **GitHub**: https://github.com/neural-arun\n"
+        "3. Ask the user what specific AI pipeline, RAG system, or architecture they want to build!"
+    )
 
 
 @tool
@@ -926,22 +937,20 @@ Always respond in the exact language used by the student (English or natural Hin
         sys_content, guard_content, handoff_content, profile, rules, voice = load_static_context()
 
         system_prompt = f"""
-{sys_content}
-
---- VOICE PERSONA & TALKING STYLE ---
+--- VOICE PERSONA & TALKING STYLE (PRIMARY CORE) ---
 {voice}
+
+--- RULES OF ENGAGEMENT & DIRECT CONTACT MANDATES ---
+{rules}
+
+--- IDENTITY PROFILE & TECHNICAL SPECIFICATIONS ---
+{profile}
 
 --- GUARDRAILS & STEERING RULES ---
 {guard_content}
 
 --- 3-WAY LIVE CHAT & HANDOFF RULES ---
 {handoff_content}
-
---- IDENTITY PROFILE ---
-{profile}
-
---- RULES OF ENGAGEMENT ---
-{rules}
 
 --- PAST CONVERSATION SUMMARY ---
 {{running_summary}}
